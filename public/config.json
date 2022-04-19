@@ -1,0 +1,7 @@
+{
+	"apiBaseUrl": "https://e-bettor.herokuapp.com/",
+	"authorizationHeaderName": "Authorization",
+	"authorizationTokenType": "Bearer",
+	"environment": "development",
+	"stripeKey": "pk_test_51JvlWvGz8Qb0yjpNJam22g5zn8wx8mMo6uPEkfvlSefgA5UehPbVmxyBuy8FXTEGk1FdAJ5e8f8uk8L3aVR2vruH00w6i5LYvf"
+}
