@@ -1,5 +1,5 @@
 <template>
-    <nav class="Navigation navbar navbar-expand-md navbar-light p-3 m-3 justify-content-between shadow bottom">
+    <nav class="Navigation navbar navbar-expand-md navbar-light p-3 m-3 justify-content-between action-shadow">
         <!-- <app-header text="Bettor" :menu="true" /> -->
         <a class="navbar-brand text-white" href="#"><router-link class="text-decoration-none text-white" :to="{name: 'home'}"><span class="bettorLogo">Bettor</span></router-link></a>
         <button 
