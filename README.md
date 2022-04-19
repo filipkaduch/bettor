@@ -1,4 +1,4 @@
-# bettor
+# Bettor - app
 
 ## Project setup
 ```
