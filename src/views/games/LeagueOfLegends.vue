@@ -13,7 +13,7 @@
             </div>
         </div>
     </b-col>
-    <b-container class="mt-1 mt-lg-3">
+    <b-container class="pt-3 pt-lg-3">
         <h1 class="bettorLogo game-header" style="font-size: 2.5rem;">League of Legends</h1>
         <div class="d-flex justify-content-between mx-lg-0 mx-5">
             <div :style="page === 0 ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">

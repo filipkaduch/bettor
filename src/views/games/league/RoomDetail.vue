@@ -3,14 +3,14 @@
         <div v-if="isLoading === false">
             <div v-if="triggerMobile === true">
                 <div class="h-100" style="max-height: 100vh;">
-                    <b-container class="mt-4 p-3 pb-0" style="z-index: -10; ">
+                    <b-container class="pt-lg-4 pt-3 p-3 pb-0" style="z-index: -10; ">
                         <div class="d-flex w-100 justify-content-center align-items-center mb-1">
                             <div class="custom-row d-flex align-items-center">
                                 <h2 style="margin-right: 20px;"><span class="bettorLogo" style="font-size: 2rem;">{{ getRoomName }}</span> room:</h2>
                                 <h2 style="text-align: start;">{{ `${metricObject.value} ${metricObject.metric} in ${metricObject.games} games` }}</h2>
                             </div>
                             <div>
-                                <router-link style="text-decoration: none; color: inherit; position:relative; top: -50px; left: 30px;" :to="{name: 'lol'}">
+                                <router-link style="text-decoration: none; color: inherit; position:relative; top: 0; left: 50px;" :to="{name: 'lol'}">
                                     <font-awesome-icon :icon="['fas', 'times-circle']" size="2x" style="cursor: pointer;"/>
                                 </router-link>
                             </div>
@@ -20,14 +20,14 @@
                         <div class="orbit">
                             <ul :style="logged === 'null' ? '' : 'margin-left: 20px;'">
                                 <li>
-                                    <div><font-awesome-icon :icon="['fas', 'info-circle']" size="lg" style="cursor: pointer; width: 50px; height: auto;"/></div>
+                                    <div><font-awesome-icon :icon="['fas', 'info-circle']" size="lg" class="orbital-icon"/></div>
                                     <p @click="openOrbital('info')">Game info</p>
                                 </li>
                                 <li>
                                     <p>Expected outcome</p>
                                 </li>
                                 <li>
-                                    <div><font-awesome-icon :icon="['fas', 'envelope']" size="lg" style="cursor: pointer; width: 50px; height: auto;"/></div>
+                                    <div><font-awesome-icon :icon="['fas', 'envelope']" size="lg" class="orbital-icon"/></div>
                                     <p @click="openOrbital('chat')">Chat</p>
                                 </li>
                                 <li>
@@ -35,7 +35,7 @@
                                         <div v-if="activeKey === ''">
                                             <font-awesome-icon :icon="['fas', 'expand']" size="lg" style="cursor: pointer;"/>
                                         </div>
-                                        <div v-if="enabledDict.info" class="w-100 h-100 p-3">
+                                        <div v-if="enabledDict.info" class="w-100 h-100 p-3 justify-content-between d-flex" style="flex-direction: column;">
                                             <div class="d-flex justify-content-between mb-5"><h3>Game info</h3> <font-awesome-icon :icon="['fas', 'minus-circle']" size="2x" style="cursor: pointer;" @click="openOrbital('info')"/></div>
                                             <h4 class="d-flex justify-content-between align-items-center game-info"><b>Competion:</b> {{ metricObject.metric }}</h4>
                                             <h4 class="d-flex justify-content-between align-items-center game-info"><b>{{ `${metricObject.metric} to reach`}}:</b> {{ metricObject.value }}</h4>
@@ -48,7 +48,7 @@
                                                 </app-loading>
                                             </b-button>
                                         </div>
-                                        <div v-if="enabledDict.outcome" class="w-100 h-100 p-3">
+                                        <div v-if="enabledDict.outcome" class="w-100 h-100 p-3 justify-content-between d-flex" style="flex-direction: column;">
                                             <div class="d-flex justify-content-between mb-5" style="text-align: start;"><h3>Expected outcome</h3> <font-awesome-icon :icon="['fas', 'minus-circle']" size="2x" style="cursor: pointer;" @click="openOrbital('outcome')"/></div>
                                             <h4 style="text-align: start;"><b>Your credits:</b> 1200 </h4>
                                             <h4 style="border-bottom: 1px solid white; text-align: start;" class="w-100"><b>Entry credits:</b> {{ room.bank }}</h4>
@@ -115,14 +115,14 @@
                                     </div>
                                 </li>
                                 <li :style="activeOrbit !== false ? 'opacity: 0;' : ''">
-                                    <div><font-awesome-icon :icon="['fas', 'users']" size="lg" style="cursor: pointer; width: 50px; height: auto;"/></div>
+                                    <div><font-awesome-icon :icon="['fas', 'users']" size="lg" class="orbital-icon"/></div>
                                     <p @click="openOrbital('stats')">Players</p>
                                 </li>
                                 <li>
                                     <p>Current table</p>
                                 </li>
                                 <li :style="activeOrbit !== false ? 'opacity: 0;' : ''">
-                                    <div><font-awesome-icon :icon="['fas', 'piggy-bank']" size="lg" style="cursor: pointer; width: 50px; height: auto;"/></div>
+                                    <div><font-awesome-icon :icon="['fas', 'piggy-bank']" size="lg" class="orbital-icon"/></div>
                                     <p @click="openOrbital('outcome')">Expected outcome</p>
                                 </li>
                                 <li>
@@ -134,7 +134,7 @@
                 </div>
             </div>
             <div v-else>
-                <b-container class="mt-4 p-3 pb-0" style="z-index: -10; ">
+                <b-container class="pt-lg-5 p-3 pb-0" style="z-index: -10; ">
                     <div class="d-flex w-100 justify-content-center align-items-center mb-1 mb-xl-4">
                         <div class="custom-row d-flex align-items-center">
                             <h2 style="margin-right: 20px;"><span class="bettorLogo" style="font-size: 2rem;">{{ getRoomName }}</span> room:</h2>
@@ -553,6 +553,10 @@ export default {
         padding-top: 0 !important;
 	}
 
+    .bettorLogo {
+        font-size: 16px !important;
+    }
+
     small {
         font-size: 10px;
     }
@@ -565,8 +569,13 @@ export default {
         font-size: 12px;
     }
 
+    h2 {
+        font-size: 16px !important;
+    }
+
     .custom-row {
         display: block !important;
+        font-size: 16px !important;
     }
 }
 
@@ -622,7 +631,7 @@ export default {
     --text-bg: blue;
 
     position: absolute;
-    width: 5rem;
+    width: 4rem;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     font-weight: 500;
@@ -673,7 +682,7 @@ export default {
   li:nth-child(1) {
     // --icon-bg: var(--blue-light);
     // --text-bg: var(--blue-dark);
-    transform: translate(0, 1rem);
+    transform: translate(0, -1rem);
   }
 
   li:nth-child(2) {
@@ -686,18 +695,18 @@ export default {
   li:nth-child(3) {
     // --icon-bg: var(--pink-light);
     // --text-bg: var(--pink-dark);
-    transform: translate(0, 6rem);
+    transform: translate(0, 4rem);
   }
   li:nth-child(4) {
     // --icon-bg: var(--red-light);
     // --text-bg: var(--red-dark);
-    transform: translate(0, 11rem);
+    transform: translate(0, 9rem);
   }
 
   li:nth-child(5) {
     // --icon-bg: var(--brown-light);
     // --text-bg: var(--brown-dark);
-    transform: translate(0, 16rem);
+    transform: translate(0, 14rem);
   }
 
   li:nth-child(6) {
@@ -710,7 +719,7 @@ export default {
   li:nth-child(7) {
     // --icon-bg: var(--purple-light);
     // --text-bg: var(--purple-dark);
-    transform: translate(0, 21rem);
+    transform: translate(0, 19rem);
   }
   li:nth-child(8) {
       display: none;
@@ -719,13 +728,19 @@ export default {
     transform: translate(0, 9rem);
   }
 
-  .orbital-pulse {
-    width: 2rem;
-    height: 2rem;
+.orbital-pulse {
+    width: 1.5rem;
+    height: 1.5rem;
     border-radius: 25%;
     background-color: #001E6C;
     transition: all 0.9s;
     animation: pulse-blue 2s infinite;
+}
+
+.orbital-icon {
+    cursor: pointer;
+    width: 32;
+    height: 32px;
 }
 
 @media screen and (max-width: 1600px) and (max-height: 1000px) {

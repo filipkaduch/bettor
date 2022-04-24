@@ -1,6 +1,6 @@
 <template>
     <transition name="slide-fade">
-        <b-col v-if="show" cols="wp" class="position-fixed p-0 h-100 main-tab">
+        <b-col v-if="show" cols="wp" class="position-fixed p-0 main-tab">
             <div class="bg-transparent h-100">
                 <div class="palette-sidebar border-left shadow">
                     <app-gamepicker v-if="type === 'create'" @closeCreate="closeSidebar"/>
@@ -74,8 +74,9 @@ export default {
 
     .main-tab {
         z-index: 300;
-        margin-left: 84px;
-        top: 80px;
+        margin-left: 52px;
+        top: 0px;
+        height: calc(100% + 73px);
         width: 600px;
     }
 
@@ -83,8 +84,8 @@ export default {
         .main-tab {
             z-index: 300;
             margin-left: 30px;
-            top: 72px;
-            width: calc(100% - 30px);
+            top: 0px;
+            width: calc(100vw - 30px);
         }
         .palette-sidebar {
             height: 100%;

@@ -1,7 +1,12 @@
 <template>
-    <nav class="Navigation navbar navbar-expand-md navbar-light p-3 m-3 justify-content-between action-shadow">
+    <div>
+    <div class="corner-logo" :style="logged !== 'null' ? 'border-bottom-right-radius: 0; box-shadow: none !important;' : ''" @click="closeAll">
+        <span v-if="displaySide === false" class="bettorLogo">B</span>
+        <font-awesome-icon v-else style="width: 1.4rem; height: 1.4rem;" :icon="['fas', 'arrow-up']" class="mt-2" />
+    </div>
+    <nav class="Navigation navbar navbar-expand-md navbar-light mt-0 p-3 pl-4 m-3 justify-content-between action-shadow"  :style="navHeight" :class="triggerMobile === true ? 'position-absolute w-100' : 'calc-width position-absolute'">
         <!-- <app-header text="Bettor" :menu="true" /> -->
-        <a class="navbar-brand text-white" href="#"><router-link class="text-decoration-none text-white" :to="{name: 'home'}"><span class="bettorLogo">Bettor</span></router-link></a>
+        <a class="navbar-brand text-white ml-5" href="#"><router-link class="text-decoration-none text-white" :to="{name: 'home'}"><span class="bettorLogo">Bettor</span></router-link></a>
         <button 
             class="navbar-toggler border-0 text-white"
             type="button"
@@ -12,7 +17,7 @@
             @click="openMobileMenu">
             <font-awesome-icon :icon="['fas', 'bars']" class="mt-2" />
         </button>
-        <b-collapse v-model="mobileMenu" class="position-absolute mt-2 w-100" style="border-radius: 0.5rem; border: 0; left: 0px; z-index: 1000;">
+        <b-collapse v-model="mobileMenu" class="position-absolute mt-2" style="border-radius: 0.5rem; border: 0; left: 36px; z-index: 1000;" :style="logged !== 'null' ? 'width: calc(100% - 36px);' : 'width: 100%; left: 0;'">
             <b-card body-class="blue-bg collapse-border" style="border: 0; border-radius: 0.5rem;">
                 <ul class="navbar-nav mr-auto">
                     <li class="menu-mobile-item mb-1">
@@ -149,6 +154,7 @@
             </div>
         </div>
     </nav>
+    </div>
 </template>
 
 <script>
@@ -164,11 +170,15 @@ export default {
     data() {
         return {
             loginUser: 0,
+            windowWidth: 0,
             loginPass: '',
             showAcc: false,
             showLogin: false,
             showGames: false,
-            mobileMenu: false
+            displaySide: false,
+            mobileMenu: false,
+            triggerMobile: false,
+            navHeight: ''
         };
     },
     computed: {
@@ -183,6 +193,25 @@ export default {
                 console.log('www');
             }
         },
+        windowWidth: {
+            immediate: true,
+            handler(val) {
+                if (val < 767) {
+                    this.triggerMobile = true;
+                } else {
+                    this.triggerMobile = false;       
+                }
+            }
+        },
+        displaySide(val) {
+            this.$nextTick(() => {
+                if (val) {
+                    this.navHeight = `height: 70px !important; transform: translateY(0px);`;
+                } else {
+                    this.navHeight = '';
+                }
+            });
+        },
         mobileMenu: {
             immediate: true,
             handler(val) {
@@ -194,7 +223,14 @@ export default {
         }
     },
     mounted() {
-
+        window.addEventListener('resize', this.onResize);
+        this.onResize();
+        if (this.windowWidth < 767) {
+            this.triggerMobile = true;
+        }
+    },
+    beforeDestroy() { 
+        window.removeEventListener('resize', this.onResize); 
     },
     methods: {
         ...mapActions('authLogin', ['logout']),
@@ -207,12 +243,22 @@ export default {
             console.log('HAPPEND');
             this.showGames = !this.showGames;
         },
+        closeAll() {
+            this.displaySide = !this.displaySide;
+            if (this.displaySide === false) {
+                this.mobileMenu = false;
+            }
+        },
+        onResize() {
+            this.windowWidth = window.innerWidth;
+        },
         closeBar() {
             console.log('HELLO');
             this.mobileMenu = false;
             this.showGames = false;
             this.showLogin = false;
             this.showAcc = false;
+            this.closeAll();
         },
         openMobileMenu() {
             this.mobileMenu = !this.mobileMenu;
@@ -255,6 +301,17 @@ li {
     border-radius: 0.25rem; 
 }
 
+.expand-enter-active,
+.expand-leave-active {
+  transition: height 1s ease-in-out;
+  overflow: hidden;
+}
+
+.expand-enter,
+.expand-leave-to {
+  height: 0;
+}
+
 .actionDropdown {
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     border: 0 !important;
@@ -264,12 +321,15 @@ li {
 }
 
 .Navigation {
+    transition: all 0.5s ease;
     background-color: #8f94fb;
     /* border: 2px solid white; */
     border-radius: 8px;
     padding: 20px;
     z-index: 600;
+    transform: translateY(-50px);
     color: white;
+    height: 0px;
     margin: 20px 40px 0px 40px;
     text-align: center;
 }
@@ -282,6 +342,10 @@ li {
         border-radius: 0;
         display: block !important;
 	}
+    
+    .corner-logo {
+        width: 36px !important;
+    }
 
     .dropdown-block {
         display: none !important;
@@ -323,6 +387,41 @@ li {
 .blue-bg {
     background-color: #8f94fb;
     border: 0;
+}
+
+.corner-logo {
+    cursor: pointer;
+    width: 56px;
+    height: 75px;
+    position: absolute;
+    border-bottom-right-radius: 15px;
+    z-index: 1000;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    background-color: #001E6C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: on-load .3s ease-in-out forwards;
+}
+
+.calc-width {
+    width: calc(100% - 40px) !important;
+    left: 34px;
+}
+
+@keyframes on-load {
+  0% {
+    opacity: 0;
+    transform: scale(.3);
+  }
+  70% {
+    opacity: .7;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 </style>

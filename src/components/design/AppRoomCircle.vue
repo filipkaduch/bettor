@@ -11,7 +11,7 @@
     <div class="orbit">
         <ul>
             <li v-for="(room, index) in rooms.slice(0, 8)" :key="`room-${index}`">
-              <div><font-awesome-icon :id="`${room.game_id}icon`" :icon="['fas', `${getIcon(room)}`]" style="width: 50px; height: 50px;" /></div>
+              <div><font-awesome-icon :id="`${room.game_id}icon`" :icon="['fas', `${getIcon(room)}`]" style="width: 32px; height: 32px;" /></div>
               <p @click="openOrbital(room)">{{ room.game_id }}</p>
             </li>
         </ul>
@@ -255,7 +255,7 @@ export default {
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     font-weight: 500;
-    color: lightcyan;
+    color: white;
     text-align: center;
     line-height: 1;
     display: grid;
@@ -284,7 +284,10 @@ export default {
     }
 
     > p {
-      position: relative;
+      width: 7rem;
+      height: 7rem;
+      position: absolute;
+      // position: relative;
       background: #8f94fb;
       transition: opacity 500ms;
       opacity: 0;
@@ -361,16 +364,23 @@ export default {
 
   @media screen and (max-width: 767px) {
 
+    li {
+      > p {
+        width: 5rem;
+        height: 5rem;;
+      }
+    }
+
     li:nth-child(1) {
       // --icon-bg: var(--blue-light);
       // --text-bg: var(--blue-dark);
-      transform: translate(0, -11rem);
+      transform: translate(0, -12rem);
     }
 
     li:nth-child(2) {
       // --icon-bg: var(--green-light);
       // --text-bg: var(--green-dark);
-      transform: translate(0, -5.5rem);
+      transform: translate(0, -6.5rem);
     }
 
     li:nth-child(3) {
@@ -413,8 +423,8 @@ export default {
 @media screen and (max-width: 767px) {
   .orbit {
     li {
-      width: 5rem;
-      height: 5rem;
+      width: 4rem;
+      height: 4rem;
     }
   }
 

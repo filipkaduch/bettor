@@ -1,6 +1,6 @@
 <template>
     <b-col cols="12" class="shadow bottom h-100" style="background: #1F3C88; border-radius: 8px;">
-        <div class="mt-md-2 d-flex justify-content-between header p-3 align-items-center">
+        <div class="d-flex justify-content-between header p-3 align-items-center">
             <div>
                 <h4>Create a room</h4>
             </div>

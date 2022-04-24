@@ -1,6 +1,6 @@
 <template>
 <div>
-	<b-navbar class="d-flex flex-column custom-nav p-0 position-fixed ml-3 shadow left right text-white" vertical>
+	<b-navbar class="d-flex flex-column custom-nav p-0 position-fixed shadow left right text-white" vertical>
 		<b-nav vertical class="w-100 h-100 text-white">
 			<li class="nav-item w-100 mt-xs-5" @click="showHandler('create')">
 				<b-button
@@ -114,11 +114,10 @@ export default {
 <style scoped>
 .custom-nav {
 	width: 56px;
-	top: 80px;
-	margin-left: 30px;
+	top: 65px;
 	/* border: 2px solid white; */
 	z-index: 400;
-	border-radius: 8px;
+	border-bottom-right-radius: 8px;
 	height: 90%;
 	background-color: #001E6C;
     color: white;
@@ -128,8 +127,9 @@ export default {
 	.custom-nav {
 		margin-left: 0px !important;
 		width: 36px;
-		height: calc(100% - 72px);
+		height: calc(100vh - 72px);
 		top: 72px; 
+		z-index: 1100;
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
 		border-bottom-left-radius: 0;

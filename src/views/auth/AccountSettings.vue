@@ -1,14 +1,14 @@
 <template>
     <b-container class="margin-container mr-0 ml-xl-0 ml-lg-0">
         <b-col cols="11" lg="9" xl="9">
-            <b-row class="mt-1 mt-lg-5">
+            <b-row class="pt-3 pt-lg-5">
                 <b-col cols="12" md="12" sm="12" lg="6" xl="6" class="d-flex justify-content-center justify-content-lg-start"><h1>Account settings</h1></b-col>
             </b-row>
             <b-row class="mt-1 mt-lg-5 d-flex">
-                <b-col cols="12" class="rounded hoverCol profilePic mb-2 mb-lg-0" md="12" sm="12"  lg="3" xl="3">
+                <b-col cols="12" class="rounded hoverCol mb-2 mb-lg-0 d-flex justify-content-center" md="12" sm="12"  lg="3" xl="3">
                     <div
                         :class="{'has-file': showRemovedBtn}"
-                        class="c-file-input js-file-input h-100 shadow bg-white rounded">
+                        class="c-file-input js-file-input h-100 shadow bg-white rounded profilePic">
                         <div class="c-file-input__indicator">
                             <span class="c-file-input__indicator__icon c-icon c-icon--attach"></span>
                         </div>
@@ -58,7 +58,7 @@
                     </b-row>
                 </b-col>
             </b-row>
-            <transition name="slide-side">
+            <!--<transition name="slide-side">
                 <b-row v-if="isEdit" class="mt-3 d-flex mx-1 accountEdit game-info">
                     <b-col
                         cols="12"
@@ -84,8 +84,35 @@
                         </b-button-group>
                     </b-col>
                 </b-row>
-            </transition>
+            </transition>-->
         </b-col>
+        <b-modal centered v-show="isEdit" id="modal-1" class="p-0 text-white" hide-footer hide-header>
+                <b-row v-if="isEdit" class="d-flex accountEdit game-info text-white justify-content-center">
+                    <b-col
+                        cols="12"
+                        lg="9"
+                        xl="9"
+                        class="rounded p-2 p-lg-3"
+                        style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset; background: #4e54c8;">
+                        <div class="d-flex justify-content-end pb-2">
+                            <font-awesome-icon :icon="['fas', 'times-circle']" size="lg" style="cursor: pointer;" class="mb-2" @click="closeModal()" />
+                        </div>
+                        <div class="d-flex mb-3 mr-3 align-items-center justify-content-center">
+                            <div class="d-flex align-items-center justify-content-center" style="width: 20%;"><h6 class="m-0 game-info"><b>{{ prependText }}</b></h6></div>
+                            <b-form-input type="text" v-model="lolName" :placeholder="accSettingsMenu[prependText]" class="w-75">
+                            </b-form-input>
+                        </div>
+                        <div v-if="prependText === 'Name' || prependText === 'Password'" class="d-flex mb-0 mb-lg-3 mr-3 align-items-center justify-content-center">
+                            <div class="d-flex align-items-center justify-content-center" style="width: 20%;"><h6  class="m-0 game-info"><b>{{ `Confirm ${prependText}` }}</b></h6></div>
+                            <b-form-input type="text" class="w-75">
+                            </b-form-input>
+                        </div>
+                        <b-button-group class="w-100 mt-2">
+                            <b-button class="mt-3 differButton" variant="transparent" @click="updateAccount">Submit</b-button>
+                        </b-button-group>
+                    </b-col>
+                </b-row>
+        </b-modal>
     </b-container>
 </template>
 
@@ -141,16 +168,22 @@ export default {
                 .then(({data}) => {
                     console.log(data);
                     this.isEdit = false;
+                    this.$bvModal.hide('modal-1');
                 })
                 .catch(({response}) => {
                     console.error(response);
                 });
+        },
+        closeModal() {
+            this.isEdit = false
+            this.$bvModal.hide('modal-1');
         },
         fileChangeHandler(e) {
             this.files = Array.from(e.target.files);
             this.showRemovedBtn = true;
         },
         openEdit(val) {
+            this.$bvModal.show('modal-1');
             this.prependText = val;
             this.isEdit = true;
         },
