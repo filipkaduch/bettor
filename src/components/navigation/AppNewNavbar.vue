@@ -127,7 +127,7 @@ export default {
 	.custom-nav {
 		margin-left: 0px !important;
 		width: 36px;
-		height: calc(100vh - 72px);
+		height: calc(100% - 72px);
 		top: 72px; 
 		z-index: 1100;
 		border-top-left-radius: 0;

@@ -15,13 +15,13 @@
     </b-col>
     <b-container class="pt-3 pt-lg-3">
         <h1 class="bettorLogo game-header" style="font-size: 2.5rem;">League of Legends</h1>
-        <div class="d-flex justify-content-between mx-lg-0 mx-5">
+        <div class="d-flex justify-content-between mx-lg-0 mx-5 align-items-center">
             <div :style="page === 0 ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
-                <font-awesome-icon :icon="['fas', 'arrow-left']" style="width: 40px; height: 40px; color: white; cursor: pointer;" @click="page = page - 1" />
+                <font-awesome-icon :icon="['fas', 'arrow-left']" class="arrow" @click="page = page - 1" />
             </div>
-            <h4 class="mt-2 game-info sub-info mx-lg-0 mx-5">Rooms ({{ `${page + 1}/${Math.ceil(rooms.length / step)}` }}):</h4>
+            <h4 class="mt-2 game-info sub-info mx-lg-0">Rooms ({{ `${page + 1}/${Math.ceil(rooms.length / step)}` }}):</h4>
             <div :style="(page * step + step) >= rooms.length ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
-                <font-awesome-icon :icon="['fas', 'arrow-right']" style="width: 40px; height: 40px; color: white; cursor: pointer;" @click="page = page + 1" />
+                <font-awesome-icon :icon="['fas', 'arrow-right']" class="arrow" @click="page = page + 1" />
             </div>
         </div>
         <!--<h1 class="bettorLogo game-header" style="font-size: 2.5rem;">League of Legends</h1>
@@ -659,11 +659,16 @@ export default {
     }
     
     .game-header {
-        font-size: 1.5rem !important;
+        font-size: 16px !important;
     }
 
     .mx-380 {
         max-height: calc(75vh - 241px);
+    }
+
+    .arrow {
+        height: 16px !important;
+        width: 16px !important;
     }
 
     .rowRecord {
@@ -699,6 +704,13 @@ export default {
   border-radius: 5px;
   -webkit-transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
   transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.arrow {
+    width: 40px !important;
+    height: 40px !important;
+    color: white;
+    cursor: pointer;
 }
 
 .swiper-slide::after {

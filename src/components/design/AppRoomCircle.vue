@@ -374,24 +374,24 @@ export default {
     li:nth-child(1) {
       // --icon-bg: var(--blue-light);
       // --text-bg: var(--blue-dark);
-      transform: translate(0, -12rem);
+      transform: translate(0, -9.5rem);
     }
 
     li:nth-child(2) {
       // --icon-bg: var(--green-light);
       // --text-bg: var(--green-dark);
-      transform: translate(0, -6.5rem);
+      transform: translate(0, -5rem);
     }
 
     li:nth-child(3) {
       // --icon-bg: var(--pink-light);
       // --text-bg: var(--pink-dark);
-      transform: translate(0, 6rem);
+      transform: translate(0, 4.5rem);
     }
     li:nth-child(4) {
       // --icon-bg: var(--red-light);
       // --text-bg: var(--red-dark);
-      transform: translate(0, 12rem);
+      transform: translate(0, 9.5rem);
     }
 
     li:nth-child(5) {
@@ -442,7 +442,7 @@ export default {
     }
 
     .orbit {
-      top: calc(-50%) !important;
+      top: calc(-45%) !important;
     }
 }
 

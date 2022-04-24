@@ -632,7 +632,7 @@ export default {
 
     position: absolute;
     width: 4rem;
-    aspect-ratio: 1 / 1;
+    height: 4rem;
     border-radius: 50%;
     font-weight: 500;
     color: lightcyan;
