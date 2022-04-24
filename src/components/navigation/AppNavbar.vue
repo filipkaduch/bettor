@@ -12,23 +12,42 @@
             @click="openMobileMenu">
             <font-awesome-icon :icon="['fas', 'bars']" class="mt-2" />
         </button>
-        <b-collapse v-model="mobileMenu" class="position-absolute mt-2 w-100" style="border-radius: 0.5rem; border: 0; left: 0px;">
+        <b-collapse v-model="mobileMenu" class="position-absolute mt-2 w-100" style="border-radius: 0.5rem; border: 0; left: 0px; z-index: 1000;">
             <b-card body-class="blue-bg collapse-border" style="border: 0; border-radius: 0.5rem;">
                 <ul class="navbar-nav mr-auto">
-                    <li>
-                        <b-dropdown variant="transparent" menu-class="actionDropdown" class="text-white" no-caret>
-                        <template #button-content class="text-white">
-                            <div class="text-white d-flex align-items-center adjust-margin">Games</div>
-                        </template>
-                            <b-dropdown-item class="dropdown-item" link-class="text-white dropdownLink" variant="transparent" href="#"><router-link style="text-decoration: none; color: inherit;" :to="{name: 'lol'}">League of Legends</router-link></b-dropdown-item>
-                            <b-dropdown-item class="dropdown-item" link-class="text-white dropdownLink" href="#">Counter Strike: GO</b-dropdown-item>
-                            <b-dropdown-item class="dropdown-item" link-class="text-white dropdownLink" href="#">HearthStone</b-dropdown-item>
-                            <b-dropdown-item class="dropdown-item" link-class="text-white dropdownLink" href="#">DOTA 2</b-dropdown-item>
-                        </b-dropdown>
+                    <li class="menu-mobile-item mb-1">
+                        <b-button variant="transparent" class="text-white w-100" @click="showGameEvent">Games</b-button>
+                        <b-collapse v-model="showGames" class="position-absolute mt-1 collapse-border w-auto" style="border-radius: 0.25rem; left: 35%; z-index: 1000;">
+                            <div class="blue-bg borderRadius p-3 d-block" style="width: auto; border-radius: 0.25rem; border:0;">
+                                <div class="justify-content-start d-flex mb-2">
+                                    <router-link style="text-decoration: none; color: inherit;" :to="{name: 'lol'}">
+                                        <div @click.self="closeBar">League of Legends</div>
+                                    </router-link>
+                                </div>
+                                <div class="justify-content-start d-flex mb-2">
+                                    <router-link style="text-decoration: none; color: inherit;" :to="{name: 'lol'}">
+                                        <div @click="closeBar">Counter Strike: GO</div>
+                                    </router-link>
+                                </div>
+                                <div class="justify-content-start d-flex mb-2">
+                                    <router-link style="text-decoration: none; color: inherit;" :to="{name: 'lol'}">
+                                        <div @click="closeBar">HearthStone</div>
+                                    </router-link>
+                                </div>
+                                <div class="justify-content-start d-flex">
+                                    <router-link style="text-decoration: none; color: inherit;" :to="{name: 'lol'}">
+                                        <div @click="closeBar">DOTA 2</div>
+                                    </router-link>
+                                </div>
+                            </div>
+                        </b-collapse>
                     </li>
-                    <li class="nav-item active">
-                        <router-link class="nav-link text-white" style="border-bottom: 0 !important;" :to="{name: 'rankings'}">Rankings</router-link>
-                        <font-awesome-icon :icon="['fas', 'ranking-star']" />
+                    <li class="nav-item active menu-mobile-item">
+                        <b-button variant="transparent" class="text-white">
+                            <router-link class="nav-link text-white p-0" style="border-bottom: 0 !important;" :to="{name: 'rankings'}">
+                                <div @click.self="closeBar">Rankings</div>
+                            </router-link>
+                        </b-button>
                     </li>
                 </ul>
                 <div v-if="logged === 'null'" class="my-2 my-lg-0 d-flex justify-content-center">
@@ -42,21 +61,23 @@
                     </div>
                     <router-link class="btn actionButton mx-1" :to="{name: 'register'}">Register now</router-link>
                 </div>
-                <div v-else class="my-2 my-lg-0 d-flex align-items-center w-100 justify-content-between">
-                    <div class="rounded-circle userIcon p-1 position-relative">
-                        <font-awesome-icon :icon="['fas', 'user-circle']" size="lg" class="mr-3" @click="showAcc = !showAcc"/>
-                        <b-collapse v-model="showAcc" class="position-absolute mt-2 collapse-border" style="border-radius: 0.25rem;">
-                            <div class="blue-bg borderRadius p-3" style="width: 160px; border-radius: 0.25rem; border:0;">
-                                <router-link style="text-decoration: none; color: inherit;" :to="{name: 'accountSettings'}">
-                                    <div @click="closeBar">Account settings</div>
-                                </router-link>
-                                <router-link style="text-decoration: none; color: inherit;" :to="{name: 'roomsList'}" class="mt-2">
-                                    <div @click="closeBar" class="mt-2">Your rooms</div>
-                                </router-link>
-                            </div>
-                        </b-collapse>
+                <div v-else class="my-2 my-lg-0 d-flex align-items-center w-100 justify-content-between border-top-white">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle userIcon p-1 position-relative">
+                            <font-awesome-icon :icon="['fas', 'user-circle']" size="lg" class="mr-3" @click="showAcc = !showAcc"/>
+                            <b-collapse v-model="showAcc" class="position-absolute mt-2 collapse-border" style="border-radius: 0.25rem;">
+                                <div class="blue-bg borderRadius p-3" style="width: 160px; border-radius: 0.25rem; border:0;">
+                                    <router-link style="text-decoration: none; color: inherit;" :to="{name: 'accountSettings'}">
+                                        <div @click="closeBar">Account settings</div>
+                                    </router-link>
+                                    <router-link style="text-decoration: none; color: inherit;" :to="{name: 'roomsList'}" class="mt-2">
+                                        <div @click="closeBar" class="mt-2">Your rooms</div>
+                                    </router-link>
+                                </div>
+                            </b-collapse>
+                        </div>
+                        <small style="margin-left: 15px;">{{ logged.name }}</small>
                     </div>
-                    <small style="margin-left: 15px;">{{ logged.name }}</small>
                     <button type="button" class="btn actionButton mx-3" @click="submit">Logout</button>
                 </div>
             </b-card>
@@ -65,22 +86,37 @@
         <div class="collapse navbar-collapse justify-content-between d-flex dropdown-block" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li>
-                    <b-dropdown variant="transparent" menu-class="actionDropdown" class="text-white" no-caret>
-                    <template #button-content class="text-white">
-                        <div class="text-white d-flex align-items-center adjust-margin">Games</div>
-					</template>
-                        <b-dropdown-item class="dropdown-item" link-class="text-white dropdownLink" variant="transparent" href="#"><router-link style="text-decoration: none; color: inherit;" :to="{name: 'lol'}">League of Legends</router-link></b-dropdown-item>
-                        <b-dropdown-item class="dropdown-item" link-class="text-white dropdownLink" href="#">Counter Strike: Global Offensive</b-dropdown-item>
-                        <b-dropdown-item class="dropdown-item" link-class="text-white dropdownLink" href="#">HearthStone</b-dropdown-item>
-                        <b-dropdown-item class="dropdown-item" link-class="text-white dropdownLink" href="#">DOTA 2</b-dropdown-item>
-                    </b-dropdown>
+                    <b-button variant="transparent" class="mr-3 text-white" @click="showGames = !showGames">Games</b-button>
+                    <b-collapse v-model="showGames" class="position-absolute mt-1 collapse-border w-auto" style="border-radius: 0.25rem; z-index: 1000;">
+                        <div class="blue-bg borderRadius p-3 d-block" style="width: auto; border-radius: 0.25rem; border:0;">
+                            <div class="justify-content-start d-flex mb-2">
+                                <router-link style="text-decoration: none; color: inherit;" :to="{name: 'lol'}">
+                                    <div @click="closeBar">League of Legends</div>
+                                </router-link>
+                            </div>
+                            <div class="justify-content-start d-flex mb-2">
+                                <router-link style="text-decoration: none; color: inherit;" :to="{name: 'lol'}">
+                                    <div @click="closeBar">Counter Strike: Global Offensive</div>
+                                </router-link>
+                            </div>
+                            <div class="justify-content-start d-flex mb-2">
+                                <router-link style="text-decoration: none; color: inherit;" :to="{name: 'lol'}">
+                                    <div @click="closeBar">HearthStone</div>
+                                </router-link>
+                            </div>
+                            <div class="justify-content-start d-flex">
+                                <router-link style="text-decoration: none; color: inherit;" :to="{name: 'lol'}">
+                                    <div @click="closeBar">DOTA 2</div>
+                                </router-link>
+                            </div>
+                        </div>
+                    </b-collapse>
                 </li>
                 <!--<li class="nav-item active">
                     <router-link class="nav-link text-white" :to="{name: 'home'}">Bets</router-link>
                 </li>-->
                 <li class="nav-item active">
-                    <router-link class="nav-link text-white" style="border-bottom: 0 !important;" :to="{name: 'rankings'}">Rankings</router-link>
-                    <font-awesome-icon :icon="['fas', 'ranking-star']" />
+                    <b-button variant="transparent" class="text-white"><router-link class="nav-link text-white p-0" style="border-bottom: 0 !important;" :to="{name: 'rankings'}">Rankings</router-link></b-button>
                 </li>
             </ul>
             <div v-if="logged === 'null'" class="my-2 my-lg-0 d-flex">
@@ -131,6 +167,7 @@ export default {
             loginPass: '',
             showAcc: false,
             showLogin: false,
+            showGames: false,
             mobileMenu: false
         };
     },
@@ -145,6 +182,15 @@ export default {
             if (value !== null) {
                 console.log('www');
             }
+        },
+        mobileMenu: {
+            immediate: true,
+            handler(val) {
+                console.log('CHANGE ', val);
+                if (val === false) {
+                    this.showGames = false;
+                }
+            }
         }
     },
     mounted() {
@@ -154,16 +200,25 @@ export default {
         ...mapActions('authLogin', ['logout']),
         submit() {
             this.showLogin = false;
+            this.mobileMenu = false;
             this.logout({username: this.name, password: this.password});
+        },
+        showGameEvent() {
+            console.log('HAPPEND');
+            this.showGames = !this.showGames;
         },
         closeBar() {
             console.log('HELLO');
             this.mobileMenu = false;
+            this.showGames = false;
             this.showLogin = false;
             this.showAcc = false;
         },
         openMobileMenu() {
             this.mobileMenu = !this.mobileMenu;
+            if (!this.openMobileMenu) {
+                this.showGames = false;
+            }
             console.log('click');
         }
     }
@@ -244,6 +299,16 @@ li {
     cursor: pointer;
     width: 35px;
     height: 35px;
+}
+
+.menu-mobile-item {
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.menu-mobile-item:hover {
+    background-color: #001E6C !important;
+    transition: all ease .8s;
 }
 
 .adjust-margin {

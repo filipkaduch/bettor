@@ -1,6 +1,9 @@
 <template>
-	<b-card header-class="customHeader" bg-variant="light" header="bodyCard" body-class="bodyCard" footer-class="bodyCard" class="border-0">
+	<b-card :header-class="variant ? 'customHeaderLight' : 'customHeader'" bg-variant="light" :header="variant ? 'bodyCardLight' : 'bodyCard'" :body-class="variant ? 'bodyCardLight' : 'bodyCard'" :footer-class="variant ? 'bodyCardLight' : 'bodyCard'" class="border-0">
         <template #header>
+            <div v-if="closer" class="d-flex justify-content-end">
+                <font-awesome-icon :icon="['fas', 'minus-circle']" size="2x" style="cursor: pointer;" @click="closeCard"/>
+            </div>
             <div class="d-flex justify-content-between mb-2">
                 <div class="firstInfo">
                     Room:
@@ -70,7 +73,15 @@ export default {
 			type: Object,
 			default: null
 		},
+        variant: {
+            type: Boolean,
+            default: false
+        },
         isOwn: {
+            type: Boolean,
+            default: false
+        },
+        closer: {
             type: Boolean,
             default: false
         },
@@ -127,6 +138,9 @@ export default {
         hideModal() {
             this.$refs['my-modal'].hide();
         },
+        closeCard() {
+            this.$emit('closeCard');
+        },
         showModal() {
             this.$refs['my-modal'].show();
         }
@@ -142,9 +156,20 @@ export default {
     color: white;
 }
 
+.customHeaderLight {
+    text-align: start;
+    background: #8f94fb;
+    color: white;
+}
+
 .bodyCard {
     color: white;
     background: #001E6C;
+}
+
+.bodyCardLight {
+    color: white;
+    background: #8f94fb;
 }
 
 .firstInfo {

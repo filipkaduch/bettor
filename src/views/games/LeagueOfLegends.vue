@@ -13,9 +13,18 @@
             </div>
         </div>
     </b-col>
-    <b-container class="mb-5 mt-1 mt-lg-3">
+    <b-container class="mt-1 mt-lg-3">
         <h1 class="bettorLogo game-header" style="font-size: 2.5rem;">League of Legends</h1>
-        <!--<app-header text="League of Legends" />-->
+        <div class="d-flex justify-content-between mx-lg-0 mx-5">
+            <div :style="page === 0 ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
+                <font-awesome-icon :icon="['fas', 'arrow-left']" style="width: 40px; height: 40px; color: white; cursor: pointer;" @click="page = page - 1" />
+            </div>
+            <h4 class="mt-2 game-info sub-info mx-lg-0 mx-5">Rooms ({{ `${page + 1}/${Math.ceil(rooms.length / step)}` }}):</h4>
+            <div :style="(page * step + step) >= rooms.length ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
+                <font-awesome-icon :icon="['fas', 'arrow-right']" style="width: 40px; height: 40px; color: white; cursor: pointer;" @click="page = page + 1" />
+            </div>
+        </div>
+        <!--<h1 class="bettorLogo game-header" style="font-size: 2.5rem;">League of Legends</h1>
         <b-row class="d-flex justify-content-center mt-2">
             <b-col v-if="triggerMobile" cols="1" />
             <b-col cols="11" lg="10" style="border-radius: 8px;">
@@ -101,7 +110,7 @@
                                     <transition name="slide-side">
                                         <b-input style="width: 50px;" v-if="collapsible.entry" v-model="playersEntryCount"></b-input>
                                     </transition>
-                                    <!-- <b-button class="actionButton mx-1" variant="transparent">Server</b-button> -->
+                                    <b-button class="actionButton mx-1" variant="transparent">Server</b-button>
                                     <b-dropdown class="m-0 p-0 actionButton rounded text-white" no-caret variant="transparent">
                                         <template class="mx-1 text-white" #button-content>
                                             {{ selectedServer === null ? 'Server' : selectedServer.text }}
@@ -132,7 +141,7 @@
                                                 <transition name="slide-side">
                                                     <b-input class="w-100" v-if="collapsible.entry" v-model="playersEntryCount"></b-input>
                                                 </transition>
-                                                <!-- <b-button class="actionButton mx-1" variant="transparent">Server</b-button> -->
+                                                <b-button class="actionButton mx-1" variant="transparent">Server</b-button>
                                                 <b-dropdown class="m-0 p-0 actionButton rounded text-white" no-caret variant="transparent">
                                                     <template class="mx-1 my-1 text-white" #button-content>
                                                         {{ selectedServer === null ? 'Server' : selectedServer.text }}
@@ -186,8 +195,13 @@
                     </div>
                 </app-loading>
             </b-col>
-        </b-row>
+        </b-row>-->
     </b-container>
+    <app-loading :loading="isLoading" :circle="true">
+        <div class="hello">
+            <app-room-circle :rooms="getRooms()" :metrics="metrics" />
+        </div>
+    </app-loading>
   </div>
 </template>
 
@@ -198,6 +212,7 @@ import {metricsList} from '@/util/consts/lolMetrics';
 import {serverList} from '@/util/consts/lolServers';
 import axios from 'axios';
 import AppGameCard from '@/components/design/AppGameCard';
+import AppRoomCircle from '@/components/design/AppRoomCircle';
 import AppHeader from '@/components/design/AppHeader';
 import AppLoading from '@/components/design/AppLoading';
 import {Swiper, SwiperSlide, Pagination, directive} from 'vue-awesome-swiper';
@@ -207,7 +222,7 @@ import {Swiper, SwiperSlide, Pagination, directive} from 'vue-awesome-swiper';
 export default {
     name: 'LeagueOfLegends',
     // eslint-disable-next-line vue/no-unused-components
-    components: { AppGameCard, AppLoading, Swiper, SwiperSlide, AppHeader, Pagination },
+    components: { AppGameCard, AppLoading, Swiper, SwiperSlide, AppHeader, Pagination, AppRoomCircle },
     directives: {
 		swiper: directive
 	},
@@ -215,6 +230,8 @@ export default {
         return {
             info: null,
             name: '',
+            page: 0,
+            step: 8,
             foundName: '',
             roomsData: null,
             selectedServer: null,
@@ -292,17 +309,16 @@ export default {
         windowWidth: {
             immediate: true,
             handler(val) {
-                console.log(val);
                 if (val < 767) {
-                    console.log(this.$refs);
-                    this.$refs.mySwiper.swiperInstance.params.slidesPerView = 1;
-                    this.$refs.mySwiper.swiperInstance.update();
+                    /// this.$refs.mySwiper.swiperInstance.params.slidesPerView = 1;
+                    // this.$refs.mySwiper.swiperInstance.update();
                     this.triggerMobile = true;
-                    console.log(this.triggerMobile);
+                    this.step = 4;
                 } else {
-                    this.$refs.mySwiper.swiperInstance.params.slidesPerView = 3;
-                    this.$refs.mySwiper.swiperInstance.update();
+                    // this.$refs.mySwiper.swiperInstance.params.slidesPerView = 3;
+                    // this.$refs.mySwiper.swiperInstance.update();
                     this.triggerMobile = false;
+                    this.step = 8;
                 }
             }
         },
@@ -390,6 +406,11 @@ export default {
         },
         onResize() {
             this.windowWidth = window.innerWidth;
+        },
+        getRooms() {
+            console.log(this.rooms);
+            console.log(this.rooms.slice(this.page * this.step, this.step));
+            return this.rooms.slice(this.page * this.step, this.page * this.step + this.step);
         },
         getServer(server) {
             return this.serverList?.find((el) => el.value === server)?.text ?? '';
@@ -518,9 +539,10 @@ export default {
                 this.filteredRooms = this.filteredRooms.sort((a,b) => {
                     return new Date(b[type]) - new Date(a[type]);
                 })
-            } else if(type === 'game') {
-                console.log(type);
             }
+            // else if(type === 'game') {
+            //     console.log(type);
+            // }
         },
         getAllRooms() {
             return axios.get(`https://e-bettor.herokuapp.com/all_rooms`, { headers: {
@@ -606,6 +628,20 @@ export default {
   display: none;
 }
 
+
+.hello {
+  display: grid;
+  min-height: 100vh;
+  place-content: center;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 1600px) and (max-height: 1000px) {
+    .hello {
+        min-height: 90vh;
+    }
+
+}
 
 .mx-380 {
     max-height: 350px;

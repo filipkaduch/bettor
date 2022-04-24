@@ -18,14 +18,14 @@
             </div>
             <div class="c">
                 <input type="checkbox" id="faq-2">
-                <h5><label for="faq-2">Deposit did not update my wallet</label></h5>
+                <h5 class="game-info"><label for="faq-2">Deposit did not update my wallet</label></h5>
                 <div class="p text-align-left">
                     <p>Yes with pure CSS and HTML.</p>
                 </div>
             </div>
             <div class="c">
                 <input type="checkbox" id="faq-3">
-                <h5><label for="faq-3">How does room work?</label></h5>
+                <h5 class="game-info"><label for="faq-3">How does room work?</label></h5>
                 <div class="p text-align-left">
                     <p>I was inpired by an article on css-tricks. <a href="https://css-tricks.com/the-checkbox-hack/">link to article</a>
                     </p>
@@ -33,7 +33,7 @@
             </div>
             <div class="c">
                 <input type="checkbox" id="faq-4">
-                <h5><label for="faq-4">I can not connect my game account to Bettor</label></h5>
+                <h5 class="game-info"><label for="faq-4">I can not connect my game account to Bettor</label></h5>
                 <div class="p text-align-left">
                     <p>I was inpired by an article on css-tricks. <a href="https://css-tricks.com/the-checkbox-hack/">link to article</a>
                     </p>

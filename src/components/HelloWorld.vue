@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="">
     <h1 class="bettorLogo" style="font-size: 2.5rem;">{{ msg }}</h1>
     <p>
       <span>Bettor</span> is an E-sports skills competition platform, providing a medium between players.
@@ -20,6 +20,12 @@ export default {
 <style scoped>
 h3 {
   margin: 40px 0 0;
+}
+.hello {
+  display: grid;
+  min-height: 100vh;
+  place-content: center;
+  overflow: hidden;
 }
 ul {
   list-style-type: none;
