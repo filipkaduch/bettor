@@ -65,7 +65,7 @@ export default {
 
 	.palette-sidebar {
 		overflow: hidden;
-		height: 90%;
+		height: 100%;
 		background-color: transparent;
 		transition: right ease 0.5s;
         transform: scaleX(1.0);

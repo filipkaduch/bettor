@@ -9,7 +9,7 @@
             </div>
         </div>
         <app-loading :loading="isLoading" class="h-100 pb-5" :circle="true" variant="white">
-            <div class="w-100 overflow-scroll hide-scrollbar h-100 p-3 pt-0 mb-1 mb-lg-5">
+            <div class="w-100 overflow-scroll hide-scrollbar history-height p-3 pt-0 mb-1 mb-lg-5" style="height: calc(100% - 68px) !important;">
                 <b-row v-for="(history, index) in histories" :key="index" style="height: 250px; background-color: #4e54c8;" class="rounded p-2 m-2 mb-xl-4 rowHover cursor-pointer">
                     <b-col cols="1" class="border-line-white" style="border-right: 1px solid white;">{{ index + 1 }}.</b-col>
                     <b-col cols="8" class="d-block align-items-baseline text-start">

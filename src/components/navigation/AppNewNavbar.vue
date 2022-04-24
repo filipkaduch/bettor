@@ -118,7 +118,7 @@ export default {
 	/* border: 2px solid white; */
 	z-index: 400;
 	border-bottom-right-radius: 8px;
-	height: 90%;
+	height: calc(100% - 65px);
 	background-color: #001E6C;
     color: white;
 }

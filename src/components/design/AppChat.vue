@@ -7,7 +7,7 @@
                     <small v-if="changedAuthor(index, msg.author)" style="border-top: 1px solid white">{{ msg.author }}, {{ timestampToDate(msg.time_sent) }}</small>
                 </div>
             </div>
-            <div class="my-auto">
+            <div class="mt-auto mb-3 mb-lg-5">
                 <b-input-group class="mt-2">
                     <b-input v-model="chatMessage" type="text" style="background-color: transparent; color: white;" placeholder="Type a message..." />
                     <b-button class="border p-1 px-3 inputIcon rounded text-white" variant="transparent"><font-awesome-icon :icon="['fas', 'angle-right']" size="2x" /></b-button>

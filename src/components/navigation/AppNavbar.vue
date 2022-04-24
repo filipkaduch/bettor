@@ -247,6 +247,9 @@ export default {
             this.displaySide = !this.displaySide;
             if (this.displaySide === false) {
                 this.mobileMenu = false;
+                this.showGames = false;
+                this.showAcc = false;
+                this.showLogin = false;
             }
         },
         onResize() {
