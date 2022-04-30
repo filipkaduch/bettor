@@ -117,7 +117,7 @@ export default {
 	/* border: 2px solid white; */
 	z-index: 400;
 	border-bottom-right-radius: 8px;
-	height: calc(100% - 65px);
+	height: 100%;
 	background-color: #001E6C;
     color: white;
 }
@@ -126,7 +126,7 @@ export default {
 	.custom-nav {
 		margin-left: 0px !important;
 		width: 36px;
-		height: calc(100% - 72px);
+		height: 100%;
 		z-index: 900;
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;

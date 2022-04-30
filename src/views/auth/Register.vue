@@ -13,7 +13,7 @@
 						</b-row>
 					</template>
 					<template v-else>
-						<b-row class="py-2 py-lg-5">
+						<b-row class="py-5">
 							<b-col cols="12" class="d-flex justify-content-start">
 								<h1 class="bettorLogo" style="font-size: 2.5rem;">Register</h1>
 							</b-col>

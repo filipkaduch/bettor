@@ -76,7 +76,7 @@ export default {
         z-index: 300;
         margin-left: 52px;
         top: 0px;
-        height: calc(100% + 73px);
+        height: 100%;
         width: 600px;
     }
 
