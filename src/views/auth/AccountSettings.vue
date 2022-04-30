@@ -2,29 +2,26 @@
     <b-container class="margin-container mr-0 ml-xl-0 ml-lg-0">
         <b-col cols="11" lg="9" xl="9">
             <b-row class="pt-3 pt-lg-5">
-                <b-col cols="12" md="12" sm="12" lg="6" xl="6" class="d-flex justify-content-center justify-content-lg-start"><h1>Account settings</h1></b-col>
-            </b-row>
-            <b-row class="mt-1 mt-lg-5 d-flex">
-                <b-col cols="12" class="rounded hoverCol mb-2 mb-lg-0 d-flex justify-content-center" md="12" sm="12"  lg="3" xl="3">
-                    <div
+                <b-col cols="12" class="d-flex justify-content-center justify-content-lg-start align-items-center mb-4 mb-lg-0">
+                    <h1>Account settings</h1>
+                     <div
                         :class="{'has-file': showRemovedBtn}"
-                        class="c-file-input js-file-input h-100 shadow bg-white rounded profilePic">
-                        <div class="c-file-input__indicator">
-                            <span class="c-file-input__indicator__icon c-icon c-icon--attach"></span>
-                        </div>
-                        <label class="c-file-input__label js-file-input__label bg-transparent rounded" for="inputfile">
+                        class="c-file-input js-file-input shadow bg-white profilePic cursor-pointer">
+                        <label class="c-file-input__label js-file-input__label bg-transparent rounded ml-5" for="inputfile">
                             <span>{{ theFileName }}</span>
                             <input
                                 id="inputfile"
                                 type="file" @change="fileChangeHandler"
-                                name="attachment" class="c-file-input__field js-file-input__field">
+                                name="attachment" class="c-file-input__field js-file-input__field hoverCol">
                         </label>
                         <div v-if="showRemovedBtn" @click.stop="clearFileHandler" class="c-file-input__remove js-file-input__remove">
                             <span class="c-file-input__remove__icon c-icon c-icon--remove-circle"></span>
                         </div>
                     </div>
                 </b-col>
-                <b-col cols="12" xl="6" lg="6" md="12" sm="12" class="">
+            </b-row>
+            <b-row class="mt-1 mt-lg-5 d-flex">
+                <b-col cols="12" xxl="6" xl="10" lg="10" md="12" sm="12" class="">
                     <b-row>
                         <b-col cols="12" class="d-flex justify-content-between">
                             <h5 class="game-info"><b>Name:</b> {{ logged.name }}</h5>
@@ -86,26 +83,27 @@
                 </b-row>
             </transition>-->
         </b-col>
-        <b-modal centered v-show="isEdit" id="modal-1" class="p-0 text-white" hide-footer hide-header>
-                <b-row v-if="isEdit" class="d-flex accountEdit game-info text-white justify-content-center">
+        <b-modal centered v-show="isEdit" id="modal-1" class="p-0 text-white w-50" hide-footer hide-header>
+                <b-row v-if="isEdit" class="row d-flex accountEdit game-info text-white justify-content-center w-100 m-0">
                     <b-col
-                        cols="12"
-                        lg="9"
-                        xl="9"
-                        class="rounded p-2 p-lg-3"
+                        class="rounded p-4 w-100"
                         style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset; background: #4e54c8;">
                         <div class="d-flex justify-content-end pb-2">
                             <font-awesome-icon :icon="['fas', 'times-circle']" size="lg" style="cursor: pointer;" class="mb-2" @click="closeModal()" />
                         </div>
                         <div class="d-flex mb-3 mr-3 align-items-center justify-content-center">
-                            <div class="d-flex align-items-center justify-content-center" style="width: 20%;"><h6 class="m-0 game-info"><b>{{ prependText }}</b></h6></div>
-                            <b-form-input type="text" v-model="lolName" :placeholder="accSettingsMenu[prependText]" class="w-75">
-                            </b-form-input>
+                            <!-- <div class="d-flex align-items-center justify-content-center"><h6 class="m-0 p-2 game-info"><b>{{ prependText }}</b></h6></div> -->
+                            <b-form-group :label="`${prependText}`" class="w-100">
+                                <b-form-input type="text" v-model="lolName" :placeholder="accSettingsMenu[prependText]" class="w-100">
+                                </b-form-input>
+                            </b-form-group>
                         </div>
                         <div v-if="prependText === 'Name' || prependText === 'Password'" class="d-flex mb-0 mb-lg-3 mr-3 align-items-center justify-content-center">
-                            <div class="d-flex align-items-center justify-content-center" style="width: 20%;"><h6  class="m-0 game-info"><b>{{ `Confirm ${prependText}` }}</b></h6></div>
-                            <b-form-input type="text" class="w-75">
-                            </b-form-input>
+                            <!-- <div class="d-flex align-items-center justify-content-center"><h6  class="m-0 p-2 game-info"><b>{{ `Confirm ${prependText}` }}</b></h6></div> -->
+                            <b-form-group :label="`Confirm ${prependText}`" class="w-100">
+                                <b-form-input type="text" class="w-100">
+                                </b-form-input>
+                            </b-form-group>
                         </div>
                         <b-button-group class="w-100 mt-2">
                             <b-button class="mt-3 differButton" variant="transparent" @click="updateAccount">Submit</b-button>
@@ -124,7 +122,7 @@ export default {
     data() {
         return {
             isLoading: false,
-            labelPlaceholder: 'Profile picture 225x250',
+            labelPlaceholder: '72x72',
             value: '',
             files: [],
             prependText: '',
@@ -248,8 +246,9 @@ export default {
     }
 
     .profilePic {
-        height: 150px !important;
-        width: 130px !important;
+        margin-left: 50px !important;
+        height: 72px;
+        width: 72px;
     }
 }
 
@@ -259,14 +258,20 @@ export default {
 }
 
 .profilePic {
-    height: 250px;
-    width: 225px;
+    height: 72px;
+    width: 72px;
+    border-radius: 50%;
+    margin-left: 100px;
+    cursor: pointer;
+    border: 2px solid #919394;
+    
 }
 
 .hoverCol {
     :hover {
         cursor: pointer;
         opacity: 0.8;
+        background-color:#999;
     }
 }
 
@@ -305,13 +310,10 @@ export default {
 /* line 34, app/assets/stylesheets/mweb/6-components/_components.file-input.scss */
 .c-file-input__label {
   position: absolute;
-  border: 2px solid #919394;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  padding-left: 36px;
-  padding-right: 36px;
   line-height: 36px;
   color: #999;
   font-size: 12px;
@@ -326,8 +328,9 @@ export default {
 /* line 50, app/assets/stylesheets/mweb/6-components/_components.file-input.scss */
 .c-file-input__field {
   position: absolute !important;
-  height: 1px !important;
-  width: 1px !important;
+  width: 100%;
+  cursor: pointer;
+  height: 100%;
   padding: 0 !important;
   overflow: hidden !important;
   clip: rect(0, 0, 0, 0) !important;

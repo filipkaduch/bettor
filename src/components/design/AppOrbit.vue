@@ -19,7 +19,6 @@
                 <div v-if="enabledDict.stats" class="w-100 h-100">
                     <div class="d-flex justify-content-between mb-2"><h3>Players</h3> <font-awesome-icon :icon="['fas', 'minus-circle']" size="2x" style="cursor: pointer;" @click="openOrbital('stats')"/></div>
                     <div class="hide-scrollbar py-2 rounded" style="overflow-y: scroll; scrollbar-width: none;">
-                        <h4>Players:</h4>
                         <b-row class="pt-2 pb-1 mx-2 d-lg-flex d-none">
                             <b-col cols="1" class="d-flex justify-content-start align-items-center">
 

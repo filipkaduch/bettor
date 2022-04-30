@@ -1,5 +1,5 @@
 <template>
-  <div class="rankings pt-2">
+  <div class="rankings pt-3">
       <h1 class="bettorLogo" style="font-size: 2.5rem;">Rankings</h1>
         <p>
             Table of current top <span>Bettor</span> players.

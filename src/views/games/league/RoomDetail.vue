@@ -240,7 +240,7 @@ export default {
         activeOrbit(val) {
             this.$nextTick(() => {
                 if (val) {
-                    this.orbitalWidth = `width: 85vw !important; height: 60vh !important; animation: none; z-index: 290; background-color: #8f94fb; border-radius: 15px;`;
+                    this.orbitalWidth = `width: 85vw !important; height: 50vh !important; animation: none; z-index: 290; background-color: #8f94fb; border-radius: 15px;`;
                     setTimeout(()=>{
                         this.enabledDict[this.activeKey] = true;
                     },700);

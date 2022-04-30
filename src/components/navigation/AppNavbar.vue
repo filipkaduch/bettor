@@ -6,7 +6,7 @@
     </div>
     <nav class="Navigation navbar navbar-expand-md navbar-light mt-0 p-3 pl-4 m-3 justify-content-between action-shadow"  :style="navHeight" :class="triggerMobile === true ? 'position-absolute w-100' : 'calc-width position-absolute'">
         <!-- <app-header text="Bettor" :menu="true" /> -->
-        <a class="navbar-brand text-white ml-5" href="#"><router-link class="text-decoration-none text-white" :to="{name: 'home'}"><span class="bettorLogo">Bettor</span></router-link></a>
+        <a class="navbar-brand text-white ml-5" href="#"><router-link class="text-decoration-none text-white" :to="{name: 'home'}"><span class="bettorLogo"  @click="closeBar">Bettor</span></router-link></a>
         <button 
             class="navbar-toggler border-0 text-white"
             type="button"
@@ -50,7 +50,7 @@
                     <li class="nav-item active menu-mobile-item">
                         <b-button variant="transparent" class="text-white">
                             <router-link class="nav-link text-white p-0" style="border-bottom: 0 !important;" :to="{name: 'rankings'}">
-                                <div @click.self="closeBar">Rankings</div>
+                                <div @click="closeBar">Rankings</div>
                             </router-link>
                         </b-button>
                     </li>
