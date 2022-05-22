@@ -85,10 +85,11 @@ export default {
             z-index: 300;
             margin-left: 30px;
             top: 0px;
+            height: 100vh;
             width: calc(100vw - 30px);
         }
         .palette-sidebar {
-            height: 100%;
+            height: 100vh;
         }
     }
 

@@ -1,7 +1,7 @@
 <template>
 	<b-card :header-class="variant ? 'customHeaderLight' : 'customHeader'" bg-variant="light" :header="variant ? 'bodyCardLight' : 'bodyCard'" :body-class="variant ? 'bodyCardLight' : 'bodyCard'" :footer-class="variant ? 'bodyCardLight' : 'bodyCard'" class="border-0">
         <template #header>
-            <div v-if="closer" class="d-flex justify-content-end">
+            <div v-if="closer" class="d-flex justify-content-end mb-2">
                 <font-awesome-icon :icon="['fas', 'minus-circle']" size="2x" style="cursor: pointer;" @click="closeCard"/>
             </div>
             <div class="d-flex justify-content-between mb-2">

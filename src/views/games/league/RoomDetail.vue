@@ -148,7 +148,7 @@
                     </div>
                 </b-container>
                 <div class="hello">
-                    <app-orbit :room="room" :metric="metricObject" :players="players" :chatComputed="chatComputed" />
+                    <app-orbit :room="room" :metric="metricObject" :players="players" :chatComputed="chatComputed" @refresh="refreshStats" />
                 </div>
             </div>
         </div>
@@ -234,6 +234,22 @@ export default {
                     console.log(this.triggerMobile);
                 } else {
                     this.triggerMobile = false;
+                }
+            }
+        },
+        '$route.params': {
+            immediate: true,
+            deep: true,
+            handler (to) {
+                console.log(to);
+                if (to.meta.reload==true) {
+                    this.metric = to.params.metric;
+                    this.game = to.$route.params.game;
+                    this.getMetric()
+                    this.getRoom();
+                    this.getPlayers();
+                    this.loadChat();
+                    // window.location.reload()
                 }
             }
         },

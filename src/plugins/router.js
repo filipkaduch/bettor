@@ -38,10 +38,13 @@ const routes = [
     component: CreateRoom
   },
   {
-    path: '/lolRoomDetail',
+    path: '/lolRoomDetail/:game',
     name: 'lolRoomDetail',
     component: RoomDetail,
-    params: true
+    params: true,
+    meta: {
+      reload: true
+    }
   },
   {
     path: '/accountSettings',

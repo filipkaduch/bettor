@@ -22,7 +22,7 @@
        <transition name="grow-height">
         <app-new-navbar v-if="logged !== 'null'" />
        </transition>
-        <router-view />
+        <router-view :key="$route.fullPath" />
       </div>
     </app-loading>
     <div class="w-100 d-flex justify-content-center page-footer">

@@ -22,12 +22,11 @@
                     <b-col cols="12" xs="12" lg="3" sm="3" md="3" class="d-grid history-text">
                         <div class="rounded p-2 mb-auto" style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">{{ `Get ${relevantMetricsComputed[index].value - history.count} 
                             ${lowercaseFirstLetter(relevantMetricsComputed[index].watch)} in ${relevantMetricsComputed[index].games - history.games_count} games and land a spot` }}</div>
-                        <router-link style="text-decoration: none; color: inherit;" :to="{name: 'lolRoomDetail', params: { metric: relevantMetricsComputed[index].id, game: history.game_id }}">
-                            <b-button variant="transparent" class="differButton my-auto d-flex align-items-center justify-content-center w-100" @click="emitClose">
-                                Room 
-                                <font-awesome-icon :icon="['fas', 'angle-right']" size="lg" style="margin-left: 10px;" />
-                            </b-button>
-                        </router-link>
+                        <!-- <router-link style="text-decoration: none; color: inherit;" :to="{name: 'lolRoomDetail', params: { metric: relevantMetricsComputed[index].id, game: history.game_id }}">-->
+                        <b-button variant="transparent" class="differButton my-auto d-flex align-items-center justify-content-center w-100" @click="goToRoom(history.game_id, relevantMetricsComputed[index].id)">
+                            Room 
+                            <font-awesome-icon :icon="['fas', 'angle-right']" size="lg" style="margin-left: 10px;" />
+                        </b-button>
                     </b-col>
                 </b-row>
             </div>
@@ -110,6 +109,16 @@ export default {
     methods: {
         emitClose() {
             this.$emit('closeCreate');
+        },
+        goToRoom(room, metric) {
+            console.log(room, metric);
+            this.emitClose();
+            this.$router.push({
+                name: 'lolRoomDetail',
+                params: {
+                    metric: metric,
+                    game: room
+            }});
         },
         getGame(index) {
             console.log(this.relevantMetricsComputed);

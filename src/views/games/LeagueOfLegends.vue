@@ -19,11 +19,52 @@
             <div :style="page === 0 ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
                 <font-awesome-icon :icon="['fas', 'arrow-left']" class="arrow" @click="page = page - 1" />
             </div>
-            <h4 class="mt-2 game-info sub-info mx-lg-0">Rooms ({{ `${page + 1}/${Math.ceil(rooms.length / step)}` }}):</h4>
-            <div :style="(page * step + step) >= rooms.length ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
+            <h4 class="mt-2 game-info sub-info mx-lg-0">
+                Rooms ({{ `${page + 1}/${Math.ceil(filteredRooms.length / step)}` }}):
+                <font-awesome-icon :icon="['fas', 'filter']" class="filter" @click="showFilter = !showFilter" />
+            </h4>
+            <div :style="(page * step + step) >= filteredRooms.length ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
                 <font-awesome-icon :icon="['fas', 'arrow-right']" class="arrow" @click="page = page + 1" />
             </div>
         </div>
+        
+            <b-collapse v-model="showFilter" class="filterBlock position-absolute mt-2 p-1 w-100vh" style="border-radius: 0.5rem; border: 0; font-size: 12px;">
+                <b-card body-class="bg-deep collapse-border" style="border: 0; border-radius: 0.5rem;">
+                    <b-card-header class="d-flex justify-content-end p-1" :class="showCleanFilter ? 'justify-content-between' : ''">
+                        <font-awesome-icon v-if="showCleanFilter"
+                            id="filtersRemove"
+                            :icon="['fas', 'ban']"
+                            size="2x"
+                            class="cursor-pointer mx-2"
+                            @click="cleanFilters"/>
+                        <font-awesome-icon :icon="['fas', 'times-circle']" size="2x" style="cursor: pointer;" @click="showFilter = false"/>
+                    </b-card-header>
+                    <b-tooltip target="filtersRemove">Remove filters</b-tooltip>
+                    <b-button class="actionButton mx-1 my-1" variant="transparent" @click="sortRooms('end_date')" :disabled="collapsible.end_date">Soon to end</b-button>
+                    <b-button class="actionButton mx-1 my-1" variant="transparent" @click="sortRooms('start_date')" :disabled="collapsible.start_date">Soon to start</b-button>
+                    <b-button class="actionButton mx-1 my-1" variant="transparent" @click="collapsible.players = !collapsible.players">Players</b-button>
+                    <transition name="slide-side">
+                        <b-input class="w-100" v-if="collapsible.players" v-model="playersFilterCount"></b-input>
+                    </transition>
+                    <b-button class="actionButton mx-1 my-1" variant="transparent" @click="collapsible.entry = !collapsible.entry">Entry</b-button>
+                    <transition name="slide-side">
+                        <b-input class="w-100" v-if="collapsible.entry" v-model="playersEntryCount"></b-input>
+                    </transition>
+                    <b-dropdown class="m-0 p-0 actionButton rounded text-white" no-caret variant="transparent">
+                        <template class="mx-1 my-1 text-white" #button-content>
+                            {{ selectedServer === null ? 'Server' : selectedServer.text }}
+                        </template>
+                        <b-dropdown-item v-for="server in serverList" :key="server.value" @click="setServer(server)">{{ server.text }}</b-dropdown-item>
+                    </b-dropdown>
+                    <b-dropdown class="mx-1 my-1 p-0 actionButton rounded text-white" no-caret variant="transparent">
+                        <template class="actionButton mx-1 text-white" #button-content>
+                            {{ selectedMetric === null ? 'Competition' : selectedMetric.metric }}
+                        </template>
+                        <b-dropdown-item v-for="metric in metricsList" :key="metric.value" @click="setMetric(metric)">{{ metric.text }}</b-dropdown-item>
+                    </b-dropdown>
+                </b-card>
+            </b-collapse>
+        
         <!--<h1 class="bettorLogo game-header" style="font-size: 2.5rem;">League of Legends</h1>
         <b-row class="d-flex justify-content-center mt-2">
             <b-col v-if="triggerMobile" cols="1" />
@@ -298,6 +339,9 @@ export default {
         logged() {
             return this.$store.getters['authLogin/token'] ?? null;
         },
+        showCleanFilter() {
+            return this.playersFilterCount !== 0 || this.playersEntryCount !== 0 || this.selectedServer !== null || this.collapsible.end_date || this.collapsible.start_date || this.selectedMetric !== null
+        },
         storeMetrics() {
             return this.$store.getters['roomsData/storeMetrics'] ?? null;
         },
@@ -321,6 +365,9 @@ export default {
                     this.step = 8;
                 }
             }
+        },
+        filteredRooms() {
+            this.page = 0;
         },
         search(val) {
             if (val === '') {
@@ -410,7 +457,7 @@ export default {
         getRooms() {
             console.log(this.rooms);
             console.log(this.rooms.slice(this.page * this.step, this.step));
-            return this.rooms.slice(this.page * this.step, this.page * this.step + this.step);
+            return this.filteredRooms.slice(this.page * this.step, this.page * this.step + this.step);
         },
         getServer(server) {
             return this.serverList?.find((el) => el.value === server)?.text ?? '';
@@ -657,6 +704,14 @@ export default {
     .resizeMax {
         max-height: calc(100vh - 226px);
     }
+
+    .filterBlock {
+        font-size: 10px !important;
+
+        .btn {
+            font-size: 10px !important;
+        }
+    }
     
     .game-header {
         font-size: 16px !important;
@@ -738,6 +793,20 @@ export default {
     // background-color: white;
     opacity: 0.6;
 
+}
+
+.filter {
+    cursor: pointer;
+}
+
+.filterBlock {
+    transform: scaleY(1.0);
+    transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: absolute;
+    width: 200px;
+    left: calc(50% - 100px);
+    border-radius: 8px;
+    z-index: 5000;
 }
 
 .swiper-slide:hover::after {

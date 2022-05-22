@@ -12,6 +12,10 @@
                     <h4 class="d-flex justify-content-between align-items-center game-info"><b>Games available:</b> {{ metric.games }}</h4>
                     <h4 class="d-flex justify-content-between align-items-center game-info"><b>Start date:</b> {{ timestampToDate(room.start_date, false) }}</h4>
                     <h4 class="d-flex justify-content-between align-items-center game-info"><b>End date:</b> {{ timestampToDate(room.end_date, false) }}</h4>
+                    <b-button v-if="logged !== 'null'" class="differButton mx-1 w-100" variant="transparent" @click="$emit('refresh')"><app-loading :loading="isLoadingRefresh" :circle="true" variant="white">
+                      Refresh stats<font-awesome-icon :icon="['fas', 'redo']" size="md" class="mx-2" style="cursor: pointer;"/>
+                      </app-loading>
+                    </b-button>
                 </div>
                 <div v-if="enabledDict.outcome" class="w-100 h-100">
                     <div class="d-flex justify-content-between mb-5"><h3>Expected outcome</h3> <font-awesome-icon :icon="['fas', 'minus-circle']" size="2x" style="cursor: pointer;" @click="openOrbital('outcome')"/></div>
