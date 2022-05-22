@@ -1,7 +1,7 @@
 <template>
     <transition name="slide-fade">
         <b-col v-if="show" cols="wp" class="position-fixed p-0 main-tab">
-            <div class="bg-transparent h-100">
+            <div class="bg-transparent" style="height: 100vh;">
                 <div class="palette-sidebar border-left shadow">
                     <app-gamepicker v-if="type === 'create'" @closeCreate="closeSidebar"/>
                     <find-player v-else-if="type === 'find'" @closeCreate="closeSidebar"/>

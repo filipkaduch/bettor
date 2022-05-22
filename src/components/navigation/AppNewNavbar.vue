@@ -1,7 +1,7 @@
 <template>
 <div>
 	<b-navbar class="d-flex flex-column custom-nav p-0 position-fixed shadow left right text-white" vertical>
-		<b-nav vertical class="w-100 h-100 text-white" style="padding-top: 72px;">
+		<b-nav vertical class="w-100 text-white" style="padding-top: 72px; height: 100vh;">
 			<li class="nav-item w-100 mt-xs-5" @click="showHandler('create')">
 				<b-button
 					variant="clean"

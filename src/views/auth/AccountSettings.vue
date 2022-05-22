@@ -176,6 +176,22 @@ export default {
             this.isEdit = false
             this.$bvModal.hide('modal-1');
         },
+        onImageChange() {
+          let file = this.files[0]
+
+          if (file == '')
+                return;
+
+           this.createImage(file);
+       },
+       createImage(file) {
+           let reader = new FileReader();
+           let el = this
+           reader.onload = (e) => {
+                el.form.photo = e.target.files[0];      
+           };
+           reader.readAsDataURL(file);
+       },
         fileChangeHandler(e) {
             this.files = Array.from(e.target.files);
             this.showRemovedBtn = true;
