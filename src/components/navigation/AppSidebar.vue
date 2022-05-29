@@ -70,6 +70,7 @@ export default {
 		transition: right ease 0.5s;
         transform: scaleX(1.0);
         border-radius: 8px;
+        padding-top: 70px;
 	}
 
     .main-tab {

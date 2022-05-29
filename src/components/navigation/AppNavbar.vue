@@ -1,12 +1,12 @@
 <template>
     <div>
-    <div class="corner-logo" :style="logged !== 'null' ? 'border-bottom-right-radius: 0; box-shadow: none !important;' : ''" @click="closeAll">
+    <!--<div class="corner-logo" :style="logged !== 'null' ? 'border-bottom-right-radius: 0; box-shadow: none !important;' : ''" @click="closeAll">
         <span v-if="displaySide === false" class="bettorLogo">B</span>
         <font-awesome-icon v-else style="width: 1.4rem; height: 1.4rem;" :icon="['fas', 'arrow-up']" class="mt-2" />
-    </div>
-    <nav class="Navigation navbar navbar-expand-md navbar-light mt-0 p-3 pl-4 m-3 justify-content-between action-shadow"  :style="navHeight" :class="triggerMobile === true ? 'position-absolute w-100' : 'calc-width position-absolute'">
+    </div>-->
+    <nav class="Navigation navbar navbar-expand-md navbar-light mt-0 p-3 mb-5 justify-content-between action-shadow" :class="triggerMobile === true ? 'position-absolute w-100' : 'calc-width position-absolute'">
         <!-- <app-header text="Bettor" :menu="true" /> -->
-        <a class="navbar-brand text-white ml-5" href="#"><router-link class="text-decoration-none text-white" :to="{name: 'home'}"><span class="bettorLogo"  @click="closeBar">Bettor</span></router-link></a>
+        <a class="navbar-brand text-white" href="#"><router-link class="text-decoration-none text-white" :to="{name: 'home'}"><span class="bettorLogo"  @click="closeBar">Bettor</span></router-link></a>
         <button 
             class="navbar-toggler border-0 text-white"
             type="button"
@@ -17,7 +17,7 @@
             @click="openMobileMenu">
             <font-awesome-icon :icon="['fas', 'bars']" class="mt-2" />
         </button>
-        <b-collapse v-model="mobileMenu" class="position-absolute mt-2" style="border-radius: 0.5rem; border: 0; left: 36px; z-index: 1000;" :style="logged !== 'null' ? 'width: calc(100% - 36px);' : 'width: 100%; left: 0;'">
+        <b-collapse v-model="mobileMenu" class="position-absolute mt-2" style="border-radius: 0.5rem; border: 0;z-index: 1000; left: 0px;" :style="logged !== 'null' ? 'width: 100%;' : 'width: 100%; left: 0;'">
             <b-card body-class="blue-bg collapse-border" style="border: 0; border-radius: 0.5rem;">
                 <ul class="navbar-nav mr-auto">
                     <li class="menu-mobile-item mb-1">
@@ -327,13 +327,13 @@ li {
     transition: all 0.5s ease;
     background-color: #8f94fb;
     /* border: 2px solid white; */
-    border-radius: 8px;
+    /* border-radius: 8px; */
     padding: 20px;
     z-index: 600;
-    transform: translateY(-50px);
+    /* transform: translateY(-50px); */
     color: white;
-    height: 0px;
-    margin: 20px 40px 0px 40px;
+    height: 70px;
+    margin: 20px 0px 0px 0px;
     text-align: center;
 }
 
@@ -408,8 +408,7 @@ li {
 }
 
 .calc-width {
-    width: calc(100% - 40px) !important;
-    left: 34px;
+    width: 100%;
 }
 
 @keyframes on-load {

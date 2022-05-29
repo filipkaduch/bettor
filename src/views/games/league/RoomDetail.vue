@@ -3,7 +3,7 @@
         <div v-if="isLoading === false">
             <div v-if="triggerMobile === true">
                 <div class="h-100" style="max-height: 100vh;">
-                    <b-container class="pt-lg-4 pt-3 p-3 pb-0" style="z-index: -10; ">
+                    <b-container class="pt-5 p-3 pb-0" style="z-index: -10; ">
                         <div class="d-flex w-100 justify-content-center align-items-center mb-1">
                             <div class="custom-row d-flex align-items-center">
                                 <h2 style="margin-right: 20px;"><span class="bettorLogo" style="font-size: 2rem;">{{ getRoomName }}</span> room:</h2>
@@ -134,7 +134,7 @@
                 </div>
             </div>
             <div v-else>
-                <b-container class="pt-lg-5 p-3 pb-0" style="z-index: -10; ">
+                <b-container class="pt-5 pb-0" style="z-index: -10; ">
                     <div class="d-flex w-100 justify-content-center align-items-center mb-1 mb-xl-4">
                         <div class="custom-row d-flex align-items-center">
                             <h2 style="margin-right: 20px;"><span class="bettorLogo" style="font-size: 2rem;">{{ getRoomName }}</span> room:</h2>

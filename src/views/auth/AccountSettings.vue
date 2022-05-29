@@ -253,7 +253,7 @@ export default {
 
 @media screen and (max-width: 767px) {
     .margin-container {
-        margin-left: 30px !important;
+        padding-left: 40px !important;
         margin-right: 0px !important;
     }   
 

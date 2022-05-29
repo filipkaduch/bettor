@@ -1,5 +1,5 @@
 import axios from 'axios';
-import router from '@/plugins/router';
+// import router from '@/plugins/router';
 
 const getInitialState = () => ({
 	loading: false,
@@ -50,14 +50,14 @@ export default {
 			commit('startLoading');
 
 			return axios.post(
-				'https://e-bettor.herokuapp.com/register',
+				'https://bettor-be.onrender.com/user',
 				{
 					...userData,
-					username: userData.email,
-					baseUrl: `${window.location.origin}${router.resolve({
+					email: userData.email
+					/* baseUrl: `${window.location.origin}${router.resolve({
 						name: 'confirm-registration',
 						params: {token: 'a'}
-					}).href.slice(0, -1)}`
+					}).href.slice(0, -1)}` */
 				}
 			)
 				.then(() => {

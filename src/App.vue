@@ -18,11 +18,11 @@
     </ul>
     <app-loading :loading="false" class="h-100">
       <div class="d-block">
-       <app-navbar />
+       <app-navbar/>
        <transition name="grow-height">
         <app-new-navbar v-if="logged !== 'null'" />
        </transition>
-        <router-view :key="$route.fullPath" />
+        <router-view :key="$route.fullPath" class="pt-5" />
       </div>
     </app-loading>
     <div class="w-100 d-flex justify-content-center page-footer">

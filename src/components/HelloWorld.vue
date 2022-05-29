@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-3">
+  <div class="pt-5">
     <h1 class="bettorLogo" style="font-size: 2.5rem;">{{ msg }}</h1>
     <p>
       <span>Bettor</span> is an E-sports skills competition platform, providing a medium between players.

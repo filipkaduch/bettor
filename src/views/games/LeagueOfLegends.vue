@@ -13,17 +13,17 @@
             </div>
         </div>
     </b-col>
-    <b-container class="pt-3 pt-lg-3">
+    <b-container class="pt-5">
         <h1 class="bettorLogo game-header" style="font-size: 2.5rem;">League of Legends</h1>
-        <div class="d-flex justify-content-between mx-lg-0 mx-5 align-items-center">
+        <div class="d-flex justify-content-center mx-lg-0 mx-5 align-items-center">
             <div :style="page === 0 ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
                 <font-awesome-icon :icon="['fas', 'arrow-left']" class="arrow" @click="page = page - 1" />
             </div>
-            <h4 class="mt-2 game-info sub-info mx-lg-0">
+            <h4 class="mt-2 game-info sub-info mx-5">
                 Rooms ({{ `${page + 1}/${Math.ceil(filteredRooms.length / step)}` }}):
                 <font-awesome-icon :icon="['fas', 'filter']" class="filter" @click="showFilter = !showFilter" />
             </h4>
-            <div :style="(page * step + step) >= filteredRooms.length ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
+            <div :style="(page * step + step) >= filteredRooms.length ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''" class="ml-5">
                 <font-awesome-icon :icon="['fas', 'arrow-right']" class="arrow" @click="page = page + 1" />
             </div>
         </div>
@@ -40,23 +40,23 @@
                         <font-awesome-icon :icon="['fas', 'times-circle']" size="2x" style="cursor: pointer;" @click="showFilter = false"/>
                     </b-card-header>
                     <b-tooltip target="filtersRemove">Remove filters</b-tooltip>
-                    <b-button class="actionButton mx-1 my-1" variant="transparent" @click="sortRooms('end_date')" :disabled="collapsible.end_date">Soon to end</b-button>
-                    <b-button class="actionButton mx-1 my-1" variant="transparent" @click="sortRooms('start_date')" :disabled="collapsible.start_date">Soon to start</b-button>
-                    <b-button class="actionButton mx-1 my-1" variant="transparent" @click="collapsible.players = !collapsible.players">Players</b-button>
+                    <b-button class="actionButton my-1 w-100" variant="transparent" @click="sortRooms('end_date')" :disabled="collapsible.end_date">Soon to end</b-button>
+                    <b-button class="actionButton my-1 w-100" variant="transparent" @click="sortRooms('start_date')" :disabled="collapsible.start_date">Soon to start</b-button>
+                    <b-button class="actionButton my-1 w-100" variant="transparent" @click="collapsible.players = !collapsible.players">Players</b-button>
                     <transition name="slide-side">
                         <b-input class="w-100" v-if="collapsible.players" v-model="playersFilterCount"></b-input>
                     </transition>
-                    <b-button class="actionButton mx-1 my-1" variant="transparent" @click="collapsible.entry = !collapsible.entry">Entry</b-button>
+                    <b-button class="actionButton my-1 w-100" variant="transparent" @click="collapsible.entry = !collapsible.entry">Entry</b-button>
                     <transition name="slide-side">
                         <b-input class="w-100" v-if="collapsible.entry" v-model="playersEntryCount"></b-input>
                     </transition>
-                    <b-dropdown class="m-0 p-0 actionButton rounded text-white" no-caret variant="transparent">
+                    <b-dropdown class="m-0 p-0 actionButton rounded text-white w-100" no-caret variant="transparent">
                         <template class="mx-1 my-1 text-white" #button-content>
                             {{ selectedServer === null ? 'Server' : selectedServer.text }}
                         </template>
                         <b-dropdown-item v-for="server in serverList" :key="server.value" @click="setServer(server)">{{ server.text }}</b-dropdown-item>
                     </b-dropdown>
-                    <b-dropdown class="mx-1 my-1 p-0 actionButton rounded text-white" no-caret variant="transparent">
+                    <b-dropdown class="my-1 p-0 actionButton rounded text-white w-100" no-caret variant="transparent">
                         <template class="actionButton mx-1 text-white" #button-content>
                             {{ selectedMetric === null ? 'Competition' : selectedMetric.metric }}
                         </template>
