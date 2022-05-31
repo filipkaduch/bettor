@@ -1,7 +1,7 @@
 <template>
 <div>
-	<b-navbar class="d-flex flex-column custom-nav position-absolute shadow left right text-white" vertical>
-		<b-nav vertical class="w-100 text-white pt-2" style="height: 100vh;">
+	<b-navbar class="d-flex flex-column custom-nav position-fixed shadow left right text-white" vertical>
+		<b-nav vertical class="w-100 text-white pt-2" style="height: 100%; min-height: 100%">
 			<li class="nav-item w-100 mt-xs-5" @click="showHandler('create')">
 				<b-button
 					variant="clean"
@@ -115,12 +115,10 @@ export default {
 .custom-nav {
 	width: 56px;
 	padding-top: 70px;
-	top: 0;
-	left: 0;
 	/* border: 2px solid white; */
 	z-index: 400;
 	border-bottom-right-radius: 8px;
-	height: 100%;
+	height: calc(100vh - 70px);
 	background-color: #001E6C;
     color: white;
 }
@@ -129,7 +127,6 @@ export default {
 	.custom-nav {
 		margin-left: 0px !important;
 		width: 36px;
-		height: 100%;
 		z-index: 500;
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;

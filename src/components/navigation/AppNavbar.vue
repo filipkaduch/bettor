@@ -4,7 +4,7 @@
         <span v-if="displaySide === false" class="bettorLogo">B</span>
         <font-awesome-icon v-else style="width: 1.4rem; height: 1.4rem;" :icon="['fas', 'arrow-up']" class="mt-2" />
     </div>-->
-    <nav class="Navigation navbar navbar-expand-md navbar-light mt-0 p-3 justify-content-between action-shadow position-fixed" :class="triggerMobile === true ? 'w-100' : 'calc-width'">
+    <nav class="Navigation navbar navbar-expand-md navbar-light mt-0 p-3 justify-content-between action-shadow position-relative" :class="triggerMobile === true ? 'w-100' : 'calc-width'">
         <!-- <app-header text="Bettor" :menu="true" /> -->
         <a class="navbar-brand text-white" href="#"><router-link class="text-decoration-none text-white" :to="{name: 'home'}"><span class="bettorLogo"  @click="closeBar">Bettor</span></router-link></a>
         <button 

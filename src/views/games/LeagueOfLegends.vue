@@ -13,7 +13,7 @@
             </div>
         </div>
     </b-col>
-    <b-container class="pt-5">
+    <b-container>
         <h1 class="bettorLogo game-header" style="font-size: 2.5rem;">League of Legends</h1>
         <div class="d-flex justify-content-center mx-lg-0 mx-5 align-items-center">
             <div :style="page === 0 ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
