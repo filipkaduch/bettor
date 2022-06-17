@@ -50,10 +50,16 @@ export default {
 			commit('startLoading');
 
 			return axios.post(
-				'https://bettor-be.onrender.com/user',
+				'http://127.0.0.1:5000/user',
 				{
-					...userData,
-					email: userData.email
+					email: userData.email,
+					lol_name: '',
+					cs_name: '',
+					dota_name: '',
+					password: userData.password,
+					joined: Date.now(),
+					credits: 0,
+					rooms_won: 0
 					/* baseUrl: `${window.location.origin}${router.resolve({
 						name: 'confirm-registration',
 						params: {token: 'a'}

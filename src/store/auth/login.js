@@ -49,15 +49,11 @@ export default {
 			commit('reset');
 			commit('startLoading');
 			return axios.post(
-				'https://e-bettor.herokuapp.com/login',
-				{ headers: {
-					'Content-type':'application/json'
-				}, data: {
-					name: username,
-					password
-				}
-			}
-			)
+				'https://bettor-be.onrender.com/user/token',
+				{
+					username: username,
+					password: password
+				})
 				.then(({data}) => {
 					console.log(data);
 					commit('login', data);

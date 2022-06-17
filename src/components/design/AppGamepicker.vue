@@ -17,7 +17,7 @@
             </b-dropdown>
             <div v-if="selectedGame">
                 <div v-if="selectedGame.value === 'lol'">
-                    <create-room @closeCreate="emitClose" />
+                    <room-create @closeCreate="emitClose" />
                 </div>
             </div>
         </div>
@@ -26,12 +26,12 @@
 
 <script>
 import {gamesList} from '@/util/consts/games';
-import CreateRoom from '@/views/games/league/CreateRoom';
+import RoomCreate from '@/views/games/league/RoomCreate';
 
 export default {
 	name: 'AppGamepicker',
     components: {
-        CreateRoom
+        RoomCreate
     },
     data() {
 		return {

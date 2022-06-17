@@ -94,7 +94,7 @@ import {serverList} from '@/util/consts/lolServers';
 import {metricsList} from '@/util/consts/lolMetrics';
 
 export default {
-    name: 'CreateRoom',
+    name: 'RoomCreate',
     data() {
         return {
             info: null,

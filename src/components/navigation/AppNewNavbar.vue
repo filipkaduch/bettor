@@ -114,7 +114,6 @@ export default {
 <style scoped>
 .custom-nav {
 	width: 56px;
-	padding-top: 70px;
 	/* border: 2px solid white; */
 	z-index: 400;
 	border-bottom-right-radius: 8px;

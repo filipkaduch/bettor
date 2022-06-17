@@ -1,9 +1,8 @@
 <template>
     <app-loading :loading="isLoading" :circle="true">
-        <div v-if="isLoading === false">
-            <div v-if="triggerMobile === true">
+            <div v-if="false">
                 <div class="h-100" style="max-height: 100vh;">
-                    <b-container class="pt-5 p-3 pb-0" style="z-index: -10; ">
+                    <b-container class="pb-0" style="z-index: -10; ">
                         <div class="d-flex w-100 justify-content-center align-items-center mb-1">
                             <div class="custom-row d-flex align-items-center">
                                 <h2 style="margin-right: 20px;"><span class="bettorLogo" style="font-size: 2rem;">{{ getRoomName }}</span> room:</h2>
@@ -61,7 +60,7 @@
                                             </b-button>
                                         </div>
                                         <div v-if="enabledDict.stats" class="w-100 h-100 p-3">
-                                            <div class="d-flex justify-content-between mb-2"><h3>Players</h3> <font-awesome-icon :icon="['fas', 'minus-circle']" size="2x" style="cursor: pointer;" @click="openOrbital('stats')"/></div>
+                                            <div class="d-flex justify-content-center mb-2"><h3>Players</h3> <font-awesome-icon :icon="['fas', 'minus-circle']" size="2x" style="cursor: pointer;" @click="openOrbital('stats')"/></div>
                                             <b-row class="pt-2 pb-1 mx-2 d-lg-flex d-none">
                                                 <b-col cols="1" class="d-flex justify-content-start align-items-center">
 
@@ -133,31 +132,136 @@
                     </div>
                 </div>
             </div>
-            <div v-else>
-                <b-container class="pt-5 pb-0" style="z-index: -10; ">
-                    <div class="d-flex w-100 justify-content-center align-items-center mb-1 mb-xl-4">
+                <div class="pb-0 w-100 px-5" style="z-index: 300;">
+                    <div class="d-flex justify-content-between align-items-center mb-1 mb-xl-4">
                         <div class="custom-row d-flex align-items-center">
-                            <h2 style="margin-right: 20px;"><span class="bettorLogo" style="font-size: 2rem;">{{ getRoomName }}</span> room:</h2>
-                            <h2>{{ `${metricObject.value} ${metricObject.metric} in ${metricObject.games} games` }}</h2>
+                            <h2 class="mb-0"><span class="bettorLogo" style="font-size: 2rem;">{{ getRoomName }}</span> room</h2>
+                            <!--<h2>{{ `${metricObject.value} ${metricObject.metric} in ${metricObject.games} games` }}</h2>-->
                         </div>
                         <div>
-                            <router-link style="text-decoration: none; color: inherit; position:relative; left: 50px;" :to="{name: 'lol'}">
+                            <router-link style="text-decoration: none; color: inherit; position:relative;" :to="{name: 'lol'}">
                                 <font-awesome-icon :icon="['fas', 'times-circle']" size="2x" style="cursor: pointer;"/>
                             </router-link>
                         </div>
                     </div>
-                </b-container>
-                <div class="hello">
-                    <app-orbit :room="room" :metric="metricObject" :players="players" :chatComputed="chatComputed" @refresh="refreshStats" />
                 </div>
-            </div>
-        </div>
+                <div class="mobile-card d-flex justify-content-center pb-1 pb-xl-5" style="max-height: calc(100% - 24px); height: 100%;">
+                    <b-card class="custom-card bg-semiblue mb-2 mb-xl-5" header-class="border-0" body-class="custom-body">
+                        <template #header>
+                            <b-btn-group class="w-100 p-2">
+                                <b-btn class="p-1" @click="openOrbital('outcome')" :style="enabledDict.outcome ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
+                                    <div><font-awesome-icon :icon="['fas', 'piggy-bank']" size="lg" class="orbital-icon"/></div>
+                                    <p>Expected outcome</p>
+                                </b-btn>
+                                <b-btn class="p-1" @click="openOrbital('stats')" :style="enabledDict.stats ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
+                                    <div><font-awesome-icon :icon="['fas', 'users']" size="lg" class="orbital-icon"/></div>
+                                    <p>Players</p>
+                                </b-btn>
+                                <b-btn class="p-1" @click="openOrbital('info')" :style="enabledDict.info ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
+                                    <div><font-awesome-icon :icon="['fas', 'info-circle']" size="lg" class="orbital-icon"/></div>
+                                    <p>Game info</p>
+                                </b-btn>
+                                <b-btn class="p-1" @click="openOrbital('chat')" :style="enabledDict.chat ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
+                                    <div><font-awesome-icon :icon="['fas', 'envelope']" size="lg" class="orbital-icon"/></div>
+                                    <p>Chat</p>
+                                </b-btn>
+                            </b-btn-group>
+                        </template>
+                        <b-card-body class="d-flex justify-content-center align-items-center h-100 overflow-hidden">
+                            <div class="orbital-pulse action-shadow d-flex align-items-center justify-content-center" style="border-radius: 15%;" :style="orbitalWidth">
+                                <div v-if="activeKey === ''">
+                                    <font-awesome-icon :icon="['fas', 'expand']" size="lg" style="cursor: pointer;"/>
+                                </div>
+                                <div v-if="enabledDict.info" class="w-100 h-100 p-3 justify-content-start d-flex" style="flex-direction: column;">
+                                    <div class="d-flex justify-content-center mb-5"><h3>Game info</h3></div>
+                                    <h4 class="d-flex justify-content-between align-items-center game-info"><b>Competion:</b> {{ metricObject.metric }}</h4>
+                                    <h4 class="d-flex justify-content-between align-items-center game-info"><b>{{ `${metricObject.metric} to reach`}}:</b> {{ metricObject.value }}</h4>
+                                    <h4 class="d-flex justify-content-between align-items-center game-info"><b>Games available:</b> {{ metricObject.games }}</h4>
+                                    <h4 class="d-flex justify-content-between align-items-center game-info"><b>Start date:</b> {{ timestampToDate(room.start_date, false) }}</h4>
+                                    <h4 class="d-flex justify-content-between align-items-center game-info"><b>End date:</b> {{ timestampToDate(room.end_date, false) }}</h4>
+                                    <h4 class="d-flex justify-content-between align-items-center game-info"><b>Players:</b> {{ `${Object.keys(players).length}/${getPlayersCount}` }}</h4>
+                                    <b-button v-if="logged !== 'null'" class="differButton mx-1 w-100" variant="transparent" @click="refreshStats"><app-loading :loading="isLoadingRefresh" :circle="true" variant="white">
+                                        Refresh stats<font-awesome-icon :icon="['fas', 'redo']" size="md" class="mx-2" style="cursor: pointer;"/>
+                                        </app-loading>
+                                    </b-button>
+                                </div>
+                                <div v-if="enabledDict.outcome" class="w-100 h-100 p-3 justify-content-between d-flex" style="flex-direction: column;">
+                                    <div>
+                                        <div class="d-flex justify-content-center mb-5" style="text-align: start;"><h3>Expected outcome</h3></div>
+                                        <h4 class="game-info" style="text-align: start;"><b>Your credits:</b> 1200 </h4>
+                                        <h4 class="game-info w-100" style="border-bottom: 1px solid white; text-align: start;"><b>Entry credits:</b> {{ room.bank }}</h4>
+                                        <h4 class="game-info" style="text-align: start;"><b>Credits available</b> {{ 1200 - room.bank }}</h4>
+                                    </div>
+                                    <b-button variant="transparent" style="max-width: 100% !important;" class="btn p-2 mt-5 d-flex justify-content-center align-items-center differButton" @click="joinRoom" :disabled="canJoin">
+                                        <app-loading :loading="isLoadingJoin" :circle="true">
+                                            Join
+                                            <font-awesome-icon :icon="['fas', 'coins']" size="lg" style="margin-left: 10px;" />
+                                        </app-loading>
+                                    </b-button>
+                                </div>
+                                <div v-if="enabledDict.stats" class="w-100 h-100 p-1 p-xl-3">
+                                    <div class="d-flex justify-content-center mb-2"><h3>Players</h3></div>
+                                    <b-row class="pt-2 pb-1 mx-2 d-lg-flex d-none">
+                                        <b-col cols="1" class="d-flex justify-content-start align-items-center">
+
+                                        </b-col>
+                                        <b-col cols="6" class="d-flex justify-content-start align-items-center">
+                                            <h5>Name:</h5>
+                                        </b-col>
+                                        <b-col cols="2" class="d-flex align-items-center justify-content-start">
+                                            <h5>{{metricObject.metric}}:</h5>
+                                        </b-col>
+                                        <b-col cols="2" lg="3" xl="3" class="d-flex align-items-center justify-content-start">
+                                            <h5>Games:</h5>
+                                        </b-col>
+                                    </b-row>
+                                    <b-row v-for="(player, index) in players" :key="`${player.id}row`" class="rounded p-2 mb-2 mx-1 rowRecord rowHover text-white" style="background: #001E6C;" @click="openPlayer(index)">
+                                        <b-col cols="1" class="d-flex justify-content-start align-items-center">
+                                            {{ parseInt(index.substr(index.length - 1, index.length), 10) + 1 }}
+                                        </b-col>
+                                        <b-col cols="6" class="d-flex align-items-center" :class="isOwner ? 'justify-content-between' : 'justify-content-start'">
+                                            {{ player.name }}
+                                            <span v-if="isOwner" class="owner-badge"><font-awesome-icon :icon="['fas', 'crown']" /></span>
+                                        </b-col>
+                                        <b-col cols="2" class="d-flex justify-content-start align-items-center">
+                                            {{ player.count }}
+                                        </b-col>
+                                        <b-col cols="2" xl="3" lg="3" class="d-flex justify-content-start align-items-center">
+                                            {{ player.games_count }}
+                                        </b-col>
+                                        <transition name="grow-down" mode="out-in">
+                                            <b-col v-if="showPlayers[getIndex(index)]" cols="12">
+                                                <competition-history :attendeeId="player.id" :gameId="room.id" :room="room" :metric="metricObject" />
+                                            </b-col>
+                                        </transition>
+                                    </b-row>
+                                </div>
+                                <div v-if="enabledDict.chat" class="w-100 h-100 p-3" style="place-content: space-between; display: flex !important; flex-direction: column;">
+                                    <div class="d-flex justify-content-between mb-2"><h3>Chat</h3></div>
+                                        <div class="hide-scrollbar py-1 py-lg-2 rounded" style="overflow-y: scroll; scrollbar-width: none; height: 100% !important;">
+                                            <div v-for="(msg, index) in chatComputed" :key="`${index}`" :class="isAuthor(msg.author) ? 'text-start' : 'text-end'" class="my-1 my-lg-2">
+                                                <h5 class="mb-0 game-info">{{ msg.message }}</h5>
+                                                <small v-if="changedAuthor(index, msg.author)" style="border-top: 1px solid white">{{ msg.author }}, {{ timestampToDate(msg.time_sent) }}</small>
+                                            </div>
+                                        </div>
+                                    <div class="my-auto">
+                                        <b-input-group class="mt-2">
+                                            <b-input v-model="chatMessage" type="text" style="background-color: transparent; color: white;" placeholder="Type a message..." :disabled="canWrite" v-on:keyup.enter="sendMessage" />
+                                            <div class="border p-1 px-3 inputIcon rounded text-white" variant="transparent" :disabled="canWrite" @click="sendMessage"><font-awesome-icon :icon="['fas', 'angle-right']" size="2x" /></div>
+                                        </b-input-group>
+                                    </div>
+                                </div>
+                            </div>
+                        </b-card-body>
+                    </b-card>
+                    <!--<app-orbit :room="room" :metric="metricObject" :players="players" :chatComputed="chatComputed" @refresh="refreshStats" />-->
+                </div>
     </app-loading>
 </template>
 
 <script>
 import AppLoading from '@/components/design/AppLoading';
-import AppOrbit from '@/components/design/AppOrbit';
+// import AppOrbit from '@/components/design/AppOrbit';
 import CompetitionHistory from '@/views/games/league/CompetitionHistory';
 import {timestampToDate} from '@/util/timeUtils';
 import axios from 'axios';
@@ -165,7 +269,7 @@ import axios from 'axios';
 
 export default {
     name: 'RoomDetail',
-    components: { AppLoading, CompetitionHistory, AppOrbit },
+    components: { AppLoading, CompetitionHistory },
     data() {
         return {
             metric: null,
@@ -178,13 +282,13 @@ export default {
             players: [],
             activeOrbit: false,
             enabledDict: {
-                info: false,
+                info: true,
                 stats: false,
                 outcome: false,
                 chat: false
             },
-            activeKey: '',
-            orbitalWidth: '',
+            activeKey: 'info',
+            orbitalWidth: `width: 100% !important; height: 100% !important; animation: none; z-index: 290; background-color: #001E6C; border-radius: 15px;`,
             chat: null,
             windowWidth: 0,
             triggerMobile: false,
@@ -256,7 +360,7 @@ export default {
         activeOrbit(val) {
             this.$nextTick(() => {
                 if (val) {
-                    this.orbitalWidth = `width: 85vw !important; height: 50vh !important; animation: none; z-index: 290; background-color: #8f94fb; border-radius: 15px;`;
+                    this.orbitalWidth = `width: 100% !important; height: 100% !important; animation: none; z-index: 290; background-color: #001E6C; border-radius: 15px;`;
                     setTimeout(()=>{
                         this.enabledDict[this.activeKey] = true;
                     },700);
@@ -301,8 +405,12 @@ export default {
             this.windowWidth = window.innerWidth;
         },
         openOrbital(key) {
+            for(const checkKey in this.enabledDict) {
+                this.enabledDict[checkKey] = false;
+            }
+            this.enabledDict[key] = true;
             this.activeKey = key;
-            this.activeOrbit = !this.activeOrbit;
+            // this.activeOrbit = !this.activeOrbit;
         },
         getChat() {
             if (!this.chat['chat0'].chat) {
@@ -467,6 +575,25 @@ export default {
 
 <style type="scss" scoped>
 
+.custom-card {
+    width: 50% !important;
+    border-radius: 16px !important;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.custom-card .btn {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    background: #1f3c88 !important;
+    max-width: calc(100% / 4);
+    border: 0 !important;
+}
+
+.custom-card .btn:hover {
+    background: #001E6C !important;
+    opacity: 0.8;
+}
+
+.custom-card .btn-group
 
 .grow-down-enter-active,
 .grow-down-leave-active {
@@ -481,10 +608,17 @@ export default {
 }
 
 .hello {
-  display: grid;
-  min-height: 100vh;
+  display: flex;
   place-content: center;
   overflow: hidden;
+}
+
+.mobile-card {
+  display: flex;
+  place-content: center;
+  overflow: hidden;
+  height: 100%;
+  padding-bottom: 10px;
 }
 
 .hello-2 {
@@ -553,6 +687,7 @@ export default {
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
     cursor: pointer;
+    background: transparent !important;
 }
 
 .inputIcon:hover {
@@ -568,6 +703,17 @@ export default {
         height: calc(100% - 80px) !important;
         padding-top: 0 !important;
 	}
+
+    .custom-card .btn p {
+        display:none;
+    }
+    .custom-card {
+        width: 80% !important;
+    }
+
+    .card-body {
+        padding: 5px !important;
+    }
 
     .bettorLogo {
         font-size: 16px !important;
@@ -593,6 +739,11 @@ export default {
         display: block !important;
         font-size: 16px !important;
     }
+}
+
+
+.custom-body {
+    max-height: calc(100% - 88px);
 }
 
 .handle-container {
@@ -634,8 +785,6 @@ export default {
     list-style: none;
     --icon-bg: blue;
     --text-bg: darkblue;
-    transform-origin: center;
-    animation: orbit var(--speed) linear infinite;
     &:hover {
       animation-play-state: paused;
       --orbit-play-state: paused;
@@ -661,11 +810,6 @@ export default {
       --throb-play-state: paused;
     }
 
-    @for $i from 0 through 7 {
-      &:nth-child(#{$i + 1}) {
-        --throb-delay: #{500ms * $i};
-      }
-    }
     & > * {
       width: 100%;
       height: 100%;

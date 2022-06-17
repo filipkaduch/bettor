@@ -50,7 +50,7 @@
                     <transition name="slide-side">
                         <b-input class="w-100" v-if="collapsible.entry" v-model="playersEntryCount"></b-input>
                     </transition>
-                    <b-dropdown class="m-0 p-0 actionButton rounded text-white w-100" no-caret variant="transparent">
+                    <b-dropdown class="m-0 my-1 p-0 actionButton rounded text-white w-100" no-caret variant="transparent">
                         <template class="mx-1 my-1 text-white" #button-content>
                             {{ selectedServer === null ? 'Server' : selectedServer.text }}
                         </template>
@@ -238,7 +238,7 @@
             </b-col>
         </b-row>-->
     </b-container>
-    <app-loading :loading="isLoading" :circle="true">
+    <app-loading :loading="isLoading" :circle="true" class="h-100">
         <div class="hello">
             <app-room-circle :rooms="getRooms()" :metrics="metrics" />
         </div>
@@ -678,14 +678,13 @@ export default {
 
 .hello {
   display: grid;
-  min-height: 100vh;
   place-content: center;
   overflow: hidden;
+  height: 100%;
 }
 
 @media screen and (max-width: 1600px) and (max-height: 1000px) {
     .hello {
-        min-height: 90vh;
     }
 
 }

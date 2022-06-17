@@ -17,27 +17,27 @@
         <li></li>
     </ul>
     <app-loading :loading="false" class="h-100">
-      <div class="d-block">
+      <div class="d-flex justify-content-between h-100" style="flex-direction: column;">
        <app-navbar/>
-       <div class="d-flex">
-       <transition name="grow-height">
-          <app-new-navbar v-if="logged !== 'null'" />
-        </transition>
-          <router-view :key="$route.fullPath" class="pt-5" />
+       <div class="d-flex justify-content-center view-block" style="flex-direction: column;">
+          <transition name="grow-height">
+            <app-new-navbar v-if="logged !== 'null'" />
+          </transition>
+          <router-view :key="$route.fullPath" class="pt-2 pt-xl-4 w-100 pb-2 pb-xl-4 main-block h-100" />
         </div>
-      </div>
+        <div class="w-100 d-flex justify-content-between page-footer" style="flex-direction: column;">
+            <div class="page-footer-line" />
+              <div class="w-100 d-flex justify-content-center page-footer-2">
+                <div class="d-flex justify-content-center page-footer-content">
+                  <router-link style="text-decoration: none; color: inherit;" :to="{name: 'home'}" class="mx-2">Legal policies</router-link>
+                  <router-link style="text-decoration: none; color: inherit;" :to="{name: 'home'}" class="mx-2">Terms of service</router-link>
+                  <router-link style="text-decoration: none; color: inherit;" :to="{name: 'home'}" class="mx-2">Cookies</router-link>
+                  © 2022
+                </div>
+              </div>
+            </div>
+          </div>
     </app-loading>
-    <div class="w-100 d-flex justify-content-center page-footer">
-      <div class="page-footer-line" />
-    </div>
-    <div class="w-100 d-flex justify-content-center page-footer-2">
-      <div class="d-flex justify-content-center page-footer-content">
-        <router-link style="text-decoration: none; color: inherit;" :to="{name: 'home'}" class="mx-2">Legal policies</router-link>
-        <router-link style="text-decoration: none; color: inherit;" :to="{name: 'home'}" class="mx-2">Terms of service</router-link>
-        <router-link style="text-decoration: none; color: inherit;" :to="{name: 'home'}" class="mx-2">Cookies</router-link>
-        © 2022
-      </div>
-    </div>
   </div>
 </template>
 
@@ -93,6 +93,10 @@ export default {
   padding: 30px;
 }
 
+.view-block {
+  height: calc(100% - 88px);
+}
+
 #nav a {
   font-weight: bold;
   color: #2c3e50;
@@ -103,18 +107,16 @@ export default {
 }
 
 .page-footer {
-  position: absolute;
-  bottom: 16px;
+  height: 16px;
 }
 
 .page-footer-2 {
   position: absolute;
-  bottom: 2px;
 }
 
 .page-footer-line {
-  height: 0.7px;
-  width: 80%;
+  height: 1px;
+  width: 100%;
   background: white;
   opacity: 0.4;
 }
@@ -131,6 +133,18 @@ a:active {
 a[tabindex]:focus {
     color:black;
     outline: none;
+}
+
+@media screen and (max-width: 767px) {
+  .main-block {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .view-block {
+    height: calc(100% - 88px);
+  }
 }
 
 .area {

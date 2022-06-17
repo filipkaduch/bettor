@@ -4,7 +4,7 @@ import Home from '../views/Home.vue';
 import Rankings from '../views/Rankings.vue';
 import Register from '../views/auth/Register.vue';
 import LeagueOfLegends from '../views/games/LeagueOfLegends.vue';
-import CreateRoom from '../views/games/league/CreateRoom.vue';
+import RoomCreate from '../views/games/league/RoomCreate.vue';
 import RoomDetail from '../views/games/league/RoomDetail.vue';
 import RoomsList from '../views/games/league/RoomsList.vue';
 import AccountSettings from '../views/auth/AccountSettings.vue';
@@ -35,7 +35,7 @@ const routes = [
   {
     path: '/lolCreateRoom',
     name: 'lolCreateRoom',
-    component: CreateRoom
+    component: RoomCreate
   },
   {
     path: '/lolRoomDetail/:game',
