@@ -8,6 +8,7 @@ import './router';
 import './i18n';
 import './lodash';
 import './stripe';
+import './carousel';
 
 export {default as store} from './store';
 export {default as router} from './router';

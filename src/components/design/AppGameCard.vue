@@ -2,7 +2,7 @@
 	<b-card :header-class="variant ? 'customHeaderLight' : 'customHeader'" bg-variant="light" :header="variant ? 'bodyCardLight' : 'bodyCard'" :body-class="variant ? 'bodyCardLight' : 'bodyCard'" :footer-class="variant ? 'bodyCardLight' : 'bodyCard'" class="border-0">
         <template #header>
             <div v-if="closer" class="d-flex justify-content-end mb-2">
-                <font-awesome-icon :icon="['fas', 'minus-circle']" size="2x" style="cursor: pointer;" @click="closeCard"/>
+                <font-awesome-icon :icon="['fas', 'pin']" size="2x" style="cursor: pointer;" @click="closeCard"/>
             </div>
             <div class="d-flex justify-content-between mb-2">
                 <div class="firstInfo">
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </template>
-        <b-card-body class="p-0">
+        <b-card-body class="justify-content-center p-1 p-lg-1" style="display: grid;">
             <div>
                 Competition: {{ metric }}
             </div>

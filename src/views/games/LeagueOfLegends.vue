@@ -1,31 +1,18 @@
 <template>
   <div class="lol">
-    <b-col
-        v-if="false"
-        cols="2"
-        class="p-3 shadow bottom d-flex justify-content-center position-absolute h-75 mt-5"
-        style="min-height: 120px; border-radius: 8px; right: 100px; background: #001E6C;">
-        <div>
-            <h2 class="mb-3">Create or join a room</h2>
-            <router-link style="text-decoration: none; color: inherit;" :to="{name: 'register'}"><b-button variant="transparent" class="actionButton mb-2 w-100">Register now!</b-button></router-link>
-            <div class="m-2 mt-4 bg-white h-75 rounded border d-flex align-items-center justify-content-center">
-                <app-loading :loading="true" :circle="true" />
-            </div>
-        </div>
-    </b-col>
     <b-container>
         <h1 class="bettorLogo game-header" style="font-size: 2.5rem;">League of Legends</h1>
-        <div class="d-flex justify-content-center mx-lg-0 mx-5 align-items-center">
-            <div :style="page === 0 ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
+        <div class="d-flex justify-content-center mx-lg-0 mx-2 align-items-center">
+            <!--<div :style="page === 0 ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
                 <font-awesome-icon :icon="['fas', 'arrow-left']" class="arrow" @click="page = page - 1" />
-            </div>
+            </div>-->
             <h4 class="mt-2 game-info sub-info mx-5">
-                Rooms ({{ `${page + 1}/${Math.ceil(filteredRooms.length / step)}` }}):
+                Rooms ({{ `${transferedNumber + 1}/${Math.ceil(filteredRooms.length)}` }}):
                 <font-awesome-icon :icon="['fas', 'filter']" class="filter" @click="showFilter = !showFilter" />
             </h4>
-            <div :style="(page * step + step) >= filteredRooms.length ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''" class="ml-5">
+            <!--<div :style="(page * step + step) >= filteredRooms.length ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''" class="ml-5">
                 <font-awesome-icon :icon="['fas', 'arrow-right']" class="arrow" @click="page = page + 1" />
-            </div>
+            </div> -->
         </div>
         
             <b-collapse v-model="showFilter" class="filterBlock position-absolute mt-2 p-1 w-100vh" style="border-radius: 0.5rem; border: 0; font-size: 12px;">
@@ -239,8 +226,19 @@
         </b-row>-->
     </b-container>
     <app-loading :loading="isLoading" :circle="true" class="h-100">
-        <div class="hello">
-            <app-room-circle :rooms="getRooms()" :metrics="metrics" />
+        <div class="hello my-xl-5">
+          <carousel-3d class="d-flex h-75 w-100 w-xl-50 py-xl-5" :controls-visible="true" :clickable="true" @after-slide-change="moveIndex" @before-slide-change="onBeforeSlideChange" @last-slide="onLastSlide">
+            <slide v-for="(room, index) in getRooms()"
+                   :index="index"
+                   :key="index"
+                   class=""
+                   style="border-radius: .25rem; box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;"
+                   :controls-prev-html="'&#10092; '" :controls-next-html="'&#10093;'"
+                   :controls-width="30" :controls-height="60">
+              <app-game-card :room="room" :closer="true" :variant="true" :metric="getMetricLabel(getIcon(room))" class="h-100 w-100 border-0" />
+            </slide>
+          </carousel-3d>
+            <!--<app-room-circle :rooms="getRooms()" :metrics="metrics" />-->
         </div>
     </app-loading>
   </div>
@@ -252,6 +250,7 @@ import {mapActions, mapGetters} from 'vuex';
 import {metricsList} from '@/util/consts/lolMetrics';
 import {serverList} from '@/util/consts/lolServers';
 import axios from 'axios';
+import RoomDetail from "@/views/games/league/RoomDetail";
 import AppGameCard from '@/components/design/AppGameCard';
 import AppRoomCircle from '@/components/design/AppRoomCircle';
 import AppHeader from '@/components/design/AppHeader';
@@ -263,7 +262,7 @@ import {Swiper, SwiperSlide, Pagination, directive} from 'vue-awesome-swiper';
 export default {
     name: 'LeagueOfLegends',
     // eslint-disable-next-line vue/no-unused-components
-    components: { AppGameCard, AppLoading, Swiper, SwiperSlide, AppHeader, Pagination, AppRoomCircle },
+    components: { AppGameCard, AppLoading, Swiper, SwiperSlide, AppHeader, Pagination, AppRoomCircle, RoomDetail },
     directives: {
 		swiper: directive
 	},
@@ -286,6 +285,7 @@ export default {
             filteredRooms: [],
             metricsData: null,
             metrics: [],
+            roomIndex: 0,
             serverList,
             metricsList,
             playersFilterCount: 0,
@@ -315,6 +315,8 @@ export default {
             },
             showFilter: false,
             filterVal: null,
+            prevIndexRoom: 0,
+            transferedNumber: 0,
             windowWidth: 0,
             triggerMobile: false,
             swiperOptionMobile: {
@@ -448,6 +450,25 @@ export default {
             this.startDate = null;
             this.name = '';
         },
+        onBeforeSlideChange(index) {
+          console.log('@onBeforeSlideChange Callback Triggered', 'Slide Index ' + index)
+        },
+        onLastSlide(index) {
+          this.page += 1;
+          this.transferedNumber = (this.page * this.step) + index;
+        },
+        moveIndex(event) {
+          console.log(event);
+          if (this.prevIndexRoom >= event) {
+            this.transferedNumber -= 1;
+          } else {
+            this.transferedNumber += 1;
+          }
+          this.roomIndex = event;
+          if (event !== this.prevIndexRoom) {
+            this.prevIndexRoom = event;
+          }
+        },
         getSwiperOptions() {
             return this.triggerMobile ? this.swiperOptionMobile : this.swiperOption;
         },
@@ -457,7 +478,8 @@ export default {
         getRooms() {
             console.log(this.rooms);
             console.log(this.rooms.slice(this.page * this.step, this.step));
-            return this.filteredRooms.slice(this.page * this.step, this.page * this.step + this.step);
+            // return this.filteredRooms.slice(this.page * this.step, this.page * this.step + this.step);
+            return this.filteredRooms;
         },
         getServer(server) {
             return this.serverList?.find((el) => el.value === server)?.text ?? '';
@@ -677,15 +699,18 @@ export default {
 
 
 .hello {
-  display: grid;
+  display: flex;
+  align-items: center;
   place-content: center;
   overflow: hidden;
-  height: 100%;
+}
+
+.carousel-3d-slide:hover {
+  -webkit-transform: scale(1.05, 1.05);
+  transform: scale(1.05, 1.05);
 }
 
 @media screen and (max-width: 1600px) and (max-height: 1000px) {
-    .hello {
-    }
 
 }
 
@@ -710,6 +735,16 @@ export default {
         .btn {
             font-size: 10px !important;
         }
+    }
+
+    .hello {
+      height: 100% !important;
+    }
+    .carousel-3d-slide {
+      height: 100% !important;
+    }
+    .carousel-3d-slider {
+      height: 100% !important;
     }
     
     .game-header {
