@@ -1,22 +1,26 @@
 <template>
     <app-loading :loading="isLoading" :circle="true">
-        <div class="pb-0 w-100 d-flex px-5 justify-content-center" style="z-index: 300;">
-            <div class="d-flex w-50 justify-content-between align-items-center mb-1 mb-xl-4">
-                <div class="custom-row d-flex align-items-center">
-                    <h2 class="mb-0"><span class="bettorLogo" style="font-size: 2rem;">{{ getRoomName }}</span> room</h2>
-                    <!--<h2>{{ `${metricObject.value} ${metricObject.metric} in ${metricObject.games} games` }}</h2>-->
-                </div>
-                <div>
-                    <router-link style="text-decoration: none; color: inherit; position:relative;" :to="{name: 'lol'}">
-                        <font-awesome-icon :icon="['fas', 'times-circle']" size="2x" style="cursor: pointer;"/>
-                    </router-link>
-                </div>
-            </div>
-        </div>
-        <div class="mobile-card d-flex justify-content-center pb-1 pb-xl-5" style="max-height: calc(100% - 24px); height: 100%;">
-            <b-card class="custom-card bg-semiblue mb-2 mb-xl-5" header-class="border-0" body-class="custom-body">
+        <div class="mobile-card d-flex justify-content-center pb-0 mb-5" style="height: 100%;">
+            <b-card class="custom-card bg-semiblue" header-class="border-0" body-class="custom-body">
                 <template #header>
+                  <div class="pb-0 w-100 d-flex" style="z-index: 300;">
+                    <div class="d-flex w-100 justify-content-between align-items-center mb-1 mb-xl-4">
+                      <div class="custom-row d-flex align-items-center">
+                        <h2 class="mb-0"><span class="bettorLogo" style="font-size: 2rem;">{{ getRoomName }}</span></h2>
+                        <!--<h2>{{ `${metricObject.value} ${metricObject.metric} in ${metricObject.games} games` }}</h2>-->
+                      </div>
+                      <div>
+                        <router-link style="text-decoration: none; color: inherit; position:relative;" :to="{name: 'lol'}">
+                          <font-awesome-icon :icon="['fas', 'map-pin']" size="2x" style="cursor: pointer;"/>
+                        </router-link>
+                      </div>
+                    </div>
+                  </div>
                     <b-btn-group class="w-100 p-2">
+                      <b-btn class="p-1" @click="openOrbital('info')" :style="enabledDict.info ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
+                        <div><font-awesome-icon :icon="['fas', 'info-circle']" size="lg" class="orbital-icon"/></div>
+                        <p>Game info</p>
+                      </b-btn>
                         <b-btn class="p-1" @click="openOrbital('outcome')" :style="enabledDict.outcome ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
                             <div><font-awesome-icon :icon="['fas', 'piggy-bank']" size="lg" class="orbital-icon"/></div>
                             <p>Expected outcome</p>
@@ -24,10 +28,6 @@
                         <b-btn class="p-1" @click="openOrbital('stats')" :style="enabledDict.stats ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
                             <div><font-awesome-icon :icon="['fas', 'users']" size="lg" class="orbital-icon"/></div>
                             <p>Players</p>
-                        </b-btn>
-                        <b-btn class="p-1" @click="openOrbital('info')" :style="enabledDict.info ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
-                            <div><font-awesome-icon :icon="['fas', 'info-circle']" size="lg" class="orbital-icon"/></div>
-                            <p>Game info</p>
                         </b-btn>
                         <b-btn class="p-1" @click="openOrbital('chat')" :style="enabledDict.chat ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
                             <div><font-awesome-icon :icon="['fas', 'envelope']" size="lg" class="orbital-icon"/></div>
@@ -114,7 +114,7 @@
                                 </div>
                             <div class="my-auto">
                                 <b-input-group class="mt-2">
-                                    <b-input v-model="chatMessage" type="text" style="background-color: transparent; color: white;" placeholder="Type a message..." :disabled="canWrite" v-on:keyup.enter="sendMessage" />
+                                    <b-input v-model="chatMessage" type="text" style="background-color: transparent; color: white; height: auto !important;" placeholder="Type a message..." :disabled="canWrite" v-on:keyup.enter="sendMessage" />
                                     <div class="border p-1 px-3 inputIcon rounded text-white" variant="transparent" :disabled="canWrite" @click="sendMessage"><font-awesome-icon :icon="['fas', 'angle-right']" size="2x" /></div>
                                 </b-input-group>
                             </div>
@@ -138,14 +138,23 @@ import axios from 'axios';
 export default {
     name: 'RoomDetail',
     components: { AppLoading, CompetitionHistory },
+    props: {
+      room: {
+        type: Object,
+        default: null
+      },
+      metricObject: {
+        type: Object,
+        default: null
+      }
+    },
     data() {
         return {
-            metric: null,
-            game: null,
-            room: null,
-            metricObject: null,
+            metric: this.metricId,
+            // game: this.roomId,
+            // room: null,
             isLoadingRefresh: false,
-            isLoading: true,
+            isLoading: false,
             timestampToDate,
             players: [],
             activeOrbit: false,
@@ -174,9 +183,6 @@ export default {
             return this.room?.players_count ?? 0;
         },
         chatComputed() {
-            if(typeof this.chat?.['chat0']?.chat !== 'undefined') {
-                return this.chat?.['chat0']?.chat;
-            }
             return this?.chat ?? [];
         },
         logged() {
@@ -209,7 +215,7 @@ export default {
                 }
             }
         },
-        '$route.params': {
+        /* '$route.params': {
             immediate: true,
             deep: true,
             handler (to) {
@@ -224,7 +230,7 @@ export default {
                     // window.location.reload()
                 }
             }
-        },
+        }, */
         activeOrbit(val) {
             this.$nextTick(() => {
                 if (val) {
@@ -252,12 +258,6 @@ export default {
         if (this.windowWidth < 767) {
             this.triggerMobile = true;
         }
-        this.metric = this.$route.params.metric;
-        this.game = this.$route.params.game;
-        this.getMetric()
-        this.getRoom();
-        this.getPlayers();
-        this.loadChat();
     },
     beforeDestroy() { 
         window.removeEventListener('resize', this.onResize); 
@@ -444,7 +444,7 @@ export default {
 <style type="scss" scoped>
 
 .custom-card {
-    width: 50% !important;
+    width: 100% !important;
     border-radius: 16px !important;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
@@ -461,7 +461,6 @@ export default {
     opacity: 0.8;
 }
 
-.custom-card .btn-group
 
 .grow-down-enter-active,
 .grow-down-leave-active {
@@ -576,7 +575,7 @@ export default {
         display:none;
     }
     .custom-card {
-        width: 80% !important;
+        width: 100% !important;
     }
 
     .card-body {

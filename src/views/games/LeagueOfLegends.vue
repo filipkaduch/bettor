@@ -226,16 +226,25 @@
         </b-row>-->
     </b-container>
     <app-loading :loading="isLoading" :circle="true" class="h-100">
-        <div class="hello my-xl-5">
-          <carousel-3d class="d-flex h-75 w-100 w-xl-50 py-xl-5" :controls-visible="true" :clickable="true" @after-slide-change="moveIndex" @before-slide-change="onBeforeSlideChange" @last-slide="onLastSlide">
+        <div class="hello h-100 my-xl-5">
+          <carousel-3d
+              class="d-flex h-100 h-xl-75 w-100 py-xl-5"
+              :controls-visible="false"
+              :clickable="true"
+              :count="getRooms().length"
+              @after-slide-change="moveIndex"
+              @before-slide-change="onBeforeSlideChange"
+              @last-slide="onLastSlide"
+              :controls-prev-html="'&#10092; '"
+              :controls-next-html="'&#10093;'"
+              :controls-width="30" :controls-height="60">
             <slide v-for="(room, index) in getRooms()"
                    :index="index"
                    :key="index"
-                   class=""
-                   style="border-radius: .25rem; box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;"
-                   :controls-prev-html="'&#10092; '" :controls-next-html="'&#10093;'"
-                   :controls-width="30" :controls-height="60">
-              <app-game-card :room="room" :closer="true" :variant="true" :metric="getMetricLabel(getIcon(room))" class="h-100 w-100 border-0" />
+                   class="h-100 w-100"
+                   style="border-radius: 16px !important; border: 0 !important; box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">
+              <room-detail :room="room" :metric-object="getMetric(room.metric_id)[0]" class="h-100 w-100"></room-detail>
+              <!--<app-game-card :room="room" :closer="true" :variant="true" :metric="getMetricLabel(getIcon(room))" class="h-100 w-100 border-0" />-->
             </slide>
           </carousel-3d>
             <!--<app-room-circle :rooms="getRooms()" :metrics="metrics" />-->
@@ -500,6 +509,9 @@ export default {
         resizeAll() {
             this.resizeRooms = !this.resizeRooms;
         },
+        getMetric(id) {
+          return this.metrics.filter((met) => met.id === id);
+        },
         getMetricText(icon) {
             const index = this.metricsList.filter((el) => {
                 return el.icon === icon;
@@ -686,8 +698,7 @@ export default {
     border-bottom-left-radius: 0px !important;
 }
 
-.hide-scrollbar
-{
+.hide-scrollbar {
     overflow-y: scroll;
     -ms-overflow-style: none; /* IE 11 */
     scrollbar-width: none; /* Firefox 64 */
@@ -705,13 +716,40 @@ export default {
   overflow: hidden;
 }
 
-.carousel-3d-slide:hover {
+.carousel-3d-slider {
+  height: 75% !important;
+  width: calc(100% / 4) !important;
+}
+
+.carousel-3d-slider .carousel-3d-slide .current {
   -webkit-transform: scale(1.05, 1.05);
-  transform: scale(1.05, 1.05);
+  transform: scale(1.15, 1.15);
 }
 
 @media screen and (max-width: 1600px) and (max-height: 1000px) {
 
+}
+
+@media screen and (min-width: 767.1px) and (max-width: 1300px) {
+  .carousel-3d-slider {
+    height: 75% !important;
+    width: calc(100% - (100% / 3)) !important;
+  }
+
+  .carousel-3d-container {
+    height: 75% !important;
+  }
+}
+
+@media screen and (min-width: 1300.1px) and (max-width: 1900px) {
+  .carousel-3d-slider {
+    height: 75% !important;
+    width: calc(100% - (100% / 2)) !important;
+  }
+
+  .carousel-3d-container {
+    height: 100% !important;
+  }
 }
 
 .mx-380 {
@@ -745,6 +783,7 @@ export default {
     }
     .carousel-3d-slider {
       height: 100% !important;
+      width: 80% !important;
     }
     
     .game-header {
