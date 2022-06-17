@@ -23,6 +23,10 @@ export default {
 			state.loading = true;
 			state.error = null;
 		},
+		stopLoading(state) {
+			state.loading = false;
+			state.error = null;
+		},
 		startRefreshing(state) {
 			state.refreshing = true;
 		},
@@ -58,14 +62,31 @@ export default {
 				}
 			}
 			)
-				.then(({data}) => {
-                    console.log('SHOW DATA: ', data);
+				.then(async ({data}) => {
+					console.log('SHOW DATA: ', data);
+					/* for (let room in data) {
+						console.log(data[room]);
+						await axios.get(`https://e-bettor.herokuapp.com/get_attendees?room=${data[room].id}`, {
+							headers: {
+								'Content-type': 'application/json'
+							}
+						})
+						.then(({data}) => {
+							console.log('PLAYERS: ', data);
+							data[room].players = clone(data);
+						})
+						.catch((response) => {
+							console.log(response);
+						});
+					} */
 					commit('setRooms', data);
 					return Promise.resolve();
 				})
 				.catch(({response}) => {
 					commit('setError', response?.data?.message ?? 'Load all rooms failed');
 					return Promise.resolve();
+				}).finally(() => {
+					commit('stopLoading');
 				});
 		},
         loadAllMetrics({commit}) {

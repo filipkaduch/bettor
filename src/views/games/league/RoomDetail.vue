@@ -258,6 +258,7 @@ export default {
         if (this.windowWidth < 767) {
             this.triggerMobile = true;
         }
+        this.getPlayers();
     },
     beforeDestroy() { 
         window.removeEventListener('resize', this.onResize); 
@@ -418,23 +419,23 @@ export default {
             });
         },
         getPlayers() {
-            if (this.game !== null) {
-                return axios.get(`https://e-bettor.herokuapp.com/get_attendees?room=${this.$route.params.game}`, { headers: {
-                'Content-type':'application/json'
-            }})
-                .then(({data}) => {
-                    this.players = this._.clone(data);
-                    Object.keys(this.players).forEach(() => {
-                        this.showPlayers.push(false);
-                    });
-                })
-                .catch((response) => {
-                    console.log(response);
-                }).finally(() => {
-                    this.isLoading = false;
-                    this.isLoadingPlayers = false;
-                });
+          return axios.get(`https://e-bettor.herokuapp.com/get_attendees?room=${this.room.id}`, {
+            headers: {
+              'Content-type': 'application/json'
             }
+          })
+              .then(({data}) => {
+                this.players = this._.clone(data);
+                Object.keys(this.players).forEach(() => {
+                  this.showPlayers.push(false);
+                });
+              })
+              .catch((response) => {
+                console.log(response);
+              }).finally(() => {
+                this.isLoading = false;
+                this.isLoadingPlayers = false;
+              });
         }
     }
 }
@@ -560,6 +561,7 @@ export default {
 .inputIcon:hover {
     opacity: 0.8;
 }
+
 
 @media screen and (max-width: 767px) {
 	.handle-container {

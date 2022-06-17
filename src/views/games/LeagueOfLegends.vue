@@ -7,7 +7,7 @@
                 <font-awesome-icon :icon="['fas', 'arrow-left']" class="arrow" @click="page = page - 1" />
             </div>-->
             <h4 class="mt-2 game-info sub-info mx-5">
-                Rooms ({{ `${transferedNumber + 1}/${Math.ceil(filteredRooms.length)}` }}):
+                Rooms ({{ `${transferedNumber}/${Math.ceil(filteredRooms.length)}` }}):
                 <font-awesome-icon :icon="['fas', 'filter']" class="filter" @click="showFilter = !showFilter" />
             </h4>
             <!--<div :style="(page * step + step) >= filteredRooms.length ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''" class="ml-5">
@@ -226,9 +226,9 @@
         </b-row>-->
     </b-container>
     <app-loading :loading="isLoading" :circle="true" class="h-100">
-        <div class="hello h-100 my-xl-5">
+        <div class="hello h-100 my-2 my-xxl-5">
           <carousel-3d
-              class="d-flex h-100 h-xl-75 w-100 py-xl-5"
+              class="d-flex h-100 h-xxl-75 w-100 py-2 py-xxl-5"
               :controls-visible="false"
               :clickable="true"
               :count="getRooms().length"
@@ -325,7 +325,7 @@ export default {
             showFilter: false,
             filterVal: null,
             prevIndexRoom: 0,
-            transferedNumber: 0,
+            transferedNumber: 1,
             windowWidth: 0,
             triggerMobile: false,
             swiperOptionMobile: {
@@ -462,21 +462,14 @@ export default {
         onBeforeSlideChange(index) {
           console.log('@onBeforeSlideChange Callback Triggered', 'Slide Index ' + index)
         },
-        onLastSlide(index) {
-          this.page += 1;
-          this.transferedNumber = (this.page * this.step) + index;
+        onLastSlide() {
+          // this.transferedNumber = 0;
         },
         moveIndex(event) {
           console.log(event);
-          if (this.prevIndexRoom >= event) {
-            this.transferedNumber -= 1;
-          } else {
-            this.transferedNumber += 1;
-          }
+
+          this.transferedNumber = event + 1;
           this.roomIndex = event;
-          if (event !== this.prevIndexRoom) {
-            this.prevIndexRoom = event;
-          }
         },
         getSwiperOptions() {
             return this.triggerMobile ? this.swiperOptionMobile : this.swiperOption;
@@ -721,11 +714,6 @@ export default {
   width: calc(100% / 4) !important;
 }
 
-.carousel-3d-slider .carousel-3d-slide .current {
-  -webkit-transform: scale(1.05, 1.05);
-  transform: scale(1.15, 1.15);
-}
-
 @media screen and (max-width: 1600px) and (max-height: 1000px) {
 
 }
@@ -743,8 +731,13 @@ export default {
 
 @media screen and (min-width: 1300.1px) and (max-width: 1900px) {
   .carousel-3d-slider {
-    height: 75% !important;
+    height: 100% !important;
     width: calc(100% - (100% / 2)) !important;
+  }
+
+
+  .hello {
+    height: 80% !important;
   }
 
   .carousel-3d-container {
