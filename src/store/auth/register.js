@@ -50,7 +50,7 @@ export default {
 			commit('startLoading');
 
 			return axios.post(
-				'http://127.0.0.1:5000/user',
+				'https//bettor-be.onrender.com/user',
 				{
 					email: userData.email,
 					lol_name: '',
