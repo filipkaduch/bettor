@@ -1,19 +1,19 @@
 <template>
-	<b-container class="ml-5">
+	<b-container>
 		<b-row class="vh-100">
-			<b-col cols="12" md="5" class="bg-transparent">
+			<b-col cols="12" class="bg-transparent">
 				<b-container style="padding: 12%">
 					<b-row>
 					</b-row>
 					<template v-if="registrationDone">
-						<b-row class="pt-5">
+						<b-row>
 							<b-col>
 								<b-alert variant="success" show>{{ $t('t_RegisterConfirmationMessage') }}</b-alert>
 							</b-col>
 						</b-row>
 					</template>
 					<template v-else>
-						<b-row class="py-5">
+						<b-row class="py-xl-5 pb-0">
 							<b-col cols="12" class="d-flex justify-content-start">
 								<h1 class="bettorLogo" style="font-size: 2.5rem;">Register</h1>
 							</b-col>
