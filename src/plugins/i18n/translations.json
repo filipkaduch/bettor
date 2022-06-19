@@ -52,6 +52,7 @@
 		"t_email": "Email address",
 		"t_username_required": "Username is required",
 		"t_password_required": "Password is required",
+		"t_RegisterConfirmationMessage": "Registration completed!",
 		"t_confirmpassword_required": "Confirm password is required",
 		"t_signin_button": "SIGN IN",
 		"t_signin_label": "Sign In To TellStory",

@@ -35,13 +35,13 @@
                         </b-btn>
                     </b-btn-group>
                 </template>
-                <b-card-body class="d-flex justify-content-center align-items-center h-100 overflow-hidden">
-                    <div class="orbital-pulse action-shadow d-flex align-items-center justify-content-center" style="border-radius: 15%;" :style="orbitalWidth">
+                <b-card-body class="d-flex justify-content-center align-items-center h-100 overflow-hidden" style="padding-bottom: 0; overflow-y: scroll;">
+                    <div class="orbital-pulse action-shadow d-flex align-items-center justify-content-center h-100" style="border-radius: 15%; " :style="orbitalWidth">
                         <div v-if="activeKey === ''">
                             <font-awesome-icon :icon="['fas', 'expand']" size="lg" style="cursor: pointer;"/>
                         </div>
                         <div v-if="enabledDict.info" class="w-100 h-100 p-3 justify-content-start d-flex" style="flex-direction: column;">
-                            <div class="d-flex justify-content-center mb-5"><h3>Game info</h3></div>
+                            <div class="d-flex justify-content-center mb-xxl-5 mb-2"><h3>Game info</h3></div>
                             <h4 class="d-flex justify-content-between align-items-center game-info"><b>Competion:</b> {{ metricObject.metric }}</h4>
                             <h4 class="d-flex justify-content-between align-items-center game-info"><b>{{ `${metricObject.metric} to reach`}}:</b> {{ metricObject.value }}</h4>
                             <h4 class="d-flex justify-content-between align-items-center game-info"><b>Games available:</b> {{ metricObject.games }}</h4>

@@ -478,8 +478,6 @@ export default {
             this.windowWidth = window.innerWidth;
         },
         getRooms() {
-            console.log(this.rooms);
-            console.log(this.rooms.slice(this.page * this.step, this.step));
             // return this.filteredRooms.slice(this.page * this.step, this.page * this.step + this.step);
             return this.filteredRooms;
         },
@@ -725,7 +723,7 @@ export default {
   }
 
   .carousel-3d-container {
-    height: 75% !important;
+    height: 100% !important;
   }
 }
 
