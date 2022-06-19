@@ -9,7 +9,7 @@
                         <h2 class="mb-0"><span class="bettorLogo" style="font-size: 2rem;">{{ getRoomName }}</span></h2>
                         <!--<h2>{{ `${metricObject.value} ${metricObject.metric} in ${metricObject.games} games` }}</h2>-->
                       </div>
-                      <div>
+                      <div class="fa-holder">
                         <router-link style="text-decoration: none; color: inherit; position:relative;" :to="{name: 'lol'}">
                           <font-awesome-icon :icon="['fas', 'map-pin']" size="2x" style="cursor: pointer;"/>
                         </router-link>
@@ -48,6 +48,8 @@
                             <h4 class="d-flex justify-content-between align-items-center game-info"><b>Start date:</b> {{ timestampToDate(room.start_date, false) }}</h4>
                             <h4 class="d-flex justify-content-between align-items-center game-info"><b>End date:</b> {{ timestampToDate(room.end_date, false) }}</h4>
                             <h4 class="d-flex justify-content-between align-items-center game-info"><b>Players:</b> {{ `${Object.keys(players).length}/${getPlayersCount}` }}</h4>
+                            <h4 class="d-flex justify-content-between align-items-center game-info"><b>Time left:</b> {{ timeLeft }}</h4>
+                            <h4 class="d-flex justify-content-between align-items-center game-info"><b>Entry:</b> {{ bankText }}</h4>
                             <b-button v-if="logged !== 'null'" class="differButton mx-1 w-100" variant="transparent" @click="refreshStats"><app-loading :loading="isLoadingRefresh" :circle="true" variant="white">
                                 Refresh stats<font-awesome-icon :icon="['fas', 'redo']" size="md" class="mx-2" style="cursor: pointer;"/>
                                 </app-loading>
@@ -60,7 +62,7 @@
                                 <h4 class="game-info w-100" style="border-bottom: 1px solid white; text-align: start;"><b>Entry credits:</b> {{ room.bank }}</h4>
                                 <h4 class="game-info" style="text-align: start;"><b>Credits available</b> {{ 1200 - room.bank }}</h4>
                             </div>
-                            <b-button variant="transparent" style="max-width: 100% !important;" class="btn p-2 mt-5 d-flex justify-content-center align-items-center differButton" @click="joinRoom" :disabled="canJoin">
+                            <b-button variant="transparent" style="max-width: 100% !important;" class="btn p-2 mt-5 d-flex justify-content-center align-items-center differButton" @click="joinRoom" :disabled="canJoin || timeLeft === '-'">
                                 <app-loading :loading="isLoadingJoin" :circle="true">
                                     Join
                                     <font-awesome-icon :icon="['fas', 'coins']" size="lg" style="margin-left: 10px;" />
@@ -188,6 +190,19 @@ export default {
         logged() {
             return this.$store.getters['authLogin/token'] ?? null;
         },
+        timeLeft() {
+          const date3 = new Date(this.room.start_date);
+          const date1 = new Date();
+          const date2 = new Date(this.room.end_date);
+          const diffTimeGame = Math.abs(date2 - date3);
+          const diffTime = Math.abs(date2 - date1);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          const diffDaysGame = Math.ceil(diffTimeGame / (1000 * 60 * 60 * 24));
+          return `${ diffDays > diffDaysGame ? '' : diffDays} ${ diffDays > diffDaysGame ? `-` : diffDays > 1 ? `days` : `day`}`;
+        },
+      bankText() {
+        return `${this.room.bank} credits`;
+      },
         canJoin() {
             let found = false;
             Object.keys(this.players).forEach((key) => {
@@ -259,6 +274,7 @@ export default {
             this.triggerMobile = true;
         }
         this.getPlayers();
+        this.getChat();
     },
     beforeDestroy() { 
         window.removeEventListener('resize', this.onResize); 
@@ -764,6 +780,15 @@ export default {
     background-color: #001E6C;
     transition: all 0.9s;
     animation: pulse-blue 2s infinite;
+}
+
+.fa-holder:hover {
+  border-radius: 50%;
+  animation: pulse-blue 2s infinite;
+}
+
+.pulsation {
+  animation: pulse-blue 2s infinite;
 }
 
 .orbital-icon {

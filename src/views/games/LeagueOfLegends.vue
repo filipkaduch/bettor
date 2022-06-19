@@ -8,7 +8,7 @@
             </div>-->
             <h4 class="mt-2 game-info sub-info mx-5">
                 Rooms ({{ `${transferedNumber}/${Math.ceil(filteredRooms.length)}` }}):
-                <font-awesome-icon :icon="['fas', 'filter']" class="filter" @click="showFilter = !showFilter" />
+                <font-awesome-icon :icon="['fas', 'search']" class="filter" @click="showFilter = !showFilter" />
             </h4>
             <!--<div :style="(page * step + step) >= filteredRooms.length ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''" class="ml-5">
                 <font-awesome-icon :icon="['fas', 'arrow-right']" class="arrow" @click="page = page + 1" />

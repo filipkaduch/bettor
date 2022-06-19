@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="area">
+  <div id="app" class="area overflow-scroll">
     <ul class="circles">
         <li></li>
         <!-- <li><img src="@/assets/images/lol.png" alt="LoL" class="hideImg" /></li> -->
@@ -16,7 +16,7 @@
         <li></li>
         <li></li>
     </ul>
-    <app-loading :loading="false" class="h-100">
+    <app-loading :loading="false" class="h-100 overflow-scroll">
       <div class="d-flex justify-content-between h-100" style="flex-direction: column;">
        <app-navbar/>
        <div class="d-flex justify-content-center view-block" style="flex-direction: column;">
