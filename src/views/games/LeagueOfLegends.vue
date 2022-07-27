@@ -345,7 +345,7 @@ export default {
         },
         getAllMetrics() {
           return axios.get(
-        'http://localhost:5000/metric/all-metrics')
+        'https://bettor-be.onrender.com/metric/all-metrics')
             .then(({data}) => {
               console.log(data);
               this.metricsData = this._.cloneDeep(data);
@@ -410,7 +410,7 @@ export default {
             // }
         },
         getAllRooms() {
-            return axios.get(`http://localhost:5000/room/active-rooms`)
+            return axios.get(`https://bettor-be.onrender.com/room/active-rooms`)
                 .then(({data}) => {
                   console.log(data);
                     this.roomsData = this._.cloneDeep(data);

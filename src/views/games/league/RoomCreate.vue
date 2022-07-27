@@ -153,7 +153,7 @@ export default {
         },
         createRoom() {
           this.disableCreate = true;
-          return this.$axios.post(`http://localhost:5000/room`, {
+          return this.$axios.post(`https://bettor-be.onrender.com/room`, {
             game_id: 'lol',
             players_count: this.numOfPlayers,
             actual_players: 1,

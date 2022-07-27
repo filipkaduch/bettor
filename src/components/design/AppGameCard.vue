@@ -45,7 +45,8 @@
                 </b-button>
             </b-button-group>
         </template>
-        <b-modal id="modal-1" ref="my-modal" body-class="actionModal d-block" hide-footer centered hide-header>
+        <b-modal id="modal-1" ref="my-modal" body-class="actionModal d-flex justify-content-center align-items-center" hide-footer centered hide-header>
+          <div>
             <div class="d-flex justify-content-center pt-2">
                 <h4 class="mb-4">Do you want to delete this room?</h4>
             </div>
@@ -59,13 +60,12 @@
                     </b-button>
                 </div>
             </div>
+          </div>
         </b-modal>
 	</b-card>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
 	name: 'AppGameCard',
 	props: {
@@ -91,9 +91,9 @@ export default {
         }
 	},
 	computed: {
-		gameName() {
-            return this.room?.game_id;
-		},
+        gameName() {
+            return this.room?.room_id;
+        },
         logged() {
             return this.$store.getters['authLogin/token'] ?? null;
         },
@@ -101,7 +101,7 @@ export default {
             return `${this.room.actual_players === null ? `0` : this.room.actual_players}/${this.room.players_count}`;
         },
         bankText() {
-            return `${this.room.bank} credits`;
+            return `${this.room.entry} credits`;
         },
         onlyPlayer() {
             return this.room.actual_players === 1;
@@ -122,15 +122,8 @@ export default {
 	},
     methods: {
         removeRoom() {
-            return axios.delete(
-            `https://e-bettor.herokuapp.com/remove_roomm?room=${this.room.id}`,
-                { headers: {
-                    'Content-type':'application/json'
-                }})
-                .then(({data}) => {
-                    console.log(data);
-                    
-                })
+            return this.$axios.delete(
+            `https://bettor-be.onrender.com/room/${this.room.id}`)
                 .catch(({response}) => {
                     console.error(response);
                 });
@@ -213,6 +206,10 @@ export default {
 .nopeButton:hover {
       -webkit-transform: scale(1.02, 1.02);
   transform: scale(1.02, 1.02);
+}
+
+.actionModal {
+  min-height: 400px !important;
 }
 
 

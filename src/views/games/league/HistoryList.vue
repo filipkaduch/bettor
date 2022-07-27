@@ -144,7 +144,7 @@ export default {
         getAllHistory() {
             this.histories = [];
             if (this.logged) {
-              return this.$axios.get(`http://localhost:5000/room-attendee/by-user/${this.logged.id}`)
+              return this.$axios.get(`https://bettor-be.onrender.com/room-attendee/by-user/${this.logged.id}`)
               .then(({data}) => {
                   console.log(data);
                   this.historiesData = this._.cloneDeep(data);

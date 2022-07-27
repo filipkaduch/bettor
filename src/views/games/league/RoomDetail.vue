@@ -425,25 +425,10 @@ export default {
         isOwner(player) {
             return this.room.owner_id === player.id;
         },
-        getRoom() {
-            if (this.game !== null) {
-                return axios.get(`https://e-bettor.herokuapp.com/get_room?id=${this.$route.params.game}`, { headers: {
-                'Content-type':'application/json'
-            }})
-                .then(({data}) => {
-                    this.room = this._.clone(data[Object.keys(data)[0]]);
-                })
-                .catch((response) => {
-                    console.log(response);
-                });
-            }
-        },
         joinRoom() {
             if (this.game !== null) {
                 this.isLoadingJoin = true;
-                return axios.get(`http://localhost:500/join_room?user=${this.logged.id}&room=${this.$route.params.game}&metric=${this.$route.params.metric}&name=${this.logged.name}`, { headers: {
-                'Content-type':'application/json'
-            }})
+                return this.$axios.get(`https://bettor-be.onrender.com/join_room?user=${this.logged.id}&room=${this.$route.params.game}&metric=${this.$route.params.metric}&name=${this.logged.name}`)
                 .then(({data}) => {
                     console.log(data);
                 })
@@ -458,7 +443,7 @@ export default {
         },
         sendMessage() {
           this.chat[`Message${Object.keys(this.chat).length + 1}`] = {message: this.chatMessage, author: this.logged.name, time_sent: new Date()}
-          return this.$axios.put(`http://localhost:5000/chat/${this.chatId}`, {
+          return this.$axios.put(`https://bettor-be.onrender.com/chat/${this.chatId}`, {
             chat: this.chat,
           })
           .then(({data}) => {
@@ -473,9 +458,8 @@ export default {
         },
       loadChat() {
         this.loading = true;
-        return axios.get(`http://localhost:5000/chat/${this.room.chat_id}`)
+        return this.$axios.get(`https://bettor-be.onrender.com/chat/${this.room.chat_id}`)
             .then(({data}) => {
-              console.log(data);
               this.chat = this._.cloneDeep(data?.chat);
             })
             .catch((response) => {
@@ -485,9 +469,8 @@ export default {
             });
       },
       getPlayers() {
-        return axios.get(`http://localhost:5000/room-attendee/${this.room.id}`)
+        return axios.get(`https://bettor-be.onrender.com/room-attendee/${this.room.id}`)
           .then(({data}) => {
-            console.log('PLAYERS: ', data);
             this.players = this._.clone(data);
             Object.keys(this.players).forEach(() => {
               this.showPlayers.push(false);
