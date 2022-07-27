@@ -51,6 +51,7 @@ export default {
 
 			return axios.post(
 				'https://bettor-be.onrender.com/user',
+				// 'http://127.0.0.1:5000/user',
 				{
 					email: userData.email,
 					lol_name: '',

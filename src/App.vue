@@ -23,7 +23,10 @@
           <transition name="grow-height">
             <app-new-navbar v-if="logged !== 'null'" />
           </transition>
-          <router-view :key="$route.fullPath" class="pt-2 pt-xl-4 w-100 pb-2 pb-xl-4 main-block h-100" />
+          <router-view
+              :key="$route.fullPath"
+              class="pt-2 pt-xl-4 w-100 pb-2 pb-xl-4 main-block h-100"
+              :style="logged !== 'null' ? 'padding-left: 20px;' : ''" />
         </div>
         <div class="w-100 d-flex justify-content-between page-footer" style="flex-direction: column;">
             <div class="page-footer-line" />

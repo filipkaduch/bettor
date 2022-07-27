@@ -6,10 +6,12 @@ import * as plugins from '@/plugins/all';
 
 import App from '@/App.vue';
 import Vue from 'vue';
+import VueAxios from 'vue-axios';
 import './plugins/bootstrap-vue'
 import './plugins/fontawesome'
-import './plugins/axios'
+// import './plugins/axios'
 import axios from 'axios';
+Vue.use(VueAxios, axios);
 
 window.Vue = Vue;
 Vue.config.productionTip = false;

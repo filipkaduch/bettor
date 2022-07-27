@@ -31,16 +31,24 @@ export default {
         players: {
             type: Array,
             default: () => []
-        }
+        },
+      chatId: {
+        type: Number,
+        required: true
+      },
+      room: {
+        type: Object,
+        required: true
+      }
     },
     data() {
-		return {
-            loading: false,
-            chatMessage: '',
-            chat: null,
-            timestampToDate
-		};
-	},
+      return {
+        loading: false,
+        chatMessage: '',
+        chat: null,
+        timestampToDate
+      };
+    },
     computed: {
         logged() {
             return this.$store.getters['authLogin/token'] ?? null;
@@ -54,6 +62,7 @@ export default {
     },
     mounted() {
         this.loading = true;
+        console.log('MOUNTING');
         this.loadChat();
     },
     methods: {
@@ -92,47 +101,36 @@ export default {
             return found || this.logged === 'null';
         },
         canWrite() {
-            return this.logged === 'null';
+          return this.logged === 'null';
         },
-        sendMessage() {
-            if (this.chat === null) {
-                this.chat = [{message: this.chatMessage, author: this.logged.name}];
-            } else {
-                this.chat?.['chat0']?.chat.push({message: this.chatMessage, author: this.logged.name, time_sent: new Date() });
-            }
-            return axios.post(`https://e-bettor.herokuapp.com/send_message?room=${this.$route.params.game}`, { headers: {
-                'Content-type':'application/json'
-            }, data: {
-                chat: this.chat,            
-            }})
+      sendMessage() {
+        this.chat[`Message${Object.keys(this.chat).length + 1}`] = {message: this.chatMessage, author: this.logged.name, time_sent: new Date()}
+        return this.$axios.put(`http://localhost:5000/chat/${this.chatId}`, {
+          chat: this.chat,
+        })
             .then(({data}) => {
-                console.log(data);
+              console.log(data);
+              this.chat = this._.cloneDeep(data?.chat);
             })
             .catch((response) => {
-                console.error(response);
+              console.error(response);
             }).finally(() => {
-                this.chatMessage = '';
-                // this.isLoading = false;
+              this.chatMessage = '';
             });
-        },
-        loadChat() {
-            this.loading = true;
-            return axios.get(`https://e-bettor.herokuapp.com/load_chat?room=${this.$route.params.game}`, { headers: {
-                'Content-type':'application/json'
-            }})
+      },
+      loadChat() {
+        this.loading = true;
+        return axios.get(`http://localhost:5000/chat/${this.room.chat_id}`)
             .then(({data}) => {
-                this.chat = this._.cloneDeep(data);
-                if (!this.chat) {
-                    this.sendMessage();
-                }
-                console.log(this.chat);
+              console.log(data);
+              this.chat = this._.cloneDeep(data?.chat);
             })
             .catch((response) => {
-                console.error(response);
+              console.error(response);
             }).finally(() => {
-                this.loading = false;
+              this.loading = false;
             });
-        },
+      }
     }
 }
 </script>

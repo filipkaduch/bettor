@@ -1,6 +1,6 @@
 <template>
-    <b-container class="margin-container mr-0 ml-xl-0 ml-lg-0">
-        <b-col cols="11" lg="9" xl="9">
+    <b-container class="">
+        <b-col cols="12" md="11">
             <b-row class="pt-3 pt-lg-5">
                 <b-col cols="12" class="d-flex justify-content-center justify-content-lg-start align-items-center mb-4 mb-lg-0">
                     <h1>Account settings</h1>
@@ -248,7 +248,7 @@ export default {
 }
 
 .game-info {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 @media screen and (max-width: 767px) {

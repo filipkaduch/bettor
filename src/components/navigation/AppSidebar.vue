@@ -68,31 +68,31 @@ export default {
 		height: 100%;
 		background-color: transparent;
 		transition: right ease 0.5s;
-        transform: scaleX(1.0);
-        border-radius: 8px;
-        padding-top: 70px;
+    transform: scaleX(1.0);
+    border-radius: 8px;
+    padding-top: 70px;
 	}
 
-    .main-tab {
-        z-index: 300;
-        margin-left: 52px;
-        top: 0px;
-        height: 100%;
-        width: 600px;
-    }
+  .main-tab {
+      z-index: 300;
+      margin-left: 52px;
+      top: 0px;
+      height: 100%;
+      width: 600px;
+  }
 
-    @media screen and (max-width: 767px) {
-        .main-tab {
-            z-index: 300;
-            margin-left: 30px;
-            top: 0px;
-            height: 100vh;
-            width: calc(100vw - 30px);
-        }
-        .palette-sidebar {
-            height: 100vh;
-        }
-    }
+  @media screen and (max-width: 767px) {
+      .main-tab {
+          z-index: 300;
+          margin-left: 30px;
+          top: 0px;
+          height: 100vh;
+          width: calc(100vw - 30px);
+      }
+      .palette-sidebar {
+          height: 100vh;
+      }
+  }
 
     .slide-fade-enter-active {
         transition: all 0.5s ease-in;

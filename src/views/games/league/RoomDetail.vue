@@ -1,8 +1,8 @@
 <template>
     <app-loading :loading="isLoading" :circle="true">
-        <div class="mobile-card d-flex justify-content-center pb-0 mb-5" style="height: 100%;">
-            <b-card class="custom-card bg-semiblue" header-class="border-0" body-class="custom-body">
-                <template #header>
+        <div class="mobile-card d-flex justify-content-center pb-0" style="height: 100%;">
+            <b-card class="custom-card pt-0 bg-semiblue" header-class="border-0" body-class="custom-body px-1">
+                <template #header class="pb-0">
                   <div class="pb-0 w-100 d-flex" style="z-index: 300;">
                     <div class="d-flex w-100 justify-content-between align-items-center mb-1 mb-xl-4">
                       <div class="custom-row d-flex align-items-center">
@@ -16,78 +16,139 @@
                       </div>
                     </div>
                   </div>
-                    <b-btn-group class="w-100 p-2">
+                    <b-btn-group class="w-100 px-2 pb-2 pt-0">
                       <b-btn class="p-1" @click="openOrbital('info')" :style="enabledDict.info ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
                         <div><font-awesome-icon :icon="['fas', 'info-circle']" size="lg" class="orbital-icon"/></div>
-                        <p>Game info</p>
+                        <p>{{ $t('t_gameInfo') }}</p>
                       </b-btn>
-                        <b-btn class="p-1" @click="openOrbital('outcome')" :style="enabledDict.outcome ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
-                            <div><font-awesome-icon :icon="['fas', 'piggy-bank']" size="lg" class="orbital-icon"/></div>
-                            <p>Expected outcome</p>
-                        </b-btn>
-                        <b-btn class="p-1" @click="openOrbital('stats')" :style="enabledDict.stats ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
-                            <div><font-awesome-icon :icon="['fas', 'users']" size="lg" class="orbital-icon"/></div>
-                            <p>Players</p>
-                        </b-btn>
-                        <b-btn class="p-1" @click="openOrbital('chat')" :style="enabledDict.chat ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
-                            <div><font-awesome-icon :icon="['fas', 'envelope']" size="lg" class="orbital-icon"/></div>
-                            <p>Chat</p>
-                        </b-btn>
+                      <b-btn class="p-1" @click="openOrbital('outcome')" :style="enabledDict.outcome ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
+                          <div><font-awesome-icon :icon="['fas', 'piggy-bank']" size="lg" class="orbital-icon"/></div>
+                          <p>{{ $t('t_expectedOutcome') }}</p>
+                      </b-btn>
+                      <b-btn class="p-1" @click="openOrbital('stats')" :style="enabledDict.stats ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
+                          <div><font-awesome-icon :icon="['fas', 'users']" size="lg" class="orbital-icon"/></div>
+                          <p>{{ $t('t_players') }}</p>
+                      </b-btn>
+                      <b-btn class="p-1" @click="openOrbital('chat')" :style="enabledDict.chat ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
+                          <div><font-awesome-icon :icon="['fas', 'envelope']" size="lg" class="orbital-icon"/></div>
+                          <p>{{ $t('t_chat') }}</p>
+                      </b-btn>
                     </b-btn-group>
                 </template>
-                <b-card-body class="d-flex justify-content-center align-items-center h-100 overflow-hidden" style="padding-bottom: 0; overflow-y: scroll;">
+                <b-card-body class="d-flex justify-content-center align-items-center h-100 overflow-hidden pt-0" style="padding-bottom: 0; overflow-y: scroll;">
                     <div class="orbital-pulse action-shadow d-flex align-items-center justify-content-center h-100" style="border-radius: 15%; " :style="orbitalWidth">
                         <div v-if="activeKey === ''">
                             <font-awesome-icon :icon="['fas', 'expand']" size="lg" style="cursor: pointer;"/>
                         </div>
-                        <div v-if="enabledDict.info" class="w-100 h-100 p-3 justify-content-start d-flex" style="flex-direction: column;">
-                            <div class="d-flex justify-content-center mb-xxl-5 mb-2"><h3>Game info</h3></div>
-                            <h4 class="d-flex justify-content-between align-items-center game-info"><b>Competion:</b> {{ metricObject.metric }}</h4>
-                            <h4 class="d-flex justify-content-between align-items-center game-info"><b>{{ `${metricObject.metric} to reach`}}:</b> {{ metricObject.value }}</h4>
-                            <h4 class="d-flex justify-content-between align-items-center game-info"><b>Games available:</b> {{ metricObject.games }}</h4>
-                            <h4 class="d-flex justify-content-between align-items-center game-info"><b>Start date:</b> {{ timestampToDate(room.start_date, false) }}</h4>
-                            <h4 class="d-flex justify-content-between align-items-center game-info"><b>End date:</b> {{ timestampToDate(room.end_date, false) }}</h4>
-                            <h4 class="d-flex justify-content-between align-items-center game-info"><b>Players:</b> {{ `${Object.keys(players).length}/${getPlayersCount}` }}</h4>
-                            <h4 class="d-flex justify-content-between align-items-center game-info"><b>Time left:</b> {{ timeLeft }}</h4>
-                            <h4 class="d-flex justify-content-between align-items-center game-info"><b>Entry:</b> {{ bankText }}</h4>
-                            <b-button v-if="logged !== 'null'" class="differButton mx-1 w-100" variant="transparent" @click="refreshStats"><app-loading :loading="isLoadingRefresh" :circle="true" variant="white">
-                                Refresh stats<font-awesome-icon :icon="['fas', 'redo']" size="md" class="mx-2" style="cursor: pointer;"/>
-                                </app-loading>
-                            </b-button>
+                        <div v-if="enabledDict.info" class="w-100 h-100 p-2 p-lg-3 justify-content-start d-flex" style="flex-direction: column;">
+                            <div v-if="triggerMobile">
+                              <div class="d-flex justify-content-center mb-xxl-5 mb-2"><h3>{{ $t('t_gameInfo') }}</h3></div>
+                              <h4 class="d-flex justify-content-between align-items-center game-info"><b>{{ $t('t_competition') }}:</b>
+                                <div>{{ getMetricText }}<font-awesome-icon class="ml-2" :id="`${room.game_id}icon`" :icon="['fas', `${getIcon}`]" style="width: 24px; height: 24px;" /></div>
+                              </h4>
+                              <h4 class="d-flex justify-content-between align-items-center game-info"><b>{{ `${getMetricText} to reach`}}:</b> {{ getMetricValue }}</h4>
+                              <h4 class="d-flex justify-content-between align-items-center game-info"><b>{{ $t('t_gamesAvailable') }}:</b> {{ room.max_games }}</h4>
+                              <h4 class="d-flex justify-content-between align-items-center game-info"><b>{{ $t('t_startDate') }}:</b> {{ timestampToDate(new Date(room.start_date + ' ' + room.start_time), true) }}</h4>
+                              <h4 class="d-flex justify-content-between align-items-center game-info"><b>{{ $t('t_endDate') }}:</b> {{ timestampToDate(new Date(room.end_date + ' ' + room.end_time), true) }}</h4>
+                              <h4 class="d-flex justify-content-between align-items-center game-info"><b>{{ $t('t_players') }}:</b> {{ `${Object.keys(players).length}/${getPlayersCount}` }}</h4>
+                              <h4 class="d-flex justify-content-between align-items-center game-info"><b>{{ $t('t_winners') }}:</b> {{ `${room.winners}` }}</h4>
+                              <h4 class="d-flex justify-content-between align-items-center game-info"><b>{{ $t('t_timeLeft') }}:</b> {{ timeLeft }}</h4>
+                              <h4 class="d-flex justify-content-between align-items-center game-info"><b>{{ $t('t_entryCredits') }}:</b> {{ bankText }}</h4>
+                            </div>
+                            <b-container v-else>
+                              <div class="d-flex justify-content-center mb-xxl-5"><h3 class="game-info">{{ $t('t_gameInfo') }}</h3></div>
+                              <b-row class="d-flex justify-content-center align-items-center header-row p-1">
+                                <h4 class="game-info"><b>{{ `${getMetricText} to reach`}}:</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center">
+                                <h4 class="game-info">{{ getMetricValue }}</h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center align-items-center header-row p-1">
+                                <h4 class="game-info"><b>{{ $t('t_gamesAvailable') }}:</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center">
+                                <h4 class="game-info"><b>{{ room.max_games }}</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center align-items-center header-row p-1">
+                                <h4 class="game-info"><b>{{ $t('t_startDate') }}:</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center">
+                                <h4 class="game-info"><b>{{ timestampToDate(new Date(room.start_date + ' ' + room.start_time), true) }}</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center align-items-center header-row p-1">
+                                <h4 class="game-info"><b>{{ $t('t_endDate') }}:</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center">
+                                <h4 class="game-info"><b>{{ timestampToDate(new Date(room.end_date + ' ' + room.end_time), true) }}</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center align-items-center header-row p-1">
+                                <h4 class="game-info"><b>{{ $t('t_players') }}:</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center">
+                                <h4 class="game-info"><b>{{ `${Object.keys(players).length}/${getPlayersCount}` }}</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center align-items-center header-row p-1">
+                                <h4 class="game-info"><b>{{ $t('t_winners') }}:</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center">
+                                <h4 class="game-info"><b>{{ `${room.winners}` }}</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center align-items-center header-row p-1">
+                                <h4 class="game-info"><b>{{ $t('t_timeLeft') }}:</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center">
+                                <h4 class="game-info"><b>{{ timeLeft }}</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center align-items-center header-row p-1">
+                                <h4 class="game-info"><b>{{ $t('t_entryCredits') }}:</b></h4>
+                              </b-row>
+                              <b-row class="d-flex justify-content-center">
+                                <h4 class="game-info"><b>{{ bankText }}</b></h4>
+                              </b-row>
+                            </b-container>
+                            <div
+                                v-if="logged !== 'null'"
+                                class="semiButton btn mx-1 w-100 mt-auto"
+                                @click="refreshStats">
+                              <app-loading :loading="isLoadingRefresh" :circle="true" variant="white" :disabled="true">
+                                {{ $t('t_refreshStats') }}:
+                                <font-awesome-icon :icon="['fas', 'redo']" size="lg" class="mx-2" style="cursor: pointer;"/>
+                              </app-loading>
+                            </div>
                         </div>
                         <div v-if="enabledDict.outcome" class="w-100 h-100 p-3 justify-content-between d-flex" style="flex-direction: column;">
                             <div>
-                                <div class="d-flex justify-content-center mb-5" style="text-align: start;"><h3>Expected outcome</h3></div>
-                                <h4 class="game-info" style="text-align: start;"><b>Your credits:</b> 1200 </h4>
-                                <h4 class="game-info w-100" style="border-bottom: 1px solid white; text-align: start;"><b>Entry credits:</b> {{ room.bank }}</h4>
-                                <h4 class="game-info" style="text-align: start;"><b>Credits available</b> {{ 1200 - room.bank }}</h4>
+                                <div class="d-flex justify-content-center mb-5" style="text-align: start;"><h3>{{ $t('t_expectedOutcome') }}</h3></div>
+                                <h4 class="game-info" style="text-align: start;"><b>{{ $t('t_yourCredits') }}:</b> 1200 </h4>
+                                <h4 class="game-info w-100" style="border-bottom: 1px solid white; text-align: start;"><b>{{ $t('t_entryCredits') }}:</b> {{ room.entry }}</h4>
+                                <h4 class="game-info" style="text-align: start;"><b>{{ $t('t_creditsAvailable') }}:</b> {{ 1200 - room.entry }}</h4>
                             </div>
-                            <b-button variant="transparent" style="max-width: 100% !important;" class="btn p-2 mt-5 d-flex justify-content-center align-items-center differButton" @click="joinRoom" :disabled="canJoin || timeLeft === '-'">
+                            <b-button variant="transparent" class="btn p-2 mt-5 w-100 d-flex justify-content-center align-items-center semiButton" @click="joinRoom" :disabled="canJoin || timeLeft === '-'">
                                 <app-loading :loading="isLoadingJoin" :circle="true">
-                                    Join
+                                    {{ $t('t_join') }}
                                     <font-awesome-icon :icon="['fas', 'coins']" size="lg" style="margin-left: 10px;" />
                                 </app-loading>
                             </b-button>
                         </div>
                         <div v-if="enabledDict.stats" class="w-100 h-100 p-1 p-xl-3">
-                            <div class="d-flex justify-content-center mb-2"><h3>Players</h3></div>
+                            <div class="d-flex justify-content-center mb-2"><h3>{{ $t('t_players') }}</h3></div>
                             <b-row class="pt-2 pb-1 mx-2 d-lg-flex d-none">
                                 <b-col cols="1" class="d-flex justify-content-start align-items-center">
 
                                 </b-col>
                                 <b-col cols="6" class="d-flex justify-content-start align-items-center">
-                                    <h5>Name:</h5>
+                                    <h5>{{ $t('t_NameOfRoom') }}</h5>
                                 </b-col>
                                 <b-col cols="2" class="d-flex align-items-center justify-content-start">
-                                    <h5>{{metricObject.metric}}:</h5>
+                                    <h5>{{ getMetricText }}:</h5>
                                 </b-col>
                                 <b-col cols="2" lg="3" xl="3" class="d-flex align-items-center justify-content-start">
-                                    <h5>Games:</h5>
+                                    <h5>{{ $t('t_games') }}:</h5>
                                 </b-col>
                             </b-row>
-                            <b-row v-for="(player, index) in players" :key="`${player.id}row`" class="rounded p-2 mb-2 mx-1 rowRecord rowHover text-white" style="background: #001E6C;" @click="openPlayer(index)">
+                            <b-row v-for="(player, index) in players" :key="`${player.id}row`" class="rounded p-2 mb-2 mx-1 rowRecord playerRecord text-white" style="background: #001E6C;" @click="openPlayer(index)">
                                 <b-col cols="1" class="d-flex justify-content-start align-items-center">
-                                    {{ parseInt(index.substr(index.length - 1, index.length), 10) + 1 }}
+                                    {{ index + 1 }}
                                 </b-col>
                                 <b-col cols="6" class="d-flex align-items-center" :class="isOwner ? 'justify-content-between' : 'justify-content-start'">
                                     {{ player.name }}
@@ -107,18 +168,19 @@
                             </b-row>
                         </div>
                         <div v-if="enabledDict.chat" class="w-100 h-100 p-3" style="place-content: space-between; display: flex !important; flex-direction: column;">
-                            <div class="d-flex justify-content-between mb-2"><h3>Chat</h3></div>
+                          <!--<app-chat :chat-id="chatId" :room="room"></app-chat>-->
+                            <div class="d-flex justify-content-between mb-2"><h3>{{ $t('t_chat') }}</h3></div>
                                 <div class="hide-scrollbar py-1 py-lg-2 rounded" style="overflow-y: scroll; scrollbar-width: none; height: 100% !important;">
                                     <div v-for="(msg, index) in chatComputed" :key="`${index}`" :class="isAuthor(msg.author) ? 'text-start' : 'text-end'" class="my-1 my-lg-2">
                                         <h5 class="mb-0 game-info">{{ msg.message }}</h5>
                                         <small v-if="changedAuthor(index, msg.author)" style="border-top: 1px solid white">{{ msg.author }}, {{ timestampToDate(msg.time_sent) }}</small>
                                     </div>
                                 </div>
-                            <div class="my-auto">
-                                <b-input-group class="mt-2">
-                                    <b-input v-model="chatMessage" type="text" style="background-color: transparent; color: white; height: auto !important;" placeholder="Type a message..." :disabled="canWrite" v-on:keyup.enter="sendMessage" />
-                                    <div class="border p-1 px-3 inputIcon rounded text-white" variant="transparent" :disabled="canWrite" @click="sendMessage"><font-awesome-icon :icon="['fas', 'angle-right']" size="2x" /></div>
-                                </b-input-group>
+                            <div class="d-flex">
+                                <b-input v-model="chatMessage" type="text" style="background-color: transparent; color: white; height: auto !important;" />
+                                <b-btn class="border p-1 px-3 inputIcon rounded text-white" variant="transparent" :disabled="canWrite" @click="sendMessage">
+                                  <font-awesome-icon :icon="['fas', 'angle-right']" size="2x" />
+                                </b-btn>
                             </div>
                         </div>
                     </div>
@@ -132,6 +194,7 @@
 <script>
 import AppLoading from '@/components/design/AppLoading';
 // import AppOrbit from '@/components/design/AppOrbit';
+// import AppChat from "@/components/design/AppChat";
 import CompetitionHistory from '@/views/games/league/CompetitionHistory';
 import {timestampToDate} from '@/util/timeUtils';
 import axios from 'axios';
@@ -153,8 +216,6 @@ export default {
     data() {
         return {
             metric: this.metricId,
-            // game: this.roomId,
-            // room: null,
             isLoadingRefresh: false,
             isLoading: false,
             timestampToDate,
@@ -169,6 +230,7 @@ export default {
             activeKey: 'info',
             orbitalWidth: `width: 100% !important; height: 100% !important; animation: none; z-index: 290; background-color: #001E6C; border-radius: 15px;`,
             chat: null,
+            chatId: 1,
             windowWidth: 0,
             triggerMobile: false,
             showPlayers: [],
@@ -179,7 +241,7 @@ export default {
     },
     computed: {
         getRoomName() {
-            return this.room?.game_id ?? '';
+            return this.room?.room_id ?? '';
         },
         getPlayersCount() {
             return this.room?.players_count ?? 0;
@@ -201,51 +263,56 @@ export default {
           return `${ diffDays > diffDaysGame ? '' : diffDays} ${ diffDays > diffDaysGame ? `-` : diffDays > 1 ? `days` : `day`}`;
         },
       bankText() {
-        return `${this.room.bank} credits`;
+        return `${this.room.entry} credits`;
       },
-        canJoin() {
-            let found = false;
-            Object.keys(this.players).forEach((key) => {
-                if (this.players[key].user_id === this.logged.id) {
-                    found = true;
-                }
-            });
-            return found || this.logged === 'null';
-        },
-        canWrite() {
-            return this.logged === 'null';
+      getMetricText() {
+        return this.metricObject?.metric ?? '';
+      },
+      getMetricValue() {
+        return this.metricObject?.value ?? 0;
+      },
+      getIcon() {
+        if (this.metricObject?.metric) {
+          switch(this.metricObject?.metric) {
+            case 'Kills':
+              return 'skull';
+            case 'Wins':
+              return 'broom';
+            case 'Assists':
+              return 'hands-helping';
+            case 'Golds':
+              return 'coins';
+            default:
+              return 'skull';
+          }
         }
+        return 'skull';
+      },
+      canJoin() {
+          let found = false;
+          Object.keys(this.players).forEach((key) => {
+              if (this.players[key].user_id === this.logged.id) {
+                  found = true;
+              }
+          });
+          return found || this.logged === 'null';
+      },
+      canWrite() {
+          console.log(this.logged);
+          return this.logged === 'null';
+      }
     },
     watch: {
         windowWidth: {
             immediate: true,
             handler(val) {
-                console.log(val);
                 if (val < 767) {
-                    console.log(this.$refs);
                     this.triggerMobile = true;
-                    console.log(this.triggerMobile);
                 } else {
                     this.triggerMobile = false;
                 }
             }
         },
-        /* '$route.params': {
-            immediate: true,
-            deep: true,
-            handler (to) {
-                console.log(to);
-                if (to.meta.reload==true) {
-                    this.metric = to.params.metric;
-                    this.game = to.$route.params.game;
-                    this.getMetric()
-                    this.getRoom();
-                    this.getPlayers();
-                    this.loadChat();
-                    // window.location.reload()
-                }
-            }
-        }, */
         activeOrbit(val) {
             this.$nextTick(() => {
                 if (val) {
@@ -298,13 +365,9 @@ export default {
             // this.activeOrbit = !this.activeOrbit;
         },
         getChat() {
-            if (!this.chat['chat0'].chat) {
-                this.loadChat().then(() => {
-                    return this.chat['chat0'].chat;
-                })
-            }
-            console.log(this.chat['chat0'].chat['chat0'].chat);
-            return this.chat['chat0'].chat;
+          this.loadChat().then(() => {
+            console.log('LOADED CHAT');
+          })
         },
         changedAuthor(index, author) {
             if (typeof this.logged.name === 'undefined') {
@@ -317,7 +380,7 @@ export default {
         },
         refreshStats() {
             this.isLoadingRefresh = true;
-            return axios.get(`https://e-bettor.herokuapp.com/check_state`, { headers: {
+            return axios.get(`https://bettor-be.onrender.com/room/check-room/${this.room.id}`, { headers: {
                 'Content-type':'application/json'
             }})
             .then(({data}) => {
@@ -344,17 +407,14 @@ export default {
             }
         },
         getIndex(key) {
-            let count = 0;
-            Object.keys(this.players).forEach((player) => {
-                console.log(player)
-                console.log(key === player)
-                if (player === key) {
-                    console.log('return');
-                    return count;
-                }
-                count += 1;
-            });
-            return count;
+          let count = 0;
+          Object.keys(this.players).forEach((player) => {
+            if (player === key) {
+              return count;
+            }
+            count += 1;
+          });
+          return count;
         },
         openPlayer(key) {
             const index = this.getIndex(key);
@@ -381,7 +441,7 @@ export default {
         joinRoom() {
             if (this.game !== null) {
                 this.isLoadingJoin = true;
-                return axios.get(`https://e-bettor.herokuapp.com/join_room?user=${this.logged.id}&room=${this.$route.params.game}&metric=${this.$route.params.metric}&name=${this.logged.name}`, { headers: {
+                return axios.get(`http://localhost:500/join_room?user=${this.logged.id}&room=${this.$route.params.game}&metric=${this.$route.params.metric}&name=${this.logged.name}`, { headers: {
                 'Content-type':'application/json'
             }})
                 .then(({data}) => {
@@ -397,62 +457,49 @@ export default {
             }
         },
         sendMessage() {
-            if (this.chat === null) {
-                this.chat = [{message: this.chatMessage, author: this.logged.name}];
-            } else {
-                this.chat?.['chat0']?.chat.push({message: this.chatMessage, author: this.logged.name, time_sent: new Date() });
-            }
-            return axios.post(`https://e-bettor.herokuapp.com/send_message?room=${this.$route.params.game}`, { headers: {
-                'Content-type':'application/json'
-            }, data: {
-                chat: this.chat,            
-            }})
-            .then(({data}) => {
-                console.log(data);
-            })
-            .catch((response) => {
-                console.error(response);
-            }).finally(() => {
-                this.chatMessage = '';
-                // this.isLoading = false;
-            });
-        },
-        loadChat() {
-            return axios.get(`https://e-bettor.herokuapp.com/load_chat?room=${this.$route.params.game}`, { headers: {
-                'Content-type':'application/json'
-            }})
-            .then(({data}) => {
-                this.chat = this._.cloneDeep(data);
-                if (!this.chat) {
-                    this.sendMessage();
-                }
-                console.log(this.chat);
-            })
-            .catch((response) => {
-                console.error(response);
-            }).finally(() => {
-                // this.isLoading = false;
-            });
-        },
-        getPlayers() {
-          return axios.get(`https://e-bettor.herokuapp.com/get_attendees?room=${this.room.id}`, {
-            headers: {
-              'Content-type': 'application/json'
-            }
+          this.chat[`Message${Object.keys(this.chat).length + 1}`] = {message: this.chatMessage, author: this.logged.name, time_sent: new Date()}
+          return this.$axios.put(`http://localhost:5000/chat/${this.chatId}`, {
+            chat: this.chat,
           })
-              .then(({data}) => {
-                this.players = this._.clone(data);
-                Object.keys(this.players).forEach(() => {
-                  this.showPlayers.push(false);
-                });
-              })
-              .catch((response) => {
-                console.log(response);
-              }).finally(() => {
-                this.isLoading = false;
-                this.isLoadingPlayers = false;
-              });
-        }
+          .then(({data}) => {
+              console.log(data);
+              this.chat = this._.cloneDeep(data?.chat);
+          })
+          .catch((response) => {
+              console.error(response);
+          }).finally(() => {
+              this.chatMessage = '';
+          });
+        },
+      loadChat() {
+        this.loading = true;
+        return axios.get(`http://localhost:5000/chat/${this.room.chat_id}`)
+            .then(({data}) => {
+              console.log(data);
+              this.chat = this._.cloneDeep(data?.chat);
+            })
+            .catch((response) => {
+              console.error(response);
+            }).finally(() => {
+              this.loading = false;
+            });
+      },
+      getPlayers() {
+        return axios.get(`http://localhost:5000/room-attendee/${this.room.id}`)
+          .then(({data}) => {
+            console.log('PLAYERS: ', data);
+            this.players = this._.clone(data);
+            Object.keys(this.players).forEach(() => {
+              this.showPlayers.push(false);
+            });
+          })
+          .catch((response) => {
+            console.error(response);
+          }).finally(() => {
+            this.isLoading = false;
+            this.isLoadingPlayers = false;
+          });
+      }
     }
 }
 
@@ -461,12 +508,13 @@ export default {
 <style type="scss" scoped>
 
 .custom-card {
-    width: 100% !important;
-    border-radius: 16px !important;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  width: 100% !important;
+  border-radius: 16px !important;
+  padding-top: 0 !important;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
-.custom-card .btn {
+.custom-card .btn-secondary {
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     background: #1f3c88 !important;
     max-width: calc(100% / 4);
@@ -478,41 +526,18 @@ export default {
     opacity: 0.8;
 }
 
-
-.grow-down-enter-active,
-.grow-down-leave-active {
-  transition: all 0.6s;
-  max-height: 230px;
-}
-.grow-down-enter,
-.grow-down-leave-to
-{
-  opacity: 0;
-  max-height: 0px;
-}
-
-.hello {
-  display: flex;
-  place-content: center;
-  overflow: hidden;
-}
-
 .mobile-card {
   display: flex;
   place-content: center;
   overflow: hidden;
   height: 100%;
   padding-bottom: 10px;
+  min-height: 790px;
 }
 
-.hello-2 {
-  display: grid;
-  place-content: center;
-}
 
 .owner-badge {
-    background: transparent;
-
+  background: transparent;
 }
 
 .previewImage {
@@ -521,7 +546,6 @@ export default {
 }
 
 .rowRecord {
-    cursor: pointer;
     background: #90AACB;
 }
 
@@ -555,11 +579,6 @@ export default {
   transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: white;
-    opacity: 1; /* Firefox */
-}
-
 .form-control {
     border-top: 1px solid white;
     border-left: 1px solid white;
@@ -578,16 +597,16 @@ export default {
     opacity: 0.8;
 }
 
+.playerRecord:hover {
+  -webkit-transform: scale(1.02, 1.02);
+  transform: scale(1.02, 1.02);
+  box-shadow: 0 5px 10px white;
+  -webkit-transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
 
 @media screen and (max-width: 767px) {
-	.handle-container {
-        margin-top: 0px !important;
-		margin-left: 36px !important;
-        top: 60px;
-        width: calc(100% - 36px);
-        height: calc(100% - 80px) !important;
-        padding-top: 0 !important;
-	}
 
     .custom-card .btn p {
         display:none;
@@ -624,20 +643,24 @@ export default {
         display: block !important;
         font-size: 16px !important;
     }
+
+    .mobile-card {
+      min-height: 100%;
+    }
 }
 
 
 .custom-body {
-    max-height: calc(100% - 88px);
+  max-height: calc(100% - 88px);
+  padding-top: 0;
 }
 
-.handle-container {
-    z-index: -10;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    max-height: 100vh;
+.header-row {
+  margin-bottom: 2px;
+  border: 1px solid #4e54c8;
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
-
 
 </style>
 
@@ -792,7 +815,6 @@ export default {
 }
 
 .orbital-icon {
-    cursor: pointer;
     width: 32px;
     height: 32px;
 }

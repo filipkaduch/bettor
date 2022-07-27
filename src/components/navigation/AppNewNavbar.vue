@@ -1,6 +1,6 @@
 <template>
 <div>
-	<b-navbar class="d-flex flex-column custom-nav position-fixed shadow left right text-white" vertical>
+	<b-navbar class="d-flex flex-column custom-nav position-fixed shadow left right text-white px-1" vertical>
 		<b-nav vertical class="w-100 text-white pt-2" style="height: 100%; min-height: 100%">
 			<li class="nav-item w-100 mt-xs-5" @click="showHandler('create')">
 				<b-button
@@ -113,7 +113,7 @@ export default {
 
 <style scoped>
 .custom-nav {
-	width: 56px;
+	width: 70px;
 	/* border: 2px solid white; */
 	z-index: 400;
 	border-bottom-right-radius: 8px;
@@ -125,7 +125,7 @@ export default {
 @media screen and (max-width: 767px) {
 	.custom-nav {
 		margin-left: 0px !important;
-		width: 36px;
+		width: 56px;
 		z-index: 500;
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
@@ -162,8 +162,8 @@ export default {
 }
 
 .actionOffDropdown {
-    color: white !important;
-    background-color: #001E6C;
+  color: white !important;
+  background-color: #001E6C;
 	border: 0;
 	border-radius: 8px;
 }

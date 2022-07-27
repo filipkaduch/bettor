@@ -4,7 +4,7 @@
             <div class="">
                 <h4>{{ $t('t_NameOfRoom') }}</h4>
             </div>
-            <b-input v-model="name" type="text" />
+            <b-input v-model="name" type="text" :maxLength="30" />
         </b-form-group>
         <h4>{{ $t('t_ChooseAccessibility') }}</h4>
         <b-form-group class="my-2">
@@ -47,7 +47,7 @@
         </b-form-group>
         <h4>{{ $t('t_GamesToReach') }}</h4>
         <b-form-group class="my-2">
-            <b-input v-model="maxGames" type="number" min="0" />
+            <b-input v-model="maxGames" type="number" min="1" />
         </b-form-group>
         <h4>{{ $t('t_DurationTime') }}</h4>
         <div class="d-flex justify-content-between">
@@ -63,6 +63,20 @@
                     <b-datepicker v-model="endDate" :min="new Date().toISOString().substr(0, 10)" />
                 </b-form-group>
             </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div>
+            <small>Start time</small>
+            <b-form-group class="my-2">
+              <b-form-timepicker v-model="startTime" locale="en"></b-form-timepicker>
+            </b-form-group>
+          </div>
+          <div>
+            <small>End time</small>
+            <b-form-group class="my-2">
+              <b-form-timepicker v-model="endTime" locale="en"></b-form-timepicker>
+            </b-form-group>
+          </div>
         </div>
         <hr />
         <h4 class="align-text-left">Prize pool setup</h4>
@@ -89,7 +103,7 @@
 
 <script>
 // import {secondsToTime, timestampToDate} from '@/util/timeUtils';
-import axios from 'axios';
+// import axios from 'axios';
 import {serverList} from '@/util/consts/lolServers';
 import {metricsList} from '@/util/consts/lolMetrics';
 
@@ -103,13 +117,16 @@ export default {
             startDate: null,
             endDate: null,
             selectedAccess: '',
+            disableCreate: false,
             selectedMetric: null,
             selectedMode: '',
             metric: '',
             competitionCredits: 0,
-            numOfPlayers: 0,
-            winners: 0,
-            maxGames: 0,
+            numOfPlayers: 2,
+            winners: 1,
+            endTime: null,
+            startTime: null,
+            maxGames: 1,
             metricCount: 0,
             serverList,
             metricsList
@@ -117,8 +134,9 @@ export default {
     },
     computed: {
         enableCreate() {
-            return this.startDate !== null && this.endDate !== null && this.selectedMetric !== null && this.numOfPlayers !== 0
-                && this.winners !== 0 && this.maxGames !== 0 && this.metricCount !== 0 && this.selectedServer !== null && this.selectedAccess !== '';
+            return (this.startDate !== null && this.endDate !== null && this.selectedMetric !== null && this.numOfPlayers !== 0
+                && this.winners !== 0 && this.maxGames !== 0 && this.metricCount !== 0 && this.selectedServer !== null && this.selectedAccess !== '')
+                && !this.disableCreate;
         },
         logged() {
             return this.$store.getters['authLogin/token'] ?? null;
@@ -134,29 +152,35 @@ export default {
             this.name = '';
         },
         createRoom() {
-            return axios.post(`https://e-bettor.herokuapp.com/create_room?server=${this.selectedServer.value}&user=${this.logged.id}&name=${this.logged.name}`, { headers: {
-                'Content-type':'application/json'
-            }, data: {
-                name: this.name,
-                access: this.selectedAccess,
-                metric: this.selectedMetric.metric,
-                metric_value: this.metricCount,
-                max_games: this.maxGames,
-                winners: this.winners,
-                players: this.numOfPlayers,
-                start_date: this.startDate,
-                end_date: this.endDate,
-                credits: this.competitionCredits,
-                gamemode: this.selectedMode                
-            }})
-                .then(({data}) => {
-                    console.log(data);
-                })
-                .catch((response) => {
-                    console.log(response);
-                }).finally(() => {
-                    this.$emit('closeCreate');
-                });
+          this.disableCreate = true;
+          return this.$axios.post(`http://localhost:5000/room`, {
+            game_id: 'lol',
+            players_count: this.numOfPlayers,
+            actual_players: 1,
+            bank: 0,
+            owner_id: this.logged.id,
+            room_id: this.name,
+            access: this.selectedAccess,
+            metric: this.selectedMetric.metric,
+            metric_value: this.metricCount,
+            max_games: this.maxGames,
+            winners: this.winners,
+            server: this.selectedServer.value,
+            start_date: this.startDate,
+            end_date: this.endDate,
+            start_time: this.startTime,
+            end_time: this.endTime,
+            entry: this.competitionCredits,
+            gamemode: this.selectedMode
+          })
+          .then(({data}) => {
+              console.log(data);
+          })
+          .catch((response) => {
+              console.log(response);
+          }).finally(() => {
+              this.$emit('closeCreate');
+          });
         },
         setCompetitionMetric(metric) {
             this.selectedMetric = metric;

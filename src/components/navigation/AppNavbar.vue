@@ -57,7 +57,7 @@
                 </ul>
                 <div v-if="logged === 'null'" class="my-2 my-lg-0 d-flex justify-content-center">
                     <div class="position-relative">
-                        <button type="button" class="btn actionButton mx-1" @click="showLogin = !showLogin">Login</button>
+                        <button type="button" class="btn actionButton mx-1" variant="actionButton" @click="showLogin = !showLogin">Login</button>
                         <b-collapse v-model="showLogin" class="position-absolute mt-2" style="border-radius: 0.5rem; border: 0;">
                             <b-card body-class="blue-bg collapse-border" style="border: 0; border-radius: 0.5rem;">
                                 <login @closeLogin="closeBar"/>

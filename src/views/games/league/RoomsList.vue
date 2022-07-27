@@ -15,7 +15,7 @@
                                 ref="mySwiper"
                                 class="p-4"
                                 :options="swiperOption">
-                                <swiper-slide v-for="room in ownedRooms" :key="room.game_id" class="fancy-6"><b-col class="cardOverlay"><app-game-card :room="room" :isOwn="true" :metric="getMetricLabel(getIcon(room))" /></b-col></swiper-slide>
+                                <swiper-slide v-for="room in ownedRooms" :key="`room-${room.id}`" class="fancy-6"><b-col class="cardOverlay"><app-game-card :room="room" :isOwn="true" :metric="getMetricLabel(getIcon(room))" /></b-col></swiper-slide>
                                 <div class="swiper-pagination" />
                             </swiper>
                         </app-loading>
@@ -114,7 +114,7 @@ export default {
                 this.rooms.push(this.roomsData[key]);
             });
             this.rooms.forEach((ro) => {
-                this.getPlayers(ro).then(() => {
+                this.getAllHistory(ro).then(() => {
                     if (this.tempPlayers.filter((fil) => {
                         return fil.user_id === this.logged.id && ro.owner_id !== fil.user_id;
                     }).length > 0) {
@@ -135,32 +135,27 @@ export default {
     },
     methods: {
         getAllMetrics() {
-            return axios.get(
-            'https://e-bettor.herokuapp.com/all_metrics',
-                { headers: {
-                    'Content-type':'application/json'
-                }})
-                .then(({data}) => {
-                    this.metricsData = this._.cloneDeep(data);
-                    console.log('SHOW METRICS: ', data);
-                    
-                })
-                .catch(({response}) => {
-                    console.error(response);
-                });
+          return axios.get(
+              'http://localhost:5000/metric/all-metrics')
+              .then(({data}) => {
+                console.log(data);
+                this.metricsData = this._.cloneDeep(data);
+              })
+              .catch(({response}) => {
+                console.error(response);
+              });
         },
-        getAllRooms() {
-            return axios.get(`https://e-bettor.herokuapp.com/all_rooms`, { headers: {
-                'Content-type':'application/json'
-            }})
-                .then(({data}) => {
-                    this.roomsData = this._.cloneDeep(data);
-                    return Promise.resolve();
-                })
-                .catch((response) => {
-                    console.log(response);
-                    return Promise.reject();
-                });
+          getAllRooms() {
+          return axios.get(`http://localhost:5000/room/active-rooms`)
+              .then(({data}) => {
+                console.log(data);
+                this.roomsData = this._.cloneDeep(data);
+                return Promise.resolve();
+              })
+              .catch((response) => {
+                console.error(response);
+                return Promise.reject();
+              });
         },
         getMetricLabel(icon) {
             const index = this.metricsList.filter((el) => {
@@ -190,23 +185,20 @@ export default {
             }
             return 'skull';
         },
-        getPlayers(room) {
-            this.tempPlayers = [];
-            return axios.get(`https://e-bettor.herokuapp.com/get_attendees?room=${room.id}`, { headers: {
-                'Content-type':'application/json'
-            }})
+        getAllHistory() {
+          this.histories = [];
+          if (this.logged) {
+            return this.$axios.get(`http://localhost:5000/room-attendee/by-user/${this.logged.id}`)
                 .then(({data}) => {
-                    console.log(data);
-                    Object.keys(data).forEach((dat) => {
-                        this.tempPlayers.push(data[dat]);
-                    })
+                  console.log(data);
+                  this.tempPlayers = this._.cloneDeep(data);
+                  this.isLoading = false;
+                  this.isLoadingPlayers = false;
                 })
                 .catch((response) => {
-                    console.log(response);
-                }).finally(() => {
-                    this.isLoading = false;
-                    this.isLoadingPlayers = false;
+                  console.error(response);
                 });
+          }
         },
         resetFilters(choice) {
             if (choice === 1) {

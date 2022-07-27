@@ -4,7 +4,7 @@ import router from '@/plugins/router';
 const getInitialState = () => ({
 	loading: false,
 	refreshing: false,
-	token: localStorage.authToken ?? 'null',
+	token: localStorage.token ?? 'null',
 	error: null
 });
 
@@ -27,11 +27,11 @@ export default {
 		stopRefreshing(state) {
 			state.refreshing = false;
 		},
-		login(state, payload) {
-			console.log(payload);
-			/* if (saveToLocalStorage) {
-				localStorage.authToken = token;
-			} */
+		login(state, payload, saveToLocalStorage=true) {
+			if (saveToLocalStorage) {
+				localStorage.authToken = payload?.access_token;
+				localStorage.token = payload;
+			}
 			state.token = payload;
 			state.loading = false;
 			state.refreshing = false;
@@ -49,7 +49,8 @@ export default {
 			commit('reset');
 			commit('startLoading');
 			return axios.post(
-				'https://bettor-be.onrender.com/user/token',
+				// 'https://bettor-be.onrender.com/user/token',
+				'http://127.0.0.1:5000/user/token',
 				{
 					username: username,
 					password: password
@@ -66,6 +67,7 @@ export default {
 		},
 		logout({dispatch}, redirect = true) {
 			localStorage.removeItem('authToken');
+			localStorage.removeItem('token');
 			dispatch('resetAll', null, {root: true});
 			if (redirect) {
 				router.push({
@@ -76,7 +78,7 @@ export default {
 		},
 		refreshToken({commit}) {
 			commit('startRefreshing');
-			axios.get('/tellStoryUser/RefreshToken')
+			axios.get('https://bettor-be.onrender.com/user/token')
 				.then(({data}) => {
 					commit('login', data);
 				})

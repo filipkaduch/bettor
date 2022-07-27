@@ -7,7 +7,7 @@ export const secondsToTime = (e) => {
     return h + ':' + m + ':' + s;
 }
 
-export const timestampToDate = (unixTimestamp, mins=true) => {
+export const timestampToDate = (unixTimestamp, mins=true, secs=false) => {
     const date = new Date(unixTimestamp);
     const formattedDate = date.toDateString();
     const hours = date.getHours();
@@ -15,7 +15,7 @@ export const timestampToDate = (unixTimestamp, mins=true) => {
     const seconds = "0" + date.getSeconds();
 
     if(mins) {
-        return formattedDate + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+        return `${formattedDate}  ${hours}:${minutes.substr(-2)} ${secs ? seconds.substr(-2) : ''}`;
     } else {
         return formattedDate;
     }

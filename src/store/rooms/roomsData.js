@@ -56,7 +56,7 @@ export default {
 			// commit('reset');
 			commit('startLoading');
 			return axios.get(
-				'https://e-bettor.herokuapp.com/all_rooms',
+				`http://localhost:5000/room/active-rooms`,
 				{ headers: {
 					'Content-type':'application/json'
 				}
