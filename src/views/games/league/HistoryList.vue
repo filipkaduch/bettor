@@ -11,7 +11,17 @@
         <app-loading :loading="isLoading" class="h-100 pb-5" :circle="true" variant="white">
             <div class="w-100 overflow-scroll hide-scrollbar history-height p-3 pt-0 mb-1 mb-lg-5" style="height: calc(100% - 68px) !important;">
                 <b-row v-for="(history, index) in historiesData" :key="index" style="height: 250px; background-color: #4e54c8;" class="rounded p-2 m-2 mb-xl-4 rowHover cursor-pointer">
-                    <b-col cols="1" class="border-line-white" style="border-right: 1px solid white;">{{ index + 1 }}.</b-col>
+                    <b-col cols="1" class="border-line-white justify-content-between d-flex align-items-center" style="border-right: 1px solid white; flex-direction: column;">
+                      {{ index + 1 }}.
+                      <div class="actionIcons py-2">
+                        <div class="actionIcon rounded-circle px-2 py-1">
+                          <font-awesome-icon :icon="['fas', 'trash']" size="sm" class="ml-0" @click="deleteRoomAttendee(history.id)"/>
+                        </div>
+                        <div class="actionIcon rounded-circle px-2 py-1">
+                          <font-awesome-icon :icon="['fas', 'redo']" size="sm" class="ml-0" @click="refreshRoomAttendee(history.id)" />
+                        </div>
+                      </div>
+                    </b-col>
                     <b-col cols="8" class="d-block">
                         <h4 class="history-text">{{ relevantMetricsComputed[index].metric }}: {{ history.count }}/{{ relevantMetricsComputed[index].value }}</h4>
                         <h4 class="history-text">{{ $t('t_games') }}: {{ history.games_count }}/{{ relevantMetricsComputed[index].games }}</h4>
@@ -37,7 +47,6 @@
 import {timestampToDate} from '@/util/timeUtils';
 import {serverList} from '@/util/consts/lolServers';
 import {gamesList} from '@/util/consts/games';
-import axios from 'axios';
 import AppLoading from '@/components/design/AppLoading.vue';
 
 
@@ -117,6 +126,31 @@ export default {
                     game: room
             }});
         },
+        deleteRoomAttendee(id) {
+          console.log(id);
+          if (this.logged) {
+            return this.$axios.delete(
+            `https://bettor-be.onrender.com/room-attendee/${id}`)
+                .then(({data}) => {
+                  console.log(data);
+                  this.historiesData.splice(this.historiesData.indexOf((el) => el.id === id), 1);
+
+                })
+                .catch(({response}) => {
+                  console.error(response);
+                });
+          }
+        },
+        refreshRoomAttendee(id) {
+          return this.$axios.get(
+              `http://localhost:5000/room-attendee/${id}`)
+              .then(({data}) => {
+                console.log(data);
+              })
+              .catch(({response}) => {
+                console.error(response);
+              });
+        },
         getGame(index) {
             const findIndex = this.gamesList.findIndex((game) => game.metric === this.relevantMetricsComputed[index].game_id);
             if (findIndex > -1) {
@@ -131,7 +165,7 @@ export default {
           this.isLoading = true;
           if (this.logged) {
             return this.$axios.get(
-                'http://localhost:5000/metric/all-metrics')
+                'https://bettor-be.onrender.com/metric/all-metrics')
                 .then(({data}) => {
                   console.log(data);
                   this.metricsData = this._.cloneDeep(data);
@@ -166,24 +200,6 @@ export default {
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
             const diffDaysGame = Math.ceil(diffTimeGame / (1000 * 60 * 60 * 24)); 
             return `${ diffDays > diffDaysGame ? '' : diffDays} ${ diffDays > diffDaysGame ? `-` : diffDays > 1 ? `days` : `day`}`;
-        },
-        getPlayers(game) {
-            axios.get(`https://e-bettor.herokuapp.com/get_attendees?room=${game}`, { headers: {
-                'Content-type':'application/json'
-            }})
-            .then(({data}) => {
-                this.players = this._.clone(data);
-                Object.keys(this.players).forEach((key) => {
-                    console.log(key);
-                    this.compareHistories.push(this.players[key]);
-                });
-            })
-            .catch((response) => {
-                console.log(response);
-            }).finally(() => {
-                this.isLoading = false;
-                this.isLoadingPlayers = false;
-            });
         }
     }
 }
@@ -194,6 +210,11 @@ export default {
 
 .history-text {
   text-align: start;
+}
+
+.actionIcon:hover {
+  background-color: #001E6C;
+  opacity: 0.7;
 }
 
 @media screen and (max-width: 767px) {

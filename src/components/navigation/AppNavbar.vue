@@ -68,8 +68,9 @@
                 </div>
                 <div v-else class="my-2 my-lg-0 d-flex align-items-center w-100 justify-content-between border-top-white">
                     <div class="d-flex align-items-center">
-                        <div class="rounded-circle userIcon p-1 position-relative">
-                            <font-awesome-icon :icon="['fas', 'user-circle']" size="lg" class="mr-3" @click="showAcc = !showAcc"/>
+                        <div class="rounded-circle userIcon p-1 position-relative" :class="profileUrl === '' ? 'p-1' : ''">
+                            <div v-if="profileUrl !== ''" class="rounded-circle actualIcon h-100 w-100" :style="`background-image: url(${profileUrl});`" @click="showAcc = !showAcc"></div>
+                            <font-awesome-icon v-if="profileUrl === ''" :icon="['fas', 'user-circle']" size="lg" class="mr-3" @click="showAcc = !showAcc"/>
                             <b-collapse v-model="showAcc" class="position-absolute mt-2 collapse-border" style="border-radius: 0.25rem;">
                                 <div class="blue-bg borderRadius p-3" style="width: 160px; border-radius: 0.25rem; border:0;">
                                     <router-link style="text-decoration: none; color: inherit;" :to="{name: 'accountSettings'}">
@@ -136,8 +137,9 @@
                 <router-link class="btn actionButton mx-1" :to="{name: 'register'}">Register now</router-link>
             </div>
             <div v-else class="my-2 my-lg-0 d-flex align-items-center">
-                <div class="rounded-circle userIcon p-1 position-relative">
-                    <font-awesome-icon :icon="['fas', 'user-circle']" size="lg" class="mr-3" @click="showAcc = !showAcc"/>
+                <div class="rounded-circle userIcon position-relative">
+                    <div v-if="profileUrl !== ''" class="rounded-circle actualIcon h-100 w-100" :style="`background-image: url(${profileUrl});`" @click="showAcc = !showAcc"></div>
+                    <font-awesome-icon v-if="profileUrl === ''" :icon="['fas', 'user-circle']" size="lg" class="mr-3" @click="showAcc = !showAcc"/>
                     <b-collapse v-model="showAcc" class="position-absolute mt-2 collapse-border" style="border-radius: 0.25rem;">
                         <div class="blue-bg borderRadius p-3" style="width: 160px; border-radius: 0.25rem; border:0;">
                             <router-link style="text-decoration: none; color: inherit;" :to="{name: 'accountSettings'}">
@@ -184,7 +186,10 @@ export default {
     computed: {
         logged() {
             return this.$store.getters['authLogin/token'] ?? null;
-        }
+        },
+      profileUrl() {
+        return this.logged?.profile ?? '';
+      }
     },
     watch: {
         logged(value) {
@@ -366,6 +371,10 @@ li {
     cursor: pointer;
     width: 35px;
     height: 35px;
+}
+
+.actualIcon {
+  background-size: contain;
 }
 
 .menu-mobile-item {

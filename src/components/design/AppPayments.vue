@@ -28,7 +28,7 @@
                                 mode="payment"
                                 :pk="publishableKey"
                                 @loading="v => loading = v" />
-                            <b-button variant="transparent" class="actionButton" @click="submit">Pay now!</b-button>
+                            <b-button variant="transparent" class="actionButton w-100" @click="submit">Pay now!</b-button>
                         </b-row>
                     </b-card-text>
                 </b-tab>
@@ -50,7 +50,7 @@
                                 mode="payment"
                                 :pk="publishableKey"
                                 @loading="v => loading = v" />
-                            <b-button variant="transparent" class="actionButton" @click="submit">Withdraw now!</b-button>
+                            <b-button variant="transparent" class="actionButton w-100" @click="submit">Withdraw now!</b-button>
                         </b-row>
                     </b-card-text>
                 </b-tab>

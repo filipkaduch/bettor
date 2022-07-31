@@ -6,7 +6,7 @@
             <!--<div :style="page === 0 ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
                 <font-awesome-icon :icon="['fas', 'arrow-left']" class="arrow" @click="page = page - 1" />
             </div>-->
-            <h4 class="mt-2 game-info sub-info mx-5">
+            <h4 class="mt-lg-2 mt-0 game-info sub-info mx-5">
                 Rooms ({{ `${transferedNumber}/${Math.ceil(filteredRooms.length)}` }}):
                 <font-awesome-icon :icon="['fas', 'search']" class="filter" @click="showFilter = !showFilter" />
             </h4>
@@ -55,7 +55,8 @@
       <div class="h-100 w-100 my-2 my-xxl-5 px-xl-5 px-3">
         <swiper
             ref="mySwiper"
-            class="px-3 pb-1 p-xl-4 w-50 h-85"
+            class="pr-1 pb-1 w-50 h-85 pt-0 px-lg-4 "
+            :class="triggerMobile && logged !== 'null' ? 'pl-4' : 'pl-1'"
             @slideChange="moveIndex"
             :options="swiperOptionJoined">
           <swiper-slide v-for="(room, index) in getRooms()"
@@ -443,7 +444,7 @@ export default {
 }
 
 .h-85 {
-  height: 80% !important;
+  height: 85% !important;
 }
 
 .slide-fade-enter-active {
@@ -474,7 +475,12 @@ export default {
   opacity: 0;
 }
 
-
+.custom-card {
+  width: 100% !important;
+  border-radius: 16px !important;
+  padding-top: 0 !important;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
 
 .rowRecord {
     cursor: pointer;
