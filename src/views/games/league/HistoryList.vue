@@ -22,7 +22,7 @@
                         </div>
                       </div>
                     </b-col>
-                    <b-col cols="8" class="d-block">
+                    <b-col cols="8">
                         <h4 class="history-text">{{ relevantMetricsComputed[index].metric }}: {{ history.count }}/{{ relevantMetricsComputed[index].value }}</h4>
                         <h4 class="history-text">{{ $t('t_games') }}: {{ history.games_count }}/{{ relevantMetricsComputed[index].games }}</h4>
                         <h4 class="history-text">{{ $t('t_timeLeft') }}: {{ getTimeLeft(relevantMetricsComputed[index]) }} </h4>
@@ -30,7 +30,7 @@
                         <h4 class="history-text">{{ $t('t_game') }}: {{ getGame(index) }} </h4>
                     </b-col>
                     <b-col cols="12" xs="12" lg="3" sm="3" md="3" class="d-flex history-text mb-2 px-1">
-                        <div class="rounded p-2 h-100" style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">{{ `Get ${relevantMetricsComputed[index].value - history.count}
+                        <div class="rounded p-2 h-100 w-100" style="box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">{{ `Get ${relevantMetricsComputed[index].value - history.count}
                             ${lowercaseFirstLetter(relevantMetricsComputed[index].metric)} in ${relevantMetricsComputed[index].games - history.games_count} games and land a spot` }}</div>
                     </b-col>
                   <b-button variant="transparent" class="differButton my-auto d-flex align-items-center justify-content-center w-100" @click="goToRoom(history.game_id, relevantMetricsComputed[index].id)">

@@ -49,8 +49,8 @@ export default {
 			commit('reset');
 			commit('startLoading');
 			return axios.post(
-				//'https://bettor-be.onrender.com/user/token',
-				'http://127.0.0.1:5000/user/token',
+				'https://bettor-be.onrender.com/user/token',
+				//'http://127.0.0.1:5000/user/token',
 				{
 					username: username,
 					password: password
