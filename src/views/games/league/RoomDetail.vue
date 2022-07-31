@@ -1,7 +1,7 @@
 <template>
     <app-loading :loading="isLoading" :circle="true">
         <div class="mobile-card d-flex justify-content-center pb-0" style="height: 100%;">
-            <b-card class="custom-card pt-0 bg-semiblue" header-class="border-0" body-class="custom-body px-1">
+            <b-card class="custom-card pt-0 bg-semiblue" header-class="border-0 pb-0 pb-lg-2" body-class="custom-body px-1">
                 <template #header class="pb-0">
                   <div class="pb-0 w-100 d-flex" style="z-index: 300;">
                     <div class="d-flex w-100 justify-content-between align-items-center mb-1 mb-xxl-4">
@@ -16,7 +16,7 @@
                       </div>
                     </div>
                   </div>
-                    <b-btn-group class="w-100 px-2 pb-2 pt-0">
+                    <b-btn-group class="w-100 px-2 pb-0 pb-lg-2 pt-0">
                       <b-btn class="p-1 d-flex justify-content-center align-items-center" @click="openOrbital('info')" :style="enabledDict.info ? 'background: #001E6C !important; pointer-events: none !important;' : ''">
                         <div>
                           <font-awesome-icon :icon="['fas', 'info-circle']" size="lg" class="orbital-icon"/>
@@ -194,7 +194,10 @@
                             <div class="d-flex justify-content-between mb-2"><h3>{{ $t('t_chat') }}</h3></div>
                                 <div class="hide-scrollbar py-1 py-lg-2 rounded" style="overflow-y: scroll; scrollbar-width: none; height: 100% !important;">
                                     <div v-for="(msg, index) in chatComputed" :key="`${index}`" :class="isAuthor(msg.author) ? 'text-start' : 'text-end'" class="my-1 my-lg-2 d-flex align-items-center">
-                                        <div class="rounded-circle actualIcon mx-2" :style="profileUrl === '' ? '' : `background-image: url(${profileUrl});`"></div>
+                                        <div v-if="profileUrl !== ''" class="rounded-circle actualIcon mx-2" :style="`background-image: url(${profileUrl});`"></div>
+                                        <div v-else class="rounded-circle actualIcon mx-2 p-1">
+                                            <font-awesome-icon v-if="profileUrl === ''" :icon="['fas', 'user-circle']" size="lg" />
+                                        </div>
                                         <div class="text-message">
                                           <h5 class="mb-0 game-info">{{ msg.message }}</h5>
                                           <small v-if="changedAuthor(index, msg.author)" style="border-top: 1px solid white">{{ msg.author }}, {{ timestampToDate(msg.time_sent) }}</small>
@@ -458,7 +461,10 @@ export default {
             }
         },
         sendMessage() {
-          this.chat[`Message${Object.keys(this.chat).length + 1}`] = {message: this.chatMessage, author: this.logged.name, time_sent: new Date()}
+          this.chat[`Message${Object.keys(this.chat).length + 1}`] = {message: this.chatMessage,
+            author: this.logged.name,
+            time_sent: new Date(),
+            profile: this.logged.profile}
           return this.$axios.put(`https://bettor-be.onrender.com/chat/${this.chatId}`, {
             chat: this.chat,
           })

@@ -6,7 +6,7 @@
             <!--<div :style="page === 0 ? 'pointer-events: none; opacity: 0.5; cursor: disabled' : ''">
                 <font-awesome-icon :icon="['fas', 'arrow-left']" class="arrow" @click="page = page - 1" />
             </div>-->
-            <h4 class="mt-lg-2 mt-0 game-info sub-info mx-5">
+            <h4 class="mt-lg-2 mt-0 mb-0 mb-lg-2 game-info sub-info mx-5">
                 Rooms ({{ `${transferedNumber}/${Math.ceil(filteredRooms.length)}` }}):
                 <font-awesome-icon :icon="['fas', 'search']" class="filter" @click="showFilter = !showFilter" />
             </h4>
