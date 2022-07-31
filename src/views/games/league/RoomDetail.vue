@@ -194,9 +194,9 @@
                             <div class="d-flex justify-content-between mb-2"><h3>{{ $t('t_chat') }}</h3></div>
                                 <div class="hide-scrollbar py-1 py-lg-2 rounded" style="overflow-y: scroll; scrollbar-width: none; height: 100% !important;">
                                     <div v-for="(msg, index) in chatComputed" :key="`${index}`" :class="isAuthor(msg.author) ? 'text-start' : 'text-end'" class="my-1 my-lg-2 d-flex align-items-center">
-                                        <div v-if="profileUrl !== ''" class="rounded-circle actualIcon mx-2" :style="`background-image: url(${profileUrl});`"></div>
+                                        <div v-if="msg.profile !== ''" class="rounded-circle actualIcon mx-2" :style="`background-image: url(${msg.profile});`"></div>
                                         <div v-else class="rounded-circle actualIcon mx-2 p-1">
-                                            <font-awesome-icon v-if="profileUrl === ''" :icon="['fas', 'user-circle']" size="lg" />
+                                            <font-awesome-icon :icon="['fas', 'user-circle']" size="lg" />
                                         </div>
                                         <div class="text-message">
                                           <h5 class="mb-0 game-info">{{ msg.message }}</h5>
@@ -382,8 +382,9 @@ export default {
     },
     methods: {
         isAuthor(author) {
+          console.log(this.logged.name);
             if (typeof this.logged.name === 'undefined') {
-                return Math.random() < 0.5;
+                return false;
             }
             return this.logged?.name === author;
         },
@@ -608,7 +609,7 @@ export default {
 
 .text-message {
   overflow-wrap: break-word;
-  inline-size: 50%;
+  inline-size: 100%;
 }
 
 .inputIcon {

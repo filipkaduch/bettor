@@ -24,7 +24,6 @@
 <script>
 import AppLoading from '@/components/design/AppLoading';
 import {timestampToDate} from '@/util/timeUtils';
-import axios from 'axios';
 
 
 export default {
@@ -78,12 +77,13 @@ export default {
             this.isLoading = true;
             console.log(this.logged);
             this.records = [];
-            return axios.get(`https://e-bettor.herokuapp.com/get-attendee-history?attendee=${this.attendeeId}&game_id=${this.gameId}&user=${this.logged.id}`, { headers: {
-                'Content-type':'application/json'
-            }})
+            return this.$axios.post(`http://localhost:5000/room-attendee/get-attendee/${this.attendeeId}`, {
+              game_id: this.gameId,
+              user_id: this.logged.id
+            })
             .then(({data}) => {
                 console.log(data);
-                this.history = this._.cloneDeep(data);
+                this.history = this._.cloneDeep(data.match_history);
             })
             .catch((response) => {
                 console.log(response);
