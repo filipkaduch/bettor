@@ -63,7 +63,7 @@
               </b-card-body>
           </b-card>
         </div>
-        <div v-else class="pl-5 mobile-card mobile-trigger-card d-flex justify-content-center p-1" style="height: 50%;">
+        <div v-else class="pl-3 mobile-card mobile-trigger-card d-flex justify-content-center p-1" style="height: 50%;">
           <b-card class="custom-card pt-0 bg-semiblue w-100" header-class="border-0" body-class="custom-body p-2 p-lg-5">
             <b-card-body class="h-100 overflow-hidden p-lg-5 w-100" style="border-radius: 8px; overflow-y: scroll; background-color: #001E6C;
                 box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;">

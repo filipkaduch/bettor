@@ -55,8 +55,7 @@
       <div class="h-100 w-100 my-2 my-xxl-5 px-xl-5 px-3">
         <swiper
             ref="mySwiper"
-            class="pr-1 pb-1 w-50 h-85 pt-0 px-lg-4 "
-            :class="triggerMobile && logged !== 'null' ? 'pl-4' : 'pl-1'"
+            class="pr-1 pb-1 w-50 h-85 pt-0 px-lg-4 pl-1"
             @slideChange="moveIndex"
             :options="swiperOptionJoined">
           <swiper-slide v-for="(room, index) in getRooms()"

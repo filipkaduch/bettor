@@ -193,7 +193,7 @@
                           <!--<app-chat :chat-id="chatId" :room="room"></app-chat>-->
                             <div class="d-flex justify-content-between mb-2"><h3>{{ $t('t_chat') }}</h3></div>
                                 <div class="hide-scrollbar py-1 py-lg-2 rounded" style="overflow-y: scroll; scrollbar-width: none; height: 100% !important;">
-                                    <div v-for="(msg, index) in chatComputed" :key="`${index}`" :class="isAuthor(msg.author) ? 'text-start' : 'text-end'" class="my-1 my-lg-2 d-flex align-items-center">
+                                    <div v-for="(msg, index) in chatComputed" :key="`${index}`" :class="changedAuthor(index, msg.author, false) === false ? 'text-start' : 'text-end'" class="my-1 my-lg-2 d-flex align-items-center">
                                         <div v-if="msg.profile !== ''" class="rounded-circle actualIcon mx-2" :style="`background-image: url(${msg.profile});`"></div>
                                         <div v-else class="rounded-circle actualIcon mx-2 p-1">
                                             <font-awesome-icon :icon="['fas', 'user-circle']" size="lg" />
@@ -404,14 +404,17 @@ export default {
             console.log('LOADED CHAT');
           })
         },
-        changedAuthor(index, author) {
+        changedAuthor(index, author, profile=true) {
+          console.log(index.slice(7, index.length));
             if (typeof this.logged.name === 'undefined') {
                 return true;
             }
-            if (index !== this.chat.length - 1) {
-                return this.chat?.['chat0']?.chat[index + 1]?.author !== author;
+            const previewIndex = parseInt(index.slice(7, index.length), 10);
+            console.log(previewIndex);
+            if (previewIndex === Object.keys(this.chat).length && !profile) {
+              return false;
             }
-            return true;
+            return this.chat[`Message${previewIndex + 1}`]?.author !== author;
         },
         refreshStats() {
             this.isLoadingRefresh = true;

@@ -1,5 +1,5 @@
 <template>
-    <b-col cols="12" class="bg-semiblue shadow bottom h-100 pr-0" style="background: #1F3C88; border-radius: 8px;">
+    <b-col cols="12" class="bg-semiblue shadow bottom h-100 pl-0 pr-0" style="background: #1F3C88; border-radius: 8px;">
         <div class="d-flex justify-content-between header p-3 align-items-center">
             <div>
                 <h4>Credits overview</h4>

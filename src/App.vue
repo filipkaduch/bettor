@@ -17,9 +17,9 @@
         <li></li>
     </ul>
     <app-loading :loading="false" class="h-100 overflow-scroll">
-      <div class="d-flex justify-content-between h-100" style="flex-direction: column;">
+      <div class="d-flex justify-content-lg-between h-100" style="flex-direction: column;">
        <app-navbar/>
-       <div class="d-flex justify-content-center view-block" style="flex-direction: column;">
+       <div class="d-flex justify-content-center view-block">
           <transition name="grow-height">
             <app-new-navbar v-if="logged !== 'null'" />
           </transition>
@@ -28,7 +28,7 @@
               class="pt-2 pt-xl-4 w-100 pb-2 pb-xl-4 main-block h-100"
               :style="logged !== 'null' ? 'padding-left: 20px;' : ''" />
         </div>
-        <div class="w-100 d-flex justify-content-between page-footer" style="flex-direction: column;">
+        <div class="w-100 d-flex justify-content-lg-between page-footer" style="flex-direction: column;">
             <div class="page-footer-line" />
               <div class="w-100 d-flex justify-content-center page-footer-2">
                 <div class="d-flex justify-content-center page-footer-content">
@@ -143,10 +143,13 @@ a[tabindex]:focus {
     height: 100%;
     display: flex;
     flex-direction: column;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   .view-block {
-    height: calc(100% - 88px);
+    height: 100%;
+    flex-direction: column;
   }
 }
 
